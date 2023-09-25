@@ -30,7 +30,7 @@ const Preview = (props: Props) => {
           height={500}
           width={500}
           alt="preview"
-          className="md:-mb-[13rem] -mb-[8rem] -ml-4"
+          className="md:-mb-[13rem] -mb-[8rem] -ml-2"
         />
       </div>
     </div>

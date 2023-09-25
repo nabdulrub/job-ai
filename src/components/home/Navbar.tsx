@@ -1,9 +1,13 @@
+import { getAuthSession } from "@/lib/nextauth";
+import SignInButton from "../auth/SignInButton";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
 type Props = {};
 
-const Navbar = (props: Props) => {
+const Navbar = async (props: Props) => {
+  const session = await getAuthSession();
+
   return (
     <nav className="flex justify-between">
       <div className="flex gap-8 items-center">
@@ -21,10 +25,15 @@ const Navbar = (props: Props) => {
         </ul>
       </div>
       <div className="flex gap-4">
-        <Button variant={"outline"} title="Already have an account?">
-          Login
-        </Button>
-        <Button title="Sign up now!">Sign up</Button>
+        <Link href={"/signin"}>
+          <Button variant={"outline"} title="Already have an account?">
+            Login
+          </Button>
+        </Link>
+        <Link href={"/register"}>
+          <Button title="Sign up now!">Sign up</Button>
+        </Link>
+        {session?.user && <SignInButton />}
       </div>
     </nav>
   );

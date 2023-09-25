@@ -20,7 +20,7 @@ const Heading = (props: Props) => {
       </div>
       <div className="md:flex-row flex-col flex gap-4 md:w-auto w-[200px] mt-4">
         <Button variant={"secondary"}>Learn More</Button>
-        <Button>Get Started</Button>
+        <Button className="bg-black">Get Started</Button>
       </div>
     </div>
   );
