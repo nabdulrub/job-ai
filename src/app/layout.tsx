@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/home/Navbar";
 import Providers from "@/components/Providers";
 import Footer from "@/components/home/Footer";
+import MobileNavbar from "@/components/home/MobileNavbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,10 +26,11 @@ export default function RootLayout({
       >
         <Providers>
           <Navbar />
+          <MobileNavbar />
           <div className="mt-20">{children}</div>
         </Providers>
       </body>
-       <Footer />
+      <Footer />
     </html>
   );
 }

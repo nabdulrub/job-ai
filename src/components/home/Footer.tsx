@@ -32,7 +32,7 @@ const Footer = (props: Props) => {
   const onSubmit = () => {};
 
   return (
-    <div className="bg-black text-white flex flex-col items-center justify-center p-16 text-center gap-4 mt-8">
+    <footer className="w-full bg-black text-white flex flex-col items-center justify-center p-16 text-center gap-4 mt-8">
       <div>
         <h2 className="text-2xl">Job AI</h2>
         <h2 className="mt-4">We are consistently adding new features!</h2>
@@ -76,7 +76,7 @@ const Footer = (props: Props) => {
           <li>Cookies</li>
         </ul>
       </div>
-    </div>
+    </footer>
   );
 };
 
