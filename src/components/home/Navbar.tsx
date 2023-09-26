@@ -43,10 +43,12 @@ const Navbar = async (props: Props) => {
 
         {session?.user && (
           <>
-            <SignInButton />
-            <Link href={"/dashboard"}>
-              <Button>Dashboard</Button>
-            </Link>
+            <div className="flex gap-4">
+              <SignInButton />
+              <Link href={"/dashboard"}>
+                <Button>Dashboard</Button>
+              </Link>
+            </div>
           </>
         )}
       </div>

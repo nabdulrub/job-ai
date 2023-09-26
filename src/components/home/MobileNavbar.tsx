@@ -21,6 +21,11 @@ const MobileNavbar = async (props: Props) => {
   return (
     <div className="md:hidden block">
       <Sheet>
+        <Link href={"/"}>
+          <h2 className="absolute top-8 left-8 text-2xl font-semibold">
+            Job AI
+          </h2>
+        </Link>
         <SheetTrigger>
           <Menu className="cursor-pointer absolute right-8 top-8" size={40} />
         </SheetTrigger>

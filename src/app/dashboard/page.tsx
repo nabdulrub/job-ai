@@ -9,11 +9,7 @@ const Dashboard = async (props: Props) => {
 
   if (!session?.user) return redirect("/");
 
-  return (
-    <>
-      <Dashboard />
-    </>
-  );
+  return <>Welcome, This is being worked on!</>;
 };
 
 export default Dashboard;
