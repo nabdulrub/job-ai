@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import ViewPassword from "../ViewPassword";
+import ViewPassword from "./ViewPassword";
 
 type Props = {};
 

@@ -12,6 +12,7 @@ declare module "next-auth" {
       firstname: string;
       lastname: string;
       email: string;
+      isNewUser: boolean;
     };
   }
 }
@@ -22,6 +23,7 @@ declare module "next-auth/jwt" {
     email: string;
     firstname: string;
     lastname: string;
+    isNewUser: boolean;
   }
 }
 
@@ -48,7 +50,7 @@ export const authOptions: NextAuthOptions = {
 
           if (!user) {
             throw new Error("User does not exist!");
-            return null; // User not found
+            return null;
           }
 
           const hashedPassword = user.hashedPassword || "";
@@ -64,10 +66,11 @@ export const authOptions: NextAuthOptions = {
               email: user.email,
               firstname: user.firstname,
               lastname: user.lastname,
+              isNewUser: user.isNewUser,
             };
           }
 
-          return null; // Incorrect password
+          return null;
         } catch (error) {
           return null;
         } finally {
@@ -77,8 +80,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token }) => {
+    jwt: async ({ token, user }) => {
       if (token) {
+        console.log("token", token);
         return token;
       }
       return null;
@@ -90,6 +94,7 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.firstname = token.firstname;
         session.user.lastname = token.firstname;
+        session.user.isNewUser = token.isNewUser;
       }
       return session;
     },

@@ -25,7 +25,7 @@ import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import TextLoop from "react-text-loop";
-import ViewPassword from "../ViewPassword";
+import ViewPassword from "./ViewPassword";
 import { useRouter } from "next/navigation";
 
 type Props = {};
