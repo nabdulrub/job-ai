@@ -22,3 +22,12 @@ export const RegisterSchema = z.object({
 });
 
 export type TRegisterSchema = z.infer<typeof RegisterSchema>;
+
+export const NewsSchema = z.object({
+  email: z
+    .string()
+    .email("This must be an email")
+    .nonempty("Email is required!"),
+});
+
+export type TNewsSchema = z.infer<typeof NewsSchema>;

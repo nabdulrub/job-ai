@@ -22,6 +22,13 @@ export const POST = async (req: Request, res: Response) => {
         email,
       },
     });
+
+    const news = await prisma.newsletter.create({
+      data: {
+        email,
+      },
+    });
+
     return NextResponse.json({ user }, { status: 200 });
   } catch (error) {
     if (error instanceof ZodError) {
