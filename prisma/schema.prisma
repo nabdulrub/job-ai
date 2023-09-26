@@ -17,9 +17,84 @@ model User {
   firstname      String
   lastname       String
   isNewUser      Boolean? @default(true)
+  location       String?
+  phone          String?
+
+  Resume   Resume? @relation(fields: [resumeId], references: [id])
+  resumeId String? @db.ObjectId
 }
 
 model Newsletter {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
+}
+
+model Resume {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  user      User[]
+  jobs      Job[]
+  projects  Project[]
+  skills    Skill[]
+  education Education[]
+}
+
+model Job {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  title          String?
+  employer       String?
+  location       String?
+  start          Int?
+  end            Int?
+  jobdescription JobDescription[]
+
+  Resume   Resume? @relation(fields: [resumeId], references: [id])
+  resumeId String? @db.ObjectId
+}
+
+model JobDescription {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  description String?
+
+  Job   Job?    @relation(fields: [jobId], references: [id])
+  jobId String? @db.ObjectId
+}
+
+model Project {
+  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  title       String?
+  location    String?
+  start       Int?
+  end         Int?
+  description ProjectDescription[]
+
+  Resume   Resume? @relation(fields: [resumeId], references: [id])
+  resumeId String? @db.ObjectId
+}
+
+model ProjectDescription {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  description String?
+
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?  @db.ObjectId
+}
+
+model Skill {
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+
+  Resume   Resume? @relation(fields: [resumeId], references: [id])
+  resumeId String? @db.ObjectId
+}
+
+model Education {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  school     String?
+  degree     String?
+  gpa        Int?
+  location   String?
+  graduation Int?
+
+  Resume   Resume? @relation(fields: [resumeId], references: [id])
+  resumeId String? @db.ObjectId
 }
