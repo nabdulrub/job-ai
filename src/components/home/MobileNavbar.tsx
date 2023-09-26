@@ -26,7 +26,9 @@ const MobileNavbar = async (props: Props) => {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle className="text-2xl font-semibold">Job AI</SheetTitle>
+            <Link href={"/"}>
+              <SheetTitle className="text-2xl font-semibold">Job AI</SheetTitle>
+            </Link>
           </SheetHeader>
 
           <div className="flex flex-col justify-between h-[calc(100%-50px)]">

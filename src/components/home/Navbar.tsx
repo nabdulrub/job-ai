@@ -12,7 +12,9 @@ const Navbar = async (props: Props) => {
   return (
     <nav className="md:flex hidden justify-between relative px-12">
       <div className="flex gap-8 items-center justify-center">
-        <h2 className="font-bold text-xl">Job AI</h2>
+        <Link href={"/"}>
+          <h2 className="font-bold text-xl">Job AI</h2>
+        </Link>
         <ul className="flex gap-4">
           <li>
             <Link href={"/"}>Home</Link>

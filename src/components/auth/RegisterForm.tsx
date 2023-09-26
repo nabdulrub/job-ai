@@ -73,11 +73,15 @@ const RegisterForm = (props: Props) => {
 
       const result = await response.json();
 
+      if (result.error.meta.target === "User_email_key") {
+        return setError("email", {
+          message: "Email already in use! Login Instead",
+        });
+      }
       reset();
-
-      router.push("/signin");
     } catch (error) {
       throw new Error("User was not created");
+      return setError("root.serverError", { type: "400" });
     }
   };
 
