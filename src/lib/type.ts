@@ -31,3 +31,14 @@ export const NewsSchema = z.object({
 });
 
 export type TNewsSchema = z.infer<typeof NewsSchema>;
+
+//Session Type
+
+export type UserSession = {
+  name: string;
+  email: string;
+  id: string;
+  firstname: string;
+  lastname: string;
+  isNewUser: boolean;
+};

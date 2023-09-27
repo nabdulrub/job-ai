@@ -1,16 +1,20 @@
+import Dashboard from "@/components/dashboard/Dashboard";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {};
 
-const Dashboard = async (props: Props) => {
+const DashboardPage = async (props: Props) => {
   const session = await getAuthSession();
 
-  console.log(session?.user);
   if (!session?.user) return redirect("/");
 
-  return <>Welcome, This is being worked on!</>;
+  return (
+    <>
+      <Dashboard session={session?.user} />
+    </>
+  );
 };
 
-export default Dashboard;
+export default DashboardPage;
