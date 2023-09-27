@@ -2,7 +2,10 @@ import z from "zod";
 
 export const SignInSchema = z.object({
   email: z.string().nonempty("Email is required!").email("Invalid Email"),
-  password: z.string().nonempty("Password is required!"),
+  password: z
+    .string()
+    .nonempty("Password is required!")
+    .min(6, "Password must be at least 6 characters"),
 });
 
 export type TSignInSchema = z.infer<typeof SignInSchema>;
