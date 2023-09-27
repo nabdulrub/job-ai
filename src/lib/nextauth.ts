@@ -1,6 +1,11 @@
 import { connectToDatabase } from "@/lib/connectdb";
 import bcrypt from "bcrypt";
-import { DefaultSession, NextAuthOptions, getServerSession } from "next-auth";
+import {
+  DefaultSession,
+  NextAuthOptions,
+  User,
+  getServerSession,
+} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "../../prisma/index";
 import { SignInSchema } from "./type";
@@ -10,12 +15,19 @@ declare module "next-auth" {
     user: {
       id: string;
       firstname: string;
+      name: string;
       lastname: string;
       email: string;
       isNewUser: boolean;
     };
   }
 }
+
+type NewUser = User & {
+  isNewUser: boolean;
+  lastname: string;
+  firstname: string;
+};
 
 declare module "next-auth/jwt" {
   interface JWT {
@@ -31,7 +43,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -44,16 +55,16 @@ export const authOptions: NextAuthOptions = {
 
         try {
           await connectToDatabase();
-          const user = await prisma.user.findFirst({
+          const verifyUser = await prisma.user.findFirst({
             where: { email },
           });
 
-          if (!user) {
-            throw new Error("User does not exist!");
+          if (!verifyUser) {
+            throw new Error("User does not exist");
             return null;
           }
 
-          const hashedPassword = user.hashedPassword || "";
+          const hashedPassword = verifyUser.hashedPassword || "";
 
           const isPasswordCorrect = await bcrypt.compare(
             password,
@@ -62,11 +73,11 @@ export const authOptions: NextAuthOptions = {
 
           if (isPasswordCorrect) {
             return {
-              id: user.id,
-              email: user.email,
-              firstname: user.firstname,
-              lastname: user.lastname,
-              isNewUser: user.isNewUser,
+              id: verifyUser.id,
+              email: verifyUser.email,
+              firstname: verifyUser.firstname,
+              lastname: verifyUser.lastname,
+              isNewUser: verifyUser.isNewUser,
             };
           }
 
@@ -81,22 +92,28 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
-      if (token) {
-        return token;
+      if (user) {
+        token.id = user.id;
+        token.firstname = (user as NewUser).firstname;
+        token.lastname = (user as NewUser).lastname;
+        token.isNewUser = (user as NewUser).isNewUser;
       }
-      return null;
+      return token;
     },
 
     session: ({ session, token }) => {
       if (token) {
         session.user.id = token.id;
-        session.user.email = token.email;
         session.user.firstname = token.firstname;
-        session.user.lastname = token.firstname;
+        session.user.lastname = token.lastname;
         session.user.isNewUser = token.isNewUser;
       }
       return session;
     },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  jwt: {
+    secret: process.env.NEXTAUTH_JWT,
   },
   pages: {
     signIn: "/signin",
