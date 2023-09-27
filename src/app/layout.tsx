@@ -6,6 +6,7 @@ import Navbar from "@/components/home/Navbar";
 import Providers from "@/components/Providers";
 import Footer from "@/components/home/Footer";
 import MobileNavbar from "@/components/home/MobileNavbar";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <Navbar />
           <MobileNavbar />
           <div className="mt-20">{children}</div>
+          <Analytics />
         </Providers>
       </body>
       <Footer />
