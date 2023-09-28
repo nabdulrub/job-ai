@@ -77,3 +77,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+.text-fade {
+  opacity: 0;
+  animation-delay: 0.3s;
+  animation: 2s textFadeIn forwards;
+}
+
+@keyframes textFadeIn {
+  from {
+    visibility: hidden;
+    opacity: 0;
+  }
+  to {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

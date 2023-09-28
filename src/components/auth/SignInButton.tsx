@@ -6,7 +6,7 @@ import { LogOut } from "lucide-react";
 
 type Props = {};
 
-const SignInButton = (props: Props) => {
+const SignOutButton = (props: Props) => {
   return (
     <Button
       onClick={() => signOut()}
@@ -18,4 +18,4 @@ const SignInButton = (props: Props) => {
   );
 };
 
-export default SignInButton;
+export default SignOutButton;

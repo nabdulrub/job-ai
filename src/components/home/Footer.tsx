@@ -5,7 +5,7 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <footer className="w-full bg-black text-white flex flex-col items-center justify-center p-16 text-center gap-4 mt-8">
+    <footer className="relative -mb-8 -ml-8 mt-8 bottom-0 w-[calc(100%+64px)] bg-black text-white flex flex-col items-center justify-center p-16 text-center gap-4 ">
       <div>
         <h2 className="text-2xl">Job AI</h2>
         <h2 className="mt-4">We are consistently adding new features!</h2>

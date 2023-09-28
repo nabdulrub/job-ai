@@ -1,8 +1,9 @@
+"use client";
+
 import React from "react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -12,12 +13,9 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { getAuthSession } from "@/lib/nextauth";
 import SignInButton from "../auth/SignInButton";
+import { NavbarProps } from "./DesktopNavbar";
 
-type Props = {};
-
-const MobileNavbar = async (props: Props) => {
-  const session = await getAuthSession();
-
+const MobileNavbar = ({ session }: NavbarProps) => {
   return (
     <div className="md:hidden block">
       <Sheet>
@@ -58,7 +56,7 @@ const MobileNavbar = async (props: Props) => {
               </Link>
             </ul>
             <div>
-              {!session?.user && (
+              {!session && (
                 <div className="flex gap-4 w-full">
                   <Link href={"/signin"} className="flex-1">
                     <Button
@@ -77,7 +75,7 @@ const MobileNavbar = async (props: Props) => {
                 </div>
               )}
 
-              {session?.user && (
+              {session && (
                 <>
                   <SignInButton />
                   <Link href={"/dashboard"} className="w-full">
