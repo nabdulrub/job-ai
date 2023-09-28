@@ -6,7 +6,7 @@ export default async function Home() {
   const session = await getAuthSession();
 
   if (session?.user.isNewUser) return redirect("/resume/form");
-  if (session?.user.isNewUser === false) return redirect("/");
+  if (session?.user.isNewUser === false) return redirect("/dashboard");
 
   return (
     <>

@@ -45,3 +45,29 @@ export type UserSession = {
   lastname: string;
   isNewUser: boolean;
 };
+
+export const ResumeSchema = z.object({
+  // Basic Info
+  firstname: z
+    .string()
+    .nonempty("First name is required!")
+    .max(50, "Name too long!"),
+  lastname: z
+    .string()
+    .nonempty("Last name is required!")
+    .max(75, "Name too long"),
+  Userlocation: z.string().nonempty("Location is required for your resume!"),
+  phone: z.number().nonnegative().min(4),
+
+  // Job Experience
+  jobTitle: z
+    .string()
+    .nonempty("Title is required!")
+    .max(75, "Title too long!"),
+  jobEmployer: z.string().nonempty("Employer is required"),
+  jobLocation: z.string().nonempty("Location is required!"),
+  jobStart: z.number().nonnegative("Invalid Date"),
+  jobEnd: z.number().nonnegative("Invalid Date"),
+});
+
+export type ResumeSchema = z.infer<typeof ResumeSchema>;

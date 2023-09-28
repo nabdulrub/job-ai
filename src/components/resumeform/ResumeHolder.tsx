@@ -2,7 +2,6 @@
 
 import { UserSession } from "@/lib/type";
 import { useEffect, useState } from "react";
-import { resumeForm } from "@/data/resumeFormData";
 import TextFadeIn from "./TextFadeIn";
 import ResumeForm from "./ResumeForm";
 
@@ -13,6 +12,7 @@ type Props = {
 const ResumeHolder = (props: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
+  const [formStep, setFormStep] = useState(0);
 
   return (
     <div className="h-[calc(100vh-300px)] grid place-items-center">
@@ -24,7 +24,7 @@ const ResumeHolder = (props: Props) => {
         />
       )}
 
-      {showForm && <ResumeForm />}
+      {showForm && <ResumeForm formStep={formStep} setFormStep={setFormStep} />}
     </div>
   );
 };
