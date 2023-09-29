@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import { RegisterSchema, TRegisterSchema } from "@/lib/type";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import Field from "../Field";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -8,32 +15,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import Link from "next/link";
-import { Input } from "../ui/input";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { useForm } from "react-hook-form";
-import { RegisterSchema, TRegisterSchema } from "@/lib/type";
-import { Button } from "../ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import TextLoop from "react-text-loop";
-import ViewPassword from "./ViewPassword";
-import { useRouter } from "next/navigation";
+import { Form } from "../ui/form";
 
 type Props = {};
 
 const RegisterForm = (props: Props) => {
   const [viewPassword, setViewPassword] = useState(false);
   const [viewVerifyPassword, setViewVerifyPassword] = useState(false);
-  const [matchError, setMatchError] = useState(null);
 
   const router = useRouter();
 
@@ -51,11 +39,10 @@ const RegisterForm = (props: Props) => {
   const {
     handleSubmit,
     control,
-    register,
     watch,
     setError,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = form;
 
   const onSubmit = async (data: TRegisterSchema) => {
@@ -73,15 +60,16 @@ const RegisterForm = (props: Props) => {
 
       const result = await response.json();
 
+      reset();
+      router.push("/signin");
+
       if (result.error.meta.target === "User_email_key") {
         return setError("email", {
           message: "Email already in use! Login Instead",
         });
       }
-      reset();
     } catch (error) {
-      throw new Error("User was not created");
-      return setError("root.serverError", { type: "400" });
+      console.log("Error: ", error);
     }
   };
 
@@ -99,91 +87,38 @@ const RegisterForm = (props: Props) => {
               className="flex flex-col gap-4"
             >
               <div className="flex gap-4">
-                <FormField
+                <Field
                   control={control}
                   name="firstname"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>First Name</FormLabel>
-                      <FormControl>
-                        <Input type="text" {...field} inputMode="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="First Name"
+                  type="text"
                 />
-                <FormField
+                <Field
                   control={control}
                   name="lastname"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>Last Name</FormLabel>
-                      <FormControl>
-                        <Input type="text" {...field} inputMode="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Last Name"
+                  type="text"
                 />
               </div>
-              <FormField
-                control={control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" {...field} inputMode="email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
+              <Field control={control} name="email" label="Email" type="text" />
+              <Field
                 control={control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <ViewPassword
-                          view={viewPassword}
-                          setView={setViewPassword}
-                        />
-                        <Input
-                          type={viewPassword ? "text" : "password"}
-                          {...field}
-                          inputMode="text"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Password"
+                view={viewPassword}
+                password
+                setView={setViewPassword}
+                type={viewPassword ? "text" : "password"}
               />
-              <FormField
+
+              <Field
                 control={control}
                 name="verifyPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Re-enter Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <ViewPassword
-                          view={viewVerifyPassword}
-                          setView={setViewVerifyPassword}
-                        />
-                        <Input
-                          type={viewVerifyPassword ? "text" : "password"}
-                          {...field}
-                          inputMode="text"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Re-enter Password"
+                view={viewVerifyPassword}
+                password
+                setView={setViewVerifyPassword}
+                type={viewVerifyPassword ? "text" : "password"}
               />
               <CardDescription>
                 Already have an account?{" "}

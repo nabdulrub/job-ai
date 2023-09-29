@@ -9,7 +9,7 @@ type Props = {
   session?: UserSession;
 };
 
-const ResumeHolder = (props: Props) => {
+const ResumeHolder = ({ session }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [formStep, setFormStep] = useState(0);
@@ -24,7 +24,13 @@ const ResumeHolder = (props: Props) => {
         />
       )}
 
-      {showForm && <ResumeForm formStep={formStep} setFormStep={setFormStep} />}
+      {showForm && (
+        <ResumeForm
+          formStep={formStep}
+          setFormStep={setFormStep}
+          session={session}
+        />
+      )}
     </div>
   );
 };

@@ -56,18 +56,48 @@ export const ResumeSchema = z.object({
     .string()
     .nonempty("Last name is required!")
     .max(75, "Name too long"),
-  Userlocation: z.string().nonempty("Location is required for your resume!"),
+  location: z.string().nonempty("Location is required for your resume!"),
   phone: z.number().nonnegative().min(4),
 
   // Job Experience
-  jobTitle: z
-    .string()
-    .nonempty("Title is required!")
-    .max(75, "Title too long!"),
-  jobEmployer: z.string().nonempty("Employer is required"),
-  jobLocation: z.string().nonempty("Location is required!"),
-  jobStart: z.number().nonnegative("Invalid Date"),
-  jobEnd: z.number().nonnegative("Invalid Date"),
+  jobs: z
+    .object({
+      title: z
+        .string()
+        .nonempty("Title is required!")
+        .max(75, "Title too long!"),
+      employer: z.string().nonempty("Employer is required"),
+      location: z.string().nonempty("Location is required!"),
+      start: z.number().nonnegative("Invalid Date"),
+      end: z.number().nonnegative("Invalid Date"),
+      description: z.string(),
+    })
+    .array(),
+
+  projects: z
+    .object({
+      title: z
+        .string()
+        .nonempty("Title is required!")
+        .max(75, "Title too long!"),
+      location: z.string().nonempty("Location is required!"),
+      start: z.number().nonnegative("Invalid Date"),
+      end: z.number().nonnegative("Invalid Date"),
+      description: z.string(),
+    })
+    .array(),
+
+  skills: z.string().nonempty().array(),
+
+  education: z
+    .object({
+      school: z.string().nonempty(),
+      degree: z.string().nonempty(),
+      gpa: z.number().nullable(),
+      location: z.string().nonempty("Location is required for your resume!"),
+      graduation: z.number().nullable(),
+    })
+    .array(),
 });
 
-export type ResumeSchema = z.infer<typeof ResumeSchema>;
+export type TResumeSchema = z.infer<typeof ResumeSchema>;

@@ -10,7 +10,7 @@ const ResumeFormPage = async (props: Props) => {
 
   if (!session?.user) return redirect("/");
 
-  return <ResumeHolder />;
+  return <ResumeHolder session={session?.user} />;
 };
 
 export default ResumeFormPage;

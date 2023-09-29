@@ -20,8 +20,7 @@ model User {
   location       String?
   phone          String?
 
-  Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String? @db.ObjectId
+  relatedResumes Resume[]
 }
 
 model Newsletter {
@@ -31,11 +30,12 @@ model Newsletter {
 
 model Resume {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  user      User[]
+  user      User        @relation(fields: [userId], references: [id])
   jobs      Job[]
   projects  Project[]
   skills    Skill[]
   education Education[]
+  userId    String      @db.ObjectId
 }
 
 model Job {

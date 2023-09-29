@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import { NewsSchema, TNewsSchema } from "@/lib/type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Field from "./Field";
 
 type Props = {};
 
@@ -57,23 +58,13 @@ const NewsletterForm = (props: Props) => {
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-end gap-2">
-              <FormField
+              <Field
                 control={control}
                 name="email"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormControl>
-                      <Input
-                        type="email"
-                        {...field}
-                        inputMode="email"
-                        placeholder="ex. johndoe@example.com"
-                        className="bg-white text-black"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                type="email"
+                placeholder="ex. johndoe@example.com"
+                className="bg-white text-black"
+                inputMode="email"
               />
               <Button type="submit" variant={"outline"} disabled={isSubmitting}>
                 {isSubmitting ? "Subscribing..." : "Subscribe"}

@@ -15,16 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import ViewPassword from "./ViewPassword";
+
+import Field from "../Field";
+import { Form } from "../ui/form";
 
 type Props = {};
 
@@ -45,7 +38,7 @@ const SignInForm = (props: Props) => {
     control,
     getValues,
     setError,
-    formState: { errors, isLoading, isSubmitSuccessful, isSubmitting },
+    formState: { isSubmitting },
   } = form;
 
   const onSubmit = async (data: TSignInSchema) => {
@@ -77,41 +70,16 @@ const SignInForm = (props: Props) => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-            <FormField
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input type="email" {...field} inputMode="email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+            <Field control={control} name="email" label="Email" type="text" />
+
+            <Field
               control={control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Passowrd</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <ViewPassword
-                        view={viewPassword}
-                        setView={setViewPassword}
-                      />
-                      <Input
-                        type={viewPassword ? "text" : "password"}
-                        {...field}
-                        inputMode="email"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Password"
+              view={viewPassword}
+              password
+              setView={setViewPassword}
+              type={viewPassword ? "text" : "password"}
             />
             <CardDescription>
               Don&apos;t have an account?{" "}
