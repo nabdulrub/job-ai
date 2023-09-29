@@ -57,7 +57,7 @@ export const ResumeSchema = z.object({
     .nonempty("Last name is required!")
     .max(75, "Name too long"),
   location: z.string().nonempty("Location is required for your resume!"),
-  phone: z.number().nonnegative().min(4),
+  phone: z.string().nonempty().min(4),
 
   // Job Experience
   jobs: z
@@ -68,9 +68,11 @@ export const ResumeSchema = z.object({
         .max(75, "Title too long!"),
       employer: z.string().nonempty("Employer is required"),
       location: z.string().nonempty("Location is required!"),
-      start: z.number().nonnegative("Invalid Date"),
-      end: z.number().nonnegative("Invalid Date"),
-      description: z.string(),
+      start: z.string().nonempty("Invalid Date"),
+      end: z.string().nonempty("Invalid Date"),
+      description: z
+        .string()
+        .nonempty("Provide a brief description of your responsbilities"),
     })
     .array(),
 
@@ -81,8 +83,8 @@ export const ResumeSchema = z.object({
         .nonempty("Title is required!")
         .max(75, "Title too long!"),
       location: z.string().nonempty("Location is required!"),
-      start: z.number().nonnegative("Invalid Date"),
-      end: z.number().nonnegative("Invalid Date"),
+      start: z.string().nonempty("Invalid Date"),
+      end: z.string().nonempty("Invalid Date"),
       description: z.string(),
     })
     .array(),
@@ -93,9 +95,9 @@ export const ResumeSchema = z.object({
     .object({
       school: z.string().nonempty(),
       degree: z.string().nonempty(),
-      gpa: z.number().nullable(),
+      gpa: z.string().nonempty("Invalid GPA").max(4, "Invalid GPA"),
       location: z.string().nonempty("Location is required for your resume!"),
-      graduation: z.number().nullable(),
+      graduation: z.string().nonempty("Invalid Date"),
     })
     .array(),
 });

@@ -36,9 +36,6 @@ const ResumeForm = ({ formStep, setFormStep, session }: Props) => {
       location: "",
       phone: 0,
       jobs: [{}],
-      projects: [{}],
-      skills: [],
-      education: [{}],
     },
   });
 
