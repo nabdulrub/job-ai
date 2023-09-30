@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, HTMLInputTypeAttribute } from "react";
+import React, { HTMLAttributes, ReactNode } from "react";
 import {
   FormControl,
   FormField,
@@ -6,18 +6,19 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { Input } from "./ui/input";
 import ViewPassword from "./auth/ViewPassword";
+import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 
 type Props = {
   control: any;
   name: string;
   label?: string;
-  type?: HTMLInputTypeAttribute;
   view?: boolean;
   password?: boolean;
   placeholder?: string;
   className?: string;
+  size?: number;
   inputMode?:
     | "email"
     | "search"
@@ -29,6 +30,7 @@ type Props = {
     | "decimal"
     | undefined;
   setView?: (view: boolean) => void;
+  render?: (field: any) => ReactNode; // New prop for rendering custom elements
 };
 
 const Field = ({
@@ -38,30 +40,36 @@ const Field = ({
   view,
   setView,
   password = false,
-  type = "text",
   placeholder,
   className,
   inputMode = "text",
+  render,
+  size = 1,
 }: Props) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex-1">
+        <FormItem className={`flex-[${size}]`}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className={`${password && "relative"}`}>
               {password && (
                 <ViewPassword view={view || false} setView={setView} />
               )}
-              <Input
-                type={type}
-                className={className}
-                placeholder={placeholder}
-                {...field}
-                inputMode={inputMode}
-              />
+              {/* Use the render prop to render the input or custom element */}
+              {render ? (
+                render(field)
+              ) : (
+                <Input
+                  type="text" // You can make this dynamic based on prop if needed
+                  className={className}
+                  placeholder={placeholder}
+                  {...field}
+                  inputMode={inputMode}
+                />
+              )}
             </div>
           </FormControl>
           <FormMessage />

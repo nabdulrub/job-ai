@@ -46,8 +46,7 @@ export type UserSession = {
   isNewUser: boolean;
 };
 
-export const ResumeSchema = z.object({
-  // Basic Info
+export const BasicInfoSchema = z.object({
   firstname: z
     .string()
     .nonempty("First name is required!")
@@ -58,8 +57,11 @@ export const ResumeSchema = z.object({
     .max(75, "Name too long"),
   location: z.string().nonempty("Location is required for your resume!"),
   phone: z.string().nonempty().min(4),
+});
 
-  // Job Experience
+export type TBasicInfoSchema = z.infer<typeof BasicInfoSchema>;
+
+export const JobSchema = z.object({
   jobs: z
     .object({
       title: z
@@ -68,14 +70,49 @@ export const ResumeSchema = z.object({
         .max(75, "Title too long!"),
       employer: z.string().nonempty("Employer is required"),
       location: z.string().nonempty("Location is required!"),
-      start: z.string().nonempty("Invalid Date"),
-      end: z.string().nonempty("Invalid Date"),
+      startMonth: z.enum([
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ]),
+      startYear: z.number().min(1950).max(new Date().getFullYear()),
+      endMonth: z
+        .enum([
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ])
+        .nullable(),
+      endYear: z.number().min(1950).max(new Date().getFullYear()).nullable(),
+      present: z.boolean().default(false),
       description: z
         .string()
         .nonempty("Provide a brief description of your responsbilities"),
     })
     .array(),
+});
 
+export type TJobSchema = z.infer<typeof JobSchema>;
+
+export const ProjectSchema = z.object({
   projects: z
     .object({
       title: z
@@ -83,12 +120,46 @@ export const ResumeSchema = z.object({
         .nonempty("Title is required!")
         .max(75, "Title too long!"),
       location: z.string().nonempty("Location is required!"),
-      start: z.string().nonempty("Invalid Date"),
-      end: z.string().nonempty("Invalid Date"),
+      startMonth: z.enum([
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ]),
+      startYear: z.number().min(1950).max(new Date().getFullYear()),
+      endMonth: z
+        .enum([
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ])
+        .nullable(),
+      endYear: z.number().min(1950).max(new Date().getFullYear()).nullable(),
       description: z.string(),
     })
     .array(),
+});
 
+export type TProjectSchema = z.infer<typeof ProjectSchema>;
+
+export const EducationSkillsSchema = z.object({
   skills: z.string().nonempty().array(),
 
   education: z
@@ -102,4 +173,4 @@ export const ResumeSchema = z.object({
     .array(),
 });
 
-export type TResumeSchema = z.infer<typeof ResumeSchema>;
+export type TEducationSkillsSchema = z.infer<typeof EducationSkillsSchema>;
