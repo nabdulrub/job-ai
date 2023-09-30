@@ -8,9 +8,9 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import { ClipboardCheck, Plus } from "lucide-react";
-import grid from "../../../public/grid.jpg";
 
 type ActionCardProps = {
+  image: string;
   title: string;
   description: string;
   action?: string;
@@ -20,6 +20,7 @@ type ActionCardProps = {
 };
 
 const ActionCard = ({
+  image,
   title,
   description,
   action = "Create",
@@ -27,20 +28,21 @@ const ActionCard = ({
   secondary = "Applied",
   secondaryIcon = <ClipboardCheck className="-ml-2 mr-1 w-4" />,
 }: ActionCardProps) => {
-  const newGrid = "../../../public/grid.jpg";
-
+  const overlayStyle = {
+    backgroundImage: `url(${image})`,
+  };
   return (
-    <Card
-      className="flex-1 shadow-none"
-      style={{
-        background: "linear-gradient(to right, #f0f0f0, #ffffff)",
-      }}
-    >
-      <CardHeader>
+    <Card className=" relative flex-1 flex flex-col justify-end shadow-none h-[250px] rounded-[20px]  border-[1px] border-gray-300">
+      <div
+        className="absolute inset-0 bg-mix-overlay opacity-50 rounded-[20px] bg-cover  md:bg-top bg-no-repeat "
+        style={overlayStyle}
+      ></div>
+
+      <CardHeader className="relative">
         <CardTitle className="text-xl font-bold">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex gap-2">
+      <CardContent className="flex gap-2 relative">
         <Button className="py-0 px-4 text-xs h-7 bg-black">
           {actionIcon} {action}
         </Button>
