@@ -8,6 +8,7 @@ import Footer from "@/components/home/Footer";
 import MobileNavbar from "@/components/home/MobileNavbar";
 import { Analytics } from "@vercel/analytics/react";
 import { getAuthSession } from "@/lib/nextauth";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default async function RootLayout({
         <Providers>
           <Navbar />
           <div className="mt-20">{children}</div>
+          <Toaster />
           <Analytics />
           {!session?.user && <Footer />}
         </Providers>

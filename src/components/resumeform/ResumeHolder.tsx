@@ -6,22 +6,24 @@ import TextFadeIn from "./TextFadeIn";
 import ResumeForm from "./ResumeForm";
 
 type Props = {
-  session?: UserSession;
+  session: UserSession;
 };
 
 const ResumeHolder = ({ session }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [formStep, setFormStep] = useState(0);
+  const [formStep, setFormStep] = useState(3);
 
   return (
-    <div className="h-[calc(100vh-300px)] grid place-items-center">
+    <div className="md:h-full  h-[calc(100vh-50px)] w-full">
       {!showForm && (
-        <TextFadeIn
-          index={currentIndex}
-          setIndex={setCurrentIndex}
-          setForm={setShowForm}
-        />
+        <div className="mt-60">
+          <TextFadeIn
+            index={currentIndex}
+            setIndex={setCurrentIndex}
+            setForm={setShowForm}
+          />
+        </div>
       )}
 
       {showForm && (

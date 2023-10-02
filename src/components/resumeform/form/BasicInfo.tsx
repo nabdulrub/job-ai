@@ -8,7 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import StepsBtn from "../StepsBtn";
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
+import { handleNext } from "@/lib/utils";
 
 type Props = {
   session: UserSession;
@@ -36,6 +37,7 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
 
   const onSubmit = (data: TBasicInfoSchema) => {
     console.log(data);
+    handleNext(setFormStep);
   };
 
   watch();
@@ -68,19 +70,13 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
               name="phone"
               label="Mobile"
               inputMode="tel"
-              type="number"
             />
           </div>
           <div className="flex justify-between mt-16">
-            <button type="submit">
-              <StepsBtn
-                setFormStep={setFormStep}
-                text="Next"
-                goNext
-                type="submit"
-                errors={errors}
-              />
-            </button>
+            <Button className="absolute right-6 bottom-6">
+              Job Experience
+              <ChevronRight className="w-5 mt-[3px]" />
+            </Button>
           </div>
         </form>
       </Form>

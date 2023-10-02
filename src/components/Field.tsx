@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode } from "react";
+import React, { HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
 import {
   FormControl,
   FormField,
@@ -9,29 +9,44 @@ import {
 import ViewPassword from "./auth/ViewPassword";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
+import {
+  FieldPath,
+  RegisterOptions,
+  UseControllerProps,
+} from "react-hook-form";
+import {
+  TBasicInfoSchema,
+  TEducationSkillsSchema,
+  TJobSchema,
+  TProjectSchema,
+} from "@/lib/type";
 
-type Props = {
+interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   control: any;
-  name: string;
+  name: FieldPath<
+    TJobSchema | TBasicInfoSchema | TEducationSkillsSchema | TProjectSchema
+  >;
   label?: string;
   view?: boolean;
   password?: boolean;
   placeholder?: string;
   className?: string;
   size?: number;
-  inputMode?:
-    | "email"
-    | "search"
-    | "tel"
-    | "text"
-    | "url"
-    | "none"
-    | "numeric"
-    | "decimal"
+  value?: string | undefined;
+  rules?:
+    | Omit<
+        RegisterOptions<
+          | TJobSchema
+          | TBasicInfoSchema
+          | TEducationSkillsSchema
+          | TProjectSchema
+        >,
+        "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+      >
     | undefined;
   setView?: (view: boolean) => void;
   render?: (field: any) => ReactNode; // New prop for rendering custom elements
-};
+}
 
 const Field = ({
   control,
@@ -42,16 +57,21 @@ const Field = ({
   password = false,
   placeholder,
   className,
-  inputMode = "text",
   render,
+  rules,
+  value,
   size = 1,
-}: Props) => {
+  ...props
+}: FieldProps) => {
+  const flex = `flex-[${size}]`;
+
   return (
     <FormField
       control={control}
+      rules={rules}
       name={name}
       render={({ field }) => (
-        <FormItem className={`flex-[${size}]`}>
+        <FormItem style={{ flex: size }}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className={`${password && "relative"}`}>
@@ -67,7 +87,7 @@ const Field = ({
                   className={className}
                   placeholder={placeholder}
                   {...field}
-                  inputMode={inputMode}
+                  {...props}
                 />
               )}
             </div>
