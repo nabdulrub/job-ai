@@ -9,11 +9,11 @@ import {
 import { Button } from "../ui/button";
 
 type UserWelcomeProps = {
-  name: string[];
+  name?: string[] | undefined;
 };
 
 const UserWelcome = ({ name }: UserWelcomeProps) => {
-  const fullname = name.join(" ");
+  const fullname = name?.join(" ");
 
   return (
     <div>

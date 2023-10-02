@@ -49,6 +49,12 @@ const SignInForm = (props: Props) => {
         redirect: false,
       });
 
+      console.log(response);
+
+      if (!response?.error) {
+        replace("/dashboard");
+      }
+
       if (response?.error) {
         setError("password", { message: "Invalid Password or Email" });
         setError("email", { message: "Invalid Password or Email" });

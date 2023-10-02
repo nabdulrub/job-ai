@@ -4,6 +4,8 @@ import { UserSession } from "@/lib/type";
 import { useEffect, useState } from "react";
 import TextFadeIn from "./TextFadeIn";
 import ResumeForm from "./ResumeForm";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 type Props = {
   session: UserSession;
@@ -12,7 +14,16 @@ type Props = {
 const ResumeHolder = ({ session }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [formStep, setFormStep] = useState(3);
+  const [formStep, setFormStep] = useState(0);
+
+  const { data: userSession } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/signin");
+    },
+  });
+
+  if (!userSession?.user.isNewUser) return redirect("/signin");
 
   return (
     <div className="md:h-full  h-[calc(100vh-50px)] w-full">

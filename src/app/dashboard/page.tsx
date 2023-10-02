@@ -12,7 +12,7 @@ const DashboardPage = async (props: Props) => {
 
   return (
     <>
-      <Dashboard session={session?.user} />
+      <Dashboard />
     </>
   );
 };

@@ -3,13 +3,13 @@
 import Field from "@/components/Field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { ToastAction } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 import { BasicInfoSchema, TBasicInfoSchema, UserSession } from "@/lib/type";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import StepsBtn from "../StepsBtn";
-import { Check, ChevronRight } from "lucide-react";
 import { handleNext } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronRight } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 type Props = {
   session: UserSession;
@@ -21,6 +21,7 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
   const form = useForm<TBasicInfoSchema>({
     resolver: zodResolver(BasicInfoSchema),
     defaultValues: {
+      id: session?.id,
       firstname: session?.firstname ? session.firstname : "",
       lastname: session?.lastname ? session.lastname : "",
       location: "",
@@ -32,12 +33,51 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
     handleSubmit,
     control,
     watch,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
   } = form;
 
-  const onSubmit = (data: TBasicInfoSchema) => {
-    console.log(data);
-    handleNext(setFormStep);
+  const onSubmit = async (data: TBasicInfoSchema) => {
+    try {
+      const response = await fetch("/api/user", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (response?.ok) {
+        toast({
+          title: "Step one done!",
+
+          description: "Lets keep going, just a few more to go!",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-green-800 text-white hover:text-black"
+            >
+              Next Step
+            </ToastAction>
+          ),
+        });
+        handleNext(setFormStep);
+      }
+
+      if (!response?.ok) {
+        toast({
+          title: "Failed to submit info",
+          variant: "destructive",
+          description: "Please try again!",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-gray-100 text-black "
+            >
+              Dismiss
+            </ToastAction>
+          ),
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   watch();
@@ -72,10 +112,10 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
               inputMode="tel"
             />
           </div>
-          <div className="flex justify-between mt-16">
-            <Button className="absolute right-6 bottom-6">
-              Job Experience
-              <ChevronRight className="w-5 mt-[3px]" />
+          <div className="flex justify-between mt-14">
+            <Button className="absolute right-6 bottom-6 bg-cyan-600 hover:bg-cyan-900 ">
+              {isSubmitting ? "Submitting..." : "Job Experience"}
+              <ChevronRight className="w-5 mt-[1px]" />
             </Button>
           </div>
         </form>

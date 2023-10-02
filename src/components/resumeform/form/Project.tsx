@@ -279,7 +279,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
               />
             </div>
           </div>
-          <div className="flex justify-between mt-16">
+          <div className="flex justify-between mt-8">
             <Button
               type="button"
               className={`absolute bottom-6 right-6 bg-orange-600 hover:bg-orange-300 hover:text-black shadow-none`}

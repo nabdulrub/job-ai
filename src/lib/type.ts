@@ -48,6 +48,7 @@ export type UserSession = {
 };
 
 export const BasicInfoSchema = z.object({
+  id: z.string().nonempty(),
   firstname: z
     .string()
     .nonempty("First name is required!")
@@ -56,14 +57,18 @@ export const BasicInfoSchema = z.object({
     .string()
     .nonempty("Last name is required!")
     .max(75, "Name too long"),
-  location: z.string().nonempty("Location is required for your resume!"),
-  phone: z.string().nonempty().min(4),
+  location: z.string().nonempty("Required!"),
+  phone: z
+    .string({ required_error: "Invalid" })
+    .nonempty("Required!")
+    .min(4, "Invalid Number"),
 });
 
 export type TBasicInfoSchema = z.infer<typeof BasicInfoSchema>;
 
 export const JobSchema = z
   .object({
+    id: z.string().nonempty(),
     title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
     employer: z.string().nonempty("Employer is required"),
     location: z.string().nonempty("Location is required!"),
@@ -104,6 +109,7 @@ export const JobSchema = z
 export type TJobSchema = z.infer<typeof JobSchema>;
 
 export const ProjectSchema = z.object({
+  id: z.string().nonempty(),
   title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
   location: z.string().nonempty("Location is required!"),
   startMonth: z.enum(resumeMonths as [string, ...string[]], {
@@ -127,6 +133,7 @@ export type TProjectSchema = z.infer<typeof ProjectSchema>;
 
 export const EducationSkillsSchema = z
   .object({
+    id: z.string().nonempty(),
     skills: z
       .string()
       .nonempty("Skills are required!")
@@ -149,7 +156,7 @@ export const EducationSkillsSchema = z
   })
   .refine(
     (data) => {
-      return !data.school;
+      return !data.school || !!data.degree;
     },
     {
       message: "Required!",
@@ -158,7 +165,7 @@ export const EducationSkillsSchema = z
   )
   .refine(
     (data) => {
-      return !data.school;
+      return !data.school || !!data.gpa;
     },
     {
       message: "Required!",
@@ -167,7 +174,7 @@ export const EducationSkillsSchema = z
   )
   .refine(
     (data) => {
-      return !data.school;
+      return !data.school || !!data.graduationMonth;
     },
     {
       message: "Required!",
@@ -176,7 +183,7 @@ export const EducationSkillsSchema = z
   )
   .refine(
     (data) => {
-      return !data.school;
+      return !data.school || !!data.graduationYear;
     },
     {
       message: "Required!",
@@ -185,7 +192,7 @@ export const EducationSkillsSchema = z
   )
   .refine(
     (data) => {
-      return !data.school;
+      return !data.school || !!data.location;
     },
     {
       message: "Required!",

@@ -22,6 +22,7 @@ import { handlePrev } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Award, Check, GraduationCap } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -32,6 +33,8 @@ type Props = {
 };
 
 const Skills = ({ session, formStep, setFormStep }: Props) => {
+  const router = useRouter();
+
   const [tags, setTags] = useState<Tag[]>([]);
 
   const { data: userSession, update } = useSession();
@@ -70,35 +73,41 @@ const Skills = ({ session, formStep, setFormStep }: Props) => {
     formState: { isSubmitting, isSubmitSuccessful },
   } = form;
 
-  const onSubmit = (data: TEducationSkillsSchema) => {
+  const onSubmit = async (data: TEducationSkillsSchema) => {
     try {
-      toast({
-        title: "Doing Great, Project Added!",
-        description: "Add another project!",
-        action: (
-          <ToastAction
-            altText="Back to form"
-            className="bg-green-800 text-white hover:text-black"
-          >
-            Add More
-          </ToastAction>
-        ),
-        duration: 2000,
+      const response = await fetch("/api/user/newUser", {
+        method: "POST",
+        body: JSON.stringify({ id: userSession?.user?.id }),
       });
-      console.log(data);
-      reset();
-      updateNewUser();
-      console.log(userSession);
+
+      if (response.ok) {
+        reset();
+        updateNewUser();
+        toast({
+          title: "Info Submitted!, Redirecting...",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-green-800 text-white hover:text-black"
+            >
+              Dismiss
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+
+        router.replace("/dashboard");
+      }
     } catch (error) {
       toast({
-        title: "Failed to add project!",
+        title: "Failed to add submit info!",
         description: "Please try again...",
         action: (
           <ToastAction
             altText="Back to form"
             className="bg-red-800 text-white hover:text-black"
           >
-            Sure
+            Sure!
           </ToastAction>
         ),
         duration: 2000,
@@ -245,7 +254,7 @@ const Skills = ({ session, formStep, setFormStep }: Props) => {
               type="submit"
               className={`absolute bottom-6 right-6 bg-green-600 hover:bg-green-900 shadow-none`}
             >
-              Finish
+              {isSubmitting ? "Finalizing..." : "Finish"}
               <Check className="w-5 ml-1 -mr-2" />
             </Button>
             <Button

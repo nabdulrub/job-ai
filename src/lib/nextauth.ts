@@ -93,16 +93,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user, trigger, session }) => {
       if (trigger === "update") {
-        await connectToDatabase();
-        const updateNewUser = prisma.user.update({
-          where: {
-            id: token.id,
-          },
-          data: {
-            isNewUser: false,
-          },
-        });
-        prisma.$disconnect;
         return { ...token, ...session.user };
       }
 

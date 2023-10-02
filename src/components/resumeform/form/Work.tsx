@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { useSession } from "next-auth/react";
 
 type Props = {
   formStep: number;
@@ -29,11 +30,14 @@ type Props = {
 };
 
 const WorkExperience = ({ formStep, setFormStep }: Props) => {
+  const { data: userSession } = useSession();
+
   const getYears = resumeYears();
 
   const form = useForm<TJobSchema>({
     resolver: zodResolver(JobSchema),
     defaultValues: {
+      id: userSession?.user.id,
       title: "",
       employer: "",
       location: "",
@@ -308,7 +312,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
               />
             </div>
           </div>
-          <div className="flex justify-between mt-16">
+          <div className="flex justify-between mt-8">
             <Button
               type="button"
               className={`absolute bottom-6 right-6 bg-green-700 hover:bg-green-300 hover:text-black shadow-none`}
