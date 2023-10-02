@@ -6,6 +6,7 @@ import UserWelcome from "./UserWelcome";
 import Actions from "./Actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import Recent from "./Recent";
 
 type Props = {};
 
