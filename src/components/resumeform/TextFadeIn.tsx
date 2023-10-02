@@ -29,7 +29,7 @@ const TextFadeIn = ({ index, setIndex, setForm }: Props) => {
   return (
     <p
       key={phrase}
-      className="text-fade text-3xl text-center md:text-6xl font-thin bg-gradient-to-r from-red-600  to-blue-500 text-transparent bg-clip-text p-6"
+      className="text-fade text-3xl text-center md:text-6xl font-thin bg-gradient-to-r from-red-600  to-blue-500 text-transparent bg-clip-text p-6 "
     >
       {phrase}
     </p>

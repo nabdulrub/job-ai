@@ -45,9 +45,11 @@ const DesktopNavbar = ({ session }: NavbarProps) => {
           <>
             <div className="flex gap-4">
               <SignOutButton />
-              <Link href={"/dashboard"}>
-                <Button>Dashboard</Button>
-              </Link>
+              {!session.isNewUser && (
+                <Link href={"/dashboard"}>
+                  <Button>Dashboard</Button>
+                </Link>
+              )}
             </div>
           </>
         )}

@@ -1,13 +1,15 @@
+"use client";
+
 import React from "react";
 import Heading from "./Heading";
 import Preview from "./Preview";
 import Pricing from "./Pricing";
-import { getAuthSession } from "@/lib/nextauth";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 type Props = {};
 
-const Landing = async (props: Props) => {
+const Landing = (props: Props) => {
   return (
     <div className="grid place-items-center md:gap-24 gap-16">
       <Heading />

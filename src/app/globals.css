@@ -100,3 +100,7 @@
   margin: 0;
   padding: 0;
 }
+
+.job-experience-scroll::-webkit-scrollbar {
+  display: none;
+}

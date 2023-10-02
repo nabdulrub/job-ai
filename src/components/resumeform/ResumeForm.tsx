@@ -29,7 +29,7 @@ type Props = {
 
 const ResumeForm = ({ formStep, setFormStep, session }: Props) => {
   return (
-    <Card className="text-fade shadow-none relative max-w-[800px] overflow-y-auto w-full">
+    <Card className="text-fade shadow-none relative max-w-[900px] overflow-y-auto w-full mx-auto">
       <CardHeader>
         <CardTitle>
           Fill out your resume manually for more accurate results!
@@ -46,8 +46,20 @@ const ResumeForm = ({ formStep, setFormStep, session }: Props) => {
         {formStep === 1 && (
           <WorkExperience setFormStep={setFormStep} formStep={formStep} />
         )}
-        {formStep === 2 && <ProjectExperience control={control} />}
-        {formStep === 3 && <Skills control={control} />}
+        {formStep === 2 && (
+          <ProjectExperience
+            session={session}
+            setFormStep={setFormStep}
+            formStep={formStep}
+          />
+        )}
+        {formStep === 3 && (
+          <Skills
+            session={session}
+            setFormStep={setFormStep}
+            formStep={formStep}
+          />
+        )}
       </CardContent>
     </Card>
   );

@@ -43,8 +43,11 @@ model Job {
   title          String?
   employer       String?
   location       String?
-  start          Int?
-  end            Int?
+  startMonth     String?
+  startYear      String?
+  endMonth       String?
+  endYear        String?
+  present        Boolean?
   jobdescription JobDescription[]
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])

@@ -1,3 +1,4 @@
+import { resumeMonths } from "@/data/resumeFormData";
 import z from "zod";
 
 export const SignInSchema = z.object({
@@ -47,6 +48,7 @@ export type UserSession = {
 };
 
 export const BasicInfoSchema = z.object({
+  id: z.string().nonempty(),
   firstname: z
     .string()
     .nonempty("First name is required!")
@@ -55,122 +57,147 @@ export const BasicInfoSchema = z.object({
     .string()
     .nonempty("Last name is required!")
     .max(75, "Name too long"),
-  location: z.string().nonempty("Location is required for your resume!"),
-  phone: z.string().nonempty().min(4),
+  location: z.string().nonempty("Required!"),
+  phone: z
+    .string({ required_error: "Invalid" })
+    .nonempty("Required!")
+    .min(4, "Invalid Number"),
 });
 
 export type TBasicInfoSchema = z.infer<typeof BasicInfoSchema>;
 
-export const JobSchema = z.object({
-  jobs: z
-    .object({
-      title: z
-        .string()
-        .nonempty("Title is required!")
-        .max(75, "Title too long!"),
-      employer: z.string().nonempty("Employer is required"),
-      location: z.string().nonempty("Location is required!"),
-      startMonth: z.enum([
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ]),
-      startYear: z.number().min(1950).max(new Date().getFullYear()),
-      endMonth: z
-        .enum([
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ])
-        .nullable(),
-      endYear: z.number().min(1950).max(new Date().getFullYear()).nullable(),
-      present: z.boolean().default(false),
-      description: z
-        .string()
-        .nonempty("Provide a brief description of your responsbilities"),
-    })
-    .array(),
-});
+export const JobSchema = z
+  .object({
+    id: z.string().nonempty(),
+    title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
+    employer: z.string().nonempty("Employer is required"),
+    location: z.string().nonempty("Location is required!"),
+    present: z.boolean().default(false),
+    startMonth: z.enum(resumeMonths as [string, ...string[]], {
+      required_error: "Required!",
+    }),
+    startYear: z
+      .number({ required_error: "Required" })
+      .min(1950, "Required!")
+      .max(new Date().getFullYear(), "Required!"),
+    endMonth: z.enum(resumeMonths as [string, ...string[]]).optional(),
+
+    endYear: z.number().min(1950).max(new Date().getFullYear()).optional(),
+    description: z
+      .string()
+      .nonempty("Provide a brief description of your responsbilities"),
+  })
+  .refine(
+    (data) => {
+      return data.present || !!data.endMonth;
+    },
+    {
+      message: "Required!",
+      path: ["endMonth"],
+    }
+  )
+  .refine(
+    (data) => {
+      return data.present || !!data.endYear;
+    },
+    {
+      message: "Required!",
+      path: ["endYear"],
+    }
+  );
 
 export type TJobSchema = z.infer<typeof JobSchema>;
 
 export const ProjectSchema = z.object({
-  projects: z
-    .object({
-      title: z
-        .string()
-        .nonempty("Title is required!")
-        .max(75, "Title too long!"),
-      location: z.string().nonempty("Location is required!"),
-      startMonth: z.enum([
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ]),
-      startYear: z.number().min(1950).max(new Date().getFullYear()),
-      endMonth: z
-        .enum([
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ])
-        .nullable(),
-      endYear: z.number().min(1950).max(new Date().getFullYear()).nullable(),
-      description: z.string(),
-    })
-    .array(),
+  id: z.string().nonempty(),
+  title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
+  location: z.string().nonempty("Location is required!"),
+  startMonth: z.enum(resumeMonths as [string, ...string[]], {
+    required_error: "Required",
+  }),
+  startYear: z
+    .number({ required_error: "Required" })
+    .min(1950, "Required!")
+    .max(new Date().getFullYear(), "Required!"),
+  endMonth: z.enum(resumeMonths as [string, ...string[]], {
+    required_error: "Required",
+  }),
+  endYear: z
+    .number({ required_error: "Required" })
+    .min(1950, "Required")
+    .max(new Date().getFullYear(), "Required!"),
+  description: z.string(),
 });
 
 export type TProjectSchema = z.infer<typeof ProjectSchema>;
 
-export const EducationSkillsSchema = z.object({
-  skills: z.string().nonempty().array(),
-
-  education: z
-    .object({
-      school: z.string().nonempty(),
-      degree: z.string().nonempty(),
-      gpa: z.string().nonempty("Invalid GPA").max(4, "Invalid GPA"),
-      location: z.string().nonempty("Location is required for your resume!"),
-      graduation: z.string().nonempty("Invalid Date"),
-    })
-    .array(),
-});
+export const EducationSkillsSchema = z
+  .object({
+    id: z.string().nonempty(),
+    skills: z
+      .string()
+      .nonempty("Skills are required!")
+      .array()
+      .nonempty("Skills are Required!"),
+    school: z.string().optional(),
+    degree: z.string().optional(),
+    gpa: z
+      .number("Invalid")
+      .min(0, "Invalid GPA")
+      .max(5, "Invalid GPA")
+      .optional(),
+    location: z.string().optional(),
+    graduationMonth: z.enum(resumeMonths as [string, ...string[]]).optional(),
+    graduationYear: z
+      .number()
+      .min(1950)
+      .max(new Date().getFullYear())
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      return !data.school || !!data.degree;
+    },
+    {
+      message: "Required!",
+      path: ["degree"],
+    }
+  )
+  .refine(
+    (data) => {
+      return !data.school || !!data.gpa;
+    },
+    {
+      message: "Required!",
+      path: ["gpa"],
+    }
+  )
+  .refine(
+    (data) => {
+      return !data.school || !!data.graduationMonth;
+    },
+    {
+      message: "Required!",
+      path: ["graduationMonth"],
+    }
+  )
+  .refine(
+    (data) => {
+      return !data.school || !!data.graduationYear;
+    },
+    {
+      message: "Required!",
+      path: ["graduationYear"],
+    }
+  )
+  .refine(
+    (data) => {
+      return !data.school || !!data.location;
+    },
+    {
+      message: "Required!",
+      path: ["location"],
+    }
+  );
 
 export type TEducationSkillsSchema = z.infer<typeof EducationSkillsSchema>;
