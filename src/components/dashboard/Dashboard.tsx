@@ -6,6 +6,7 @@ import UserWelcome from "./UserWelcome";
 import Actions from "./Actions";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import Recent from "./Recent";
 
 type Props = {};
 
@@ -26,6 +27,9 @@ const Dashboard = (props: Props) => {
       <UserWelcome name={[session?.firstname, session?.lastname]} />
       <div className="self-start w-full">
         <Actions />
+      </div>
+      <div className="self-start w-full">
+       <Recent/>
       </div>
     </div>
   );
