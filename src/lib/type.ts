@@ -21,7 +21,10 @@ export const RegisterSchema = z.object({
     .nonempty("Last name is required!")
     .max(75, "Name too long"),
   email: z.string().nonempty("Email is required!").email("Invalid Email"),
-  password: z.string().nonempty("Password is required!"),
+  password: z
+    .string()
+    .nonempty("Password is required!")
+    .min(6, "Invalid Password"),
   verifyPassword: z.string().nonempty("Password does not match!"),
 });
 
