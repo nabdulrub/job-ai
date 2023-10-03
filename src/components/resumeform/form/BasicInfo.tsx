@@ -21,7 +21,6 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
   const form = useForm<TBasicInfoSchema>({
     resolver: zodResolver(BasicInfoSchema),
     defaultValues: {
-      id: session?.id,
       firstname: session?.firstname ? session.firstname : "",
       lastname: session?.lastname ? session.lastname : "",
       location: "",
@@ -33,6 +32,7 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { isSubmitting },
   } = form;
 
@@ -58,6 +58,7 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
           ),
         });
         handleNext(setFormStep);
+        reset();
       }
 
       if (!response?.ok) {
@@ -76,7 +77,7 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      console.error(error);
     }
   };
 

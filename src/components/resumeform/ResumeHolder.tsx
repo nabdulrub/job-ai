@@ -7,23 +7,21 @@ import ResumeForm from "./ResumeForm";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-type Props = {
-  session: UserSession;
-};
+type Props = {};
 
-const ResumeHolder = ({ session }: Props) => {
+const ResumeHolder = (props: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [formStep, setFormStep] = useState(0);
+  const [formStep, setFormStep] = useState(3);
 
-  const { data: userSession } = useSession({
+  const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
       redirect("/signin");
     },
   });
 
-  if (!userSession?.user.isNewUser) return redirect("/signin");
+  if (!session?.user.isNewUser) return redirect("/signin");
 
   return (
     <div className="md:h-full  h-[calc(100vh-50px)] w-full">
@@ -41,7 +39,7 @@ const ResumeHolder = ({ session }: Props) => {
         <ResumeForm
           formStep={formStep}
           setFormStep={setFormStep}
-          session={session}
+          session={session.user}
         />
       )}
     </div>

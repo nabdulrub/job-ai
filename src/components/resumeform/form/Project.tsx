@@ -1,3 +1,5 @@
+"use client";
+
 import Field from "@/components/Field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -51,38 +53,48 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
     formState: { isSubmitting, isSubmitSuccessful },
   } = form;
 
-  const onSubmit = (data: TProjectSchema) => {
+  const onSubmit = async (data: TProjectSchema) => {
     try {
-      toast({
-        title: "Doing Great, Project Added!",
-        description: "Add another project!",
-        action: (
-          <ToastAction
-            altText="Back to form"
-            className="bg-green-800 text-white hover:text-black"
-          >
-            Add More
-          </ToastAction>
-        ),
-        duration: 2000,
+      const response = await fetch("/api/project", {
+        method: "POST",
+        body: JSON.stringify(data),
       });
-      console.log(data);
-      reset();
-      setAdded((v) => v + 1);
+
+      if (response.ok) {
+        toast({
+          title: "Doing Great, Project Added!",
+          description: "Add another project!",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-green-800 text-white hover:text-black"
+            >
+              Add More
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+        reset();
+        setAdded((v) => v + 1);
+      }
+
+      if (!response.ok) {
+        toast({
+          title: "Failed to add project!",
+          description: "Please try again...",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-red-800 text-white hover:text-black"
+            >
+              Sure
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+      }
     } catch (error) {
-      toast({
-        title: "Failed to add project!",
-        description: "Please try again...",
-        action: (
-          <ToastAction
-            altText="Back to form"
-            className="bg-red-800 text-white hover:text-black"
-          >
-            Sure
-          </ToastAction>
-        ),
-        duration: 2000,
-      });
+      console.error(error);
     }
   };
 

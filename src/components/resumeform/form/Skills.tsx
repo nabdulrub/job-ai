@@ -1,3 +1,5 @@
+"use client";
+
 import Field from "@/components/Field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -13,11 +15,7 @@ import { Tag, TagInput } from "@/components/ui/tag-input";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
 import { resumeMonths, resumeYears } from "@/data/resumeFormData";
-import {
-  EducationSkillsSchema,
-  TEducationSkillsSchema,
-  UserSession,
-} from "@/lib/type";
+import { EducationSkillsSchema, TEducationSkillsSchema } from "@/lib/type";
 import { handlePrev } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Award, Check, GraduationCap } from "lucide-react";
@@ -27,23 +25,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type Props = {
-  session: UserSession;
   formStep: number;
   setFormStep: (forStep: number) => void;
 };
 
-const Skills = ({ session, formStep, setFormStep }: Props) => {
+const Skills = ({ formStep, setFormStep }: Props) => {
   const router = useRouter();
 
   const [tags, setTags] = useState<Tag[]>([]);
 
-  const { data: userSession, update } = useSession();
+  const { data: session, update } = useSession();
 
   const updateNewUser = async () => {
     await update({
-      ...userSession,
+      ...session,
       user: {
-        ...userSession?.user,
+        ...session?.user,
         isNewUser: false,
       },
     });
@@ -57,7 +54,7 @@ const Skills = ({ session, formStep, setFormStep }: Props) => {
       skills: [],
       school: "",
       degree: "",
-      gpa: undefined || 0,
+      gpa: undefined,
       location: "",
       graduationMonth: undefined,
       graduationYear: undefined,
@@ -75,9 +72,10 @@ const Skills = ({ session, formStep, setFormStep }: Props) => {
 
   const onSubmit = async (data: TEducationSkillsSchema) => {
     try {
-      const response = await fetch("/api/user/newUser", {
+      console.log();
+      const response = await fetch("/api/skills", {
         method: "POST",
-        body: JSON.stringify({ id: userSession?.user?.id }),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
@@ -98,20 +96,24 @@ const Skills = ({ session, formStep, setFormStep }: Props) => {
 
         router.replace("/dashboard");
       }
+
+      if (!response.ok) {
+        toast({
+          title: "Failed to add submit info!",
+          description: "Please try again...",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-red-800 text-white hover:text-black"
+            >
+              Sure!
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+      }
     } catch (error) {
-      toast({
-        title: "Failed to add submit info!",
-        description: "Please try again...",
-        action: (
-          <ToastAction
-            altText="Back to form"
-            className="bg-red-800 text-white hover:text-black"
-          >
-            Sure!
-          </ToastAction>
-        ),
-        duration: 2000,
-      });
+      console.error(error);
     }
   };
 

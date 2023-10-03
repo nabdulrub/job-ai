@@ -23,6 +23,12 @@ export const POST = async (req: Request, res: Response) => {
       },
     });
 
+    const resume = await prisma.resume.create({
+      data: {
+        userId: user.id,
+      },
+    });
+
     const news = await prisma.newsletter.create({
       data: {
         email,

@@ -48,7 +48,6 @@ export type UserSession = {
 };
 
 export const BasicInfoSchema = z.object({
-  id: z.string().nonempty(),
   firstname: z
     .string()
     .nonempty("First name is required!")
@@ -68,7 +67,6 @@ export type TBasicInfoSchema = z.infer<typeof BasicInfoSchema>;
 
 export const JobSchema = z
   .object({
-    id: z.string().nonempty(),
     title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
     employer: z.string().nonempty("Employer is required"),
     location: z.string().nonempty("Location is required!"),
@@ -109,7 +107,6 @@ export const JobSchema = z
 export type TJobSchema = z.infer<typeof JobSchema>;
 
 export const ProjectSchema = z.object({
-  id: z.string().nonempty(),
   title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
   location: z.string().nonempty("Location is required!"),
   startMonth: z.enum(resumeMonths as [string, ...string[]], {
@@ -133,16 +130,11 @@ export type TProjectSchema = z.infer<typeof ProjectSchema>;
 
 export const EducationSkillsSchema = z
   .object({
-    id: z.string().nonempty(),
-    skills: z
-      .string()
-      .nonempty("Skills are required!")
-      .array()
-      .nonempty("Skills are Required!"),
+    skills: z.string().array().nonempty("Skills are Required!"),
     school: z.string().optional(),
     degree: z.string().optional(),
     gpa: z
-      .number("Invalid")
+      .number({ required_error: "Invalid" })
       .min(0, "Invalid GPA")
       .max(5, "Invalid GPA")
       .optional(),

@@ -54,11 +54,7 @@ const ResumeForm = ({ formStep, setFormStep, session }: Props) => {
           />
         )}
         {formStep === 3 && (
-          <Skills
-            session={session}
-            setFormStep={setFormStep}
-            formStep={formStep}
-          />
+          <Skills setFormStep={setFormStep} formStep={formStep} />
         )}
       </CardContent>
     </Card>

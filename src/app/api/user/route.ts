@@ -38,11 +38,11 @@ export const POST = async (req: Request, res: Response) => {
 
     const body = await req.json();
 
-    const { firstname, lastname, location, phone, id } =
+    const { firstname, lastname, location, phone } =
       BasicInfoSchema.parse(body);
 
     const updatedUser = await prisma.user.update({
-      where: { id },
+      where: { id: session.user.id },
       data: {
         firstname,
         lastname,
@@ -61,5 +61,7 @@ export const POST = async (req: Request, res: Response) => {
       { message: "Internal Server Error Adding User Info" },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 };

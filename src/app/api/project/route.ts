@@ -1,9 +1,9 @@
 import { connectToDatabase } from "@/lib/connectdb";
 import { getAuthSession } from "@/lib/nextauth";
-import { JobSchema } from "@/lib/type";
+import { ProjectSchema } from "@/lib/type";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { prisma } from "../../../../../prisma";
+import { prisma } from "../../../../prisma";
 
 export const POST = async (req: Request, res: Response) => {
   try {
@@ -20,40 +20,59 @@ export const POST = async (req: Request, res: Response) => {
     const body = await req.json();
 
     const {
-      id,
       title,
-      employer,
       location,
       startMonth,
       startYear,
       endMonth,
       endYear,
       description,
-      present,
-    } = JobSchema.parse(body);
+    } = ProjectSchema.parse(body);
 
-    const newResume = await prisma.resume.create({
+    const resume = await prisma.resume.findFirst({
       where: {
-        user: id,
-      },
-      data: {
-        jobs: [
-          {
-            title: title,
-          },
-        ],
+        userId: session.user.id,
       },
     });
 
-    return NextResponse.json({ updatedUser }, { status: 200 });
+    if (!resume)
+      return NextResponse.json(
+        { message: "User does not have resume!" },
+        { status: 404 }
+      );
+
+    const newProject = await prisma.resume.update({
+      where: {
+        id: resume.id,
+      },
+      data: {
+        projects: {
+          create: {
+            title,
+            location,
+            startMonth,
+            startYear,
+            endMonth,
+            endYear,
+            description,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ newProject }, { status: 201 });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json({ message: error.issues }, { status: 415 });
     }
 
+    console.log(error);
+
     return NextResponse.json(
-      { message: "Internal Server Error Adding User Info" },
+      { message: "Internal Server Error Adding Project Info" },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 };

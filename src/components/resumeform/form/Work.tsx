@@ -37,7 +37,6 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
   const form = useForm<TJobSchema>({
     resolver: zodResolver(JobSchema),
     defaultValues: {
-      id: userSession?.user.id,
       title: "",
       employer: "",
       location: "",
@@ -60,40 +59,48 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
     formState: { isSubmitting, errors, isSubmitSuccessful },
   } = form;
 
-  const onSubmit = (data: TJobSchema) => {
+  const onSubmit = async (data: TJobSchema) => {
     try {
-      toast({
-        title: "Job Added!",
-        description: "Add another job!",
-        action: (
-          <ToastAction
-            altText="Back to form"
-            className="bg-green-800 text-white hover:text-black"
-          >
-            Add More
-          </ToastAction>
-        ),
-        duration: 2000,
+      const response = await fetch("/api/job", {
+        method: "POST",
+        body: JSON.stringify(data),
       });
-    } catch (error) {
-      toast({
-        title: "Failed to add job!",
-        description: "Please try again...",
-        action: (
-          <ToastAction
-            altText="Back to form"
-            className="bg-red-800 text-white hover:text-black"
-          >
-            Sure
-          </ToastAction>
-        ),
-        duration: 2000,
-      });
-    }
+      if (response.ok) {
+        toast({
+          title: "Job Added!",
+          description: "Add another job!",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-green-800 text-white hover:text-black"
+            >
+              Add More
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+        reset();
+      }
 
-    console.log(data);
-    reset();
-    // handleNext(setFormStep);
+      if (!response.ok) {
+        toast({
+          title: "Failed to add job!",
+          description: "Please try again...",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-red-800 text-white hover:text-black"
+            >
+              Sure
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+        console.log(response);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleNextError = () => {
