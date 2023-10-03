@@ -12,7 +12,7 @@ type Props = {};
 const ResumeHolder = (props: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [formStep, setFormStep] = useState(3);
+  const [formStep, setFormStep] = useState(0);
 
   const { data: session } = useSession({
     required: true,

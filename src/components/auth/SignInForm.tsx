@@ -49,8 +49,6 @@ const SignInForm = (props: Props) => {
         redirect: false,
       });
 
-      console.log(response);
-
       if (!response?.error) {
         replace("/dashboard");
       }

@@ -72,7 +72,6 @@ const Skills = ({ formStep, setFormStep }: Props) => {
 
   const onSubmit = async (data: TEducationSkillsSchema) => {
     try {
-      console.log();
       const response = await fetch("/api/skills", {
         method: "POST",
         body: JSON.stringify(data),
