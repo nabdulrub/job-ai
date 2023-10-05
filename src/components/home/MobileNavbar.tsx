@@ -42,7 +42,7 @@ const MobileNavbar = ({ session }: NavbarProps) => {
                   <ChevronRight />
                 </li>
               </Link>
-              <Link href={"/"}>
+              <Link href={"/Pricing"}>
                 <li className="text-xl font-normal flex items-center">
                   Pricing
                   <ChevronRight />

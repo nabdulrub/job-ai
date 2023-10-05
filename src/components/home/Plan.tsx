@@ -7,18 +7,23 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
+import Details from "../Pricing-page/Details";
 
 type PlanProps = {
+  isPlan: boolean;
   title: string;
   description: string;
   price: number;
   top?: boolean;
   topTitle?: string;
+  planPage: boolean;
   duration: "MONTHLY" | "ANNUALLY";
   className?: string;
 };
 
 const Plan = ({
+  isPlan,
+  planPage,
   title,
   description,
   price,
@@ -56,6 +61,12 @@ const Plan = ({
           <p className="text-xs ml-4">{durationCheck}</p>
         </CardContent>
       </div>
+      {planPage ? (
+        <CardContent className=" "> <Details isStudentPlan={isPlan}/></CardContent>
+      ) : (
+        ""
+      )}
+
       <CardContent className="border-t-2 borde-gray-900 pt-4">
         <Button className="w-full py-6 bg-black hover:bg-white border-2 hover:border-black hover:text-black transition-all duration-300">
           Get Started

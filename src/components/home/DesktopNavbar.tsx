@@ -20,7 +20,7 @@ const DesktopNavbar = ({ session }: NavbarProps) => {
             <Link href={"/"}>Home</Link>
           </li>
           <li>
-            <Link href={"/"}>Pricing</Link>
+            <Link href={"/Pricing"}>Pricing</Link>
           </li>
           <li>
             <Link href={"/"}>Newletter</Link>
