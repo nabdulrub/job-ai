@@ -1,5 +1,6 @@
 "use client";
 
+import ButtonLoading from "@/components/ButtonLoading";
 import Field from "@/components/Field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -14,6 +15,7 @@ import {
 import { Tag, TagInput } from "@/components/ui/tag-input";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
+import { useFormStepContext } from "@/context/FormSteps";
 import { resumeMonths, resumeYears } from "@/data/resumeFormData";
 import { EducationSkillsSchema, TEducationSkillsSchema } from "@/lib/type";
 import { handlePrev } from "@/lib/utils";
@@ -30,6 +32,8 @@ type Props = {
 };
 
 const Skills = ({ formStep, setFormStep }: Props) => {
+  const { isStepCompleted, setComplete } = useFormStepContext();
+
   const router = useRouter();
 
   const [tags, setTags] = useState<Tag[]>([]);
@@ -92,7 +96,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
           ),
           duration: 2000,
         });
-
+        setComplete(formStep);
         router.replace("/dashboard");
       }
 
@@ -251,13 +255,14 @@ const Skills = ({ formStep, setFormStep }: Props) => {
             </div>
           </div>
           <div className="mt-8">
-            <Button
-              type="submit"
-              className={`absolute bottom-6 right-6 bg-green-600 hover:bg-green-900 shadow-none`}
-            >
-              {isSubmitting ? "Finalizing..." : "Finish"}
-              <Check className="w-5 ml-1 -mr-2" />
-            </Button>
+            <ButtonLoading
+              text="Finish"
+              loadingText="Finalizing..."
+              isLoading={isSubmitting}
+              buttonIcon={<Check className="w-5 ml-1 -mr-2" />}
+              className="absolute bottom-6 right-6 bg-green-600 hover:bg-green-900 shadow-none"
+            />
+
             <Button
               variant={"secondary"}
               type="button"

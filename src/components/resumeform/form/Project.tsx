@@ -1,5 +1,6 @@
 "use client";
 
+import ButtonLoading from "@/components/ButtonLoading";
 import Field from "@/components/Field";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -13,6 +14,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
+import { useFormStepContext } from "@/context/FormSteps";
 import { resumeMonths, resumeYears } from "@/data/resumeFormData";
 import { ProjectSchema, TProjectSchema, UserSession } from "@/lib/type";
 import { handleNext, handlePrev } from "@/lib/utils";
@@ -28,7 +30,8 @@ type Props = {
 };
 
 const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
-  const [added, setAdded] = useState(0);
+  const { isStepCompleted, setComplete } = useFormStepContext();
+  const isComplete = isStepCompleted[formStep]?.completed;
 
   const getYears = resumeYears();
 
@@ -75,7 +78,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
           duration: 2000,
         });
         reset();
-        setAdded((v) => v + 1);
+        setComplete(formStep);
       }
 
       if (!response.ok) {
@@ -99,7 +102,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
   };
 
   const handleNextError = () => {
-    if (isSubmitSuccessful) {
+    if (isComplete) {
       return handleNext(setFormStep);
     }
     toast({
@@ -114,8 +117,6 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
     });
   };
 
-  const projectsAmount = `${added} project${added <= 1 ? "" : "s"}`;
-
   watch();
   return (
     <>
@@ -126,26 +127,24 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
               Project Experience <GanttChartSquare className="w-6" />{" "}
             </h2>
             <div className="flex gap-2">
-              <Button
-                type="button"
-                title={`You have ${projectsAmount} added`}
-                className={`${
-                  added > 0 && "border-orange-500 text-xl"
-                } hover:bg-none border-2 font-extrabold hover:no-underline`}
-                variant={"link"}
-              >
-                {added}
-              </Button>
-              <Button className="flex items-center" type="submit">
-                {isSubmitting ? (
-                  "Adding..."
-                ) : (
-                  <>
-                    <span className="md:block hidden">Add Project</span>
-                    <Plus className="w-5 md:ml-[3px]" />
-                  </>
-                )}
-              </Button>
+              {isComplete && (
+                <>
+                  <ButtonLoading
+                    text="Add Project"
+                    loadingText="Adding..."
+                    type="submit"
+                    className="hidden md:block"
+                    isLoading={isSubmitting}
+                    buttonIcon={<Plus className="w-5 md:ml-[3px]" />}
+                  />
+                  <ButtonLoading
+                    type="submit"
+                    isLoading={isSubmitting}
+                    className="md:hidden"
+                    buttonIcon={<Plus className="w-5 md:ml-[3px]" />}
+                  />
+                </>
+              )}
             </div>
           </div>
           <div className="relative flex flex-col md:flex-row  gap-4 overflow-auto max-h-[575px] md:h-auto pb-6 px-1 job-experience-scroll scroll-smooth">
@@ -292,14 +291,25 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
             </div>
           </div>
           <div className="flex justify-between mt-8">
-            <Button
-              type="button"
-              className={`absolute bottom-6 right-6 bg-orange-600 hover:bg-orange-300 hover:text-black shadow-none`}
-              onClick={handleNextError}
-            >
-              Skills & Education
-              <ChevronRight className="w-5l -mr-2" />
-            </Button>
+            {isComplete ? (
+              <Button
+                type="button"
+                className={`absolute bottom-6 right-6 bg-orange-600 hover:bg-orange-300 hover:text-black shadow-none`}
+                onClick={handleNextError}
+              >
+                Skills & Education
+                <ChevronRight className="w-5l -mr-2" />
+              </Button>
+            ) : (
+              <ButtonLoading
+                text="Add Project"
+                loadingText="Adding..."
+                type="submit"
+                isLoading={isSubmitting}
+                className="absolute right-6 bottom-6"
+                buttonIcon={<Plus className="w-5 md:ml-[3px]" />}
+              />
+            )}
             <Button
               variant={"secondary"}
               type="button"

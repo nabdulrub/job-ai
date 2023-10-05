@@ -19,6 +19,8 @@ import {
   TEducationSkillsSchema,
   TJobSchema,
   TProjectSchema,
+  TRegisterSchema,
+  TSignInSchema,
 } from "@/lib/type";
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -40,6 +42,8 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
           | TBasicInfoSchema
           | TEducationSkillsSchema
           | TProjectSchema
+          | TSignInSchema
+          | TRegisterSchema
         >,
         "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
       >

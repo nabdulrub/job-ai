@@ -1,11 +1,10 @@
 "use client";
 
-import { UserSession } from "@/lib/type";
-import { useEffect, useState } from "react";
-import TextFadeIn from "./TextFadeIn";
-import ResumeForm from "./ResumeForm";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useState } from "react";
+import ResumeForm from "./ResumeForm";
+import TextFadeIn from "./TextFadeIn";
 
 type Props = {};
 
