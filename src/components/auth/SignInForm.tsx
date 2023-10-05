@@ -36,7 +36,6 @@ const SignInForm = (props: Props) => {
   const {
     handleSubmit,
     control,
-    getValues,
     setError,
     formState: { isSubmitting },
   } = form;
@@ -44,16 +43,16 @@ const SignInForm = (props: Props) => {
   const onSubmit = async (data: TSignInSchema) => {
     try {
       const response = await signIn("credentials", {
-        email: getValues("email"),
-        password: getValues("password"),
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
 
-      if (!response?.error) {
+      if (response?.ok) {
         replace("/dashboard");
       }
 
-      if (response?.error) {
+      if (!response?.ok) {
         setError("password", { message: "Invalid Password or Email" });
         setError("email", { message: "Invalid Password or Email" });
       } else {

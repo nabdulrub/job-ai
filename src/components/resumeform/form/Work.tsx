@@ -18,11 +18,13 @@ import {
 import { resumeMonths, resumeYears } from "@/data/resumeFormData";
 import { handleNext, handlePrev } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useSession } from "next-auth/react";
+import ButtonLoading from "@/components/ButtonLoading";
+import { useFormStepContext } from "@/context/FormSteps";
 
 type Props = {
   formStep: number;
@@ -30,9 +32,12 @@ type Props = {
 };
 
 const WorkExperience = ({ formStep, setFormStep }: Props) => {
-  const { data: userSession } = useSession();
+  const { isStepCompleted, setComplete } = useFormStepContext();
+  const isComplete = isStepCompleted[formStep]?.completed;
 
   const getYears = resumeYears();
+
+  const { data: userSession } = useSession();
 
   const form = useForm<TJobSchema>({
     resolver: zodResolver(JobSchema),
@@ -79,6 +84,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
           ),
           duration: 2000,
         });
+        setComplete(formStep);
         reset();
       }
 
@@ -104,7 +110,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
   };
 
   const handleNextError = () => {
-    if (isSubmitSuccessful) {
+    if (isComplete) {
       return handleNext(setFormStep);
     }
     toast({
@@ -128,10 +134,16 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4">Work Experience</h2>
-            <Button className="flex items-center" type="submit">
-              {isSubmitting ? "Adding..." : "Add Job"}
-              <Plus className="w-5 ml-[3px]" />
-            </Button>
+            {isComplete && (
+              <ButtonLoading
+                text="Add Job"
+                loadingText="Adding..."
+                className=" z-20"
+                isLoading={isSubmitting}
+                type="submit"
+                buttonIcon={<Plus className="w-5 ml-[3px]" />}
+              />
+            )}
           </div>
           <div className="relative flex flex-col md:flex-row  gap-4 overflow-auto max-h-[575px] md:h-auto pb-6 px-1 job-experience-scroll scroll-smooth">
             <div className="grid grid-cols-1 gap-4  flex-1 min-w-full">
@@ -320,14 +332,27 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
             </div>
           </div>
           <div className="flex justify-between mt-8">
-            <Button
-              type="button"
-              className={`absolute bottom-6 right-6 bg-green-700 hover:bg-green-300 hover:text-black shadow-none`}
-              onClick={handleNextError}
-            >
-              Project Experience
-              <ChevronRight className="w-5l -mr-2" />
-            </Button>
+            <div className="absolute bottom-6 right-6">
+              {isSubmitSuccessful || isComplete ? (
+                <Button
+                  type="button"
+                  className={` bg-green-700 hover:bg-green-300 hover:text-black shadow-none`}
+                  onClick={handleNextError}
+                >
+                  Project Experience
+                  <ChevronRight className="w-5l -mr-2" />
+                </Button>
+              ) : (
+                <ButtonLoading
+                  text="Add Job"
+                  loadingText="Adding..."
+                  className=" z-20"
+                  isLoading={isSubmitting}
+                  type="submit"
+                  buttonIcon={<Plus className="w-5 ml-[3px]" />}
+                />
+              )}
+            </div>
             <Button
               variant={"secondary"}
               type="button"

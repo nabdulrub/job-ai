@@ -69,6 +69,15 @@ export const POST = async (req: Request, res: Response) => {
       },
     });
 
+    const updateNewUser = await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        isNewUser: false,
+      },
+    });
+
     return NextResponse.json({ updateResume }, { status: 201 });
   } catch (error) {
     console.log(error);
