@@ -20,7 +20,7 @@ const Dashboard = (props: Props) => {
 
   const session = userSession?.user;
 
-  // if (session?.isNewUser === true) redirect("/resume/form");
+  if (session?.isNewUser === true) redirect("/resume/form");
 
   return (
     <div className="flex flex-col justify-center gap-12 items-start md:px-10">

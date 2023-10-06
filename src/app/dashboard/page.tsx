@@ -8,7 +8,11 @@ type Props = {};
 const DashboardPage = async (props: Props) => {
   const session = await getAuthSession();
 
-  if (!session?.user) return redirect("/");
+  if (!session?.user) {
+    redirect("/");
+  } else if (session.user.isNewUser) {
+    redirect("resume/form");
+  }
 
   return (
     <>

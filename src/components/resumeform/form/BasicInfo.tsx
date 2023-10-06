@@ -12,7 +12,7 @@ import { ChevronRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 type Props = {
-  session: UserSession;
+  session?: UserSession;
   formStep: number;
   setFormStep: (forStep: number) => void;
 };

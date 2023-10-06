@@ -1,4 +1,11 @@
-import React, { HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
+"use client";
+
+import React, {
+  HTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  useState,
+} from "react";
 import {
   FormControl,
   FormField,
@@ -36,7 +43,6 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
     | TSignInSchema
   >;
   label?: string;
-  view?: boolean;
   password?: boolean;
   placeholder?: string;
   className?: string;
@@ -46,6 +52,7 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
     | Omit<
         RegisterOptions<
           | TRegisterSchema
+          | TChangePasswordSchema
           | TSignInSchema
           | TJobSchema
           | TBasicInfoSchema
@@ -55,7 +62,6 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
         "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
       >
     | undefined;
-  setView?: (view: boolean) => void;
   render?: (field: any) => ReactNode; // New prop for rendering custom elements
 }
 
@@ -63,8 +69,6 @@ const Field = ({
   control,
   name,
   label,
-  view,
-  setView,
   password = false,
   placeholder,
   className,
@@ -74,7 +78,7 @@ const Field = ({
   size = 1,
   ...props
 }: FieldProps) => {
-  const flex = `flex-[${size}]`;
+  const [viewPassword, setViewPassword] = useState(false);
 
   return (
     <FormField
@@ -87,17 +91,24 @@ const Field = ({
           <FormControl>
             <div className={`${password && "relative"}`}>
               {password && (
-                <ViewPassword view={view || false} setView={setView} />
+                <ViewPassword view={viewPassword} setView={setViewPassword} />
               )}
-              {/* Use the render prop to render the input or custom element */}
               {render ? (
                 render(field)
               ) : (
                 <Input
-                  type="text" // You can make this dynamic based on prop if needed
+                  type={
+                    password
+                      ? viewPassword
+                        ? "text"
+                        : !viewPassword
+                        ? "password"
+                        : "text"
+                      : "text"
+                  }
                   className={className}
                   placeholder={placeholder}
-                  {...field}
+                  onChange={field.onChange}
                   {...props}
                 />
               )}

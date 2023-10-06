@@ -105,20 +105,14 @@ const RegisterForm = (props: Props) => {
                 control={control}
                 name="password"
                 label="Password"
-                view={viewPassword}
                 password
-                setView={setViewPassword}
-                type={viewPassword ? "text" : "password"}
               />
 
               <Field
                 control={control}
                 name="verifyPassword"
                 label="Re-enter Password"
-                view={viewVerifyPassword}
                 password
-                setView={setViewVerifyPassword}
-                type={viewVerifyPassword ? "text" : "password"}
               />
               <CardDescription>
                 Already have an account?{" "}

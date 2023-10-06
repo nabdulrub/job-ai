@@ -20,8 +20,6 @@ const ResumeHolder = (props: Props) => {
     },
   });
 
-  if (!session?.user.isNewUser) return redirect("/signin");
-
   return (
     <div className="md:h-full  h-[calc(100vh-50px)] w-full">
       {!showForm && (
@@ -38,7 +36,7 @@ const ResumeHolder = (props: Props) => {
         <ResumeForm
           formStep={formStep}
           setFormStep={setFormStep}
-          session={session.user}
+          session={session?.user}
         />
       )}
     </div>

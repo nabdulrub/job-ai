@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 type Props = {
   view: boolean;
-  setView: ((view: boolean) => void) | undefined;
+  setView: (view: boolean) => void;
 };
 
 const ViewPassword = ({ view, setView }: Props) => {

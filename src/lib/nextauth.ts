@@ -93,6 +93,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user, trigger, session }) => {
       if (trigger === "update") {
+        token.isNewUser = (user as NewUser).isNewUser;
         return { ...token, ...session.user };
       }
 
@@ -105,7 +106,12 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
-    session: ({ session, token }) => {
+    session: ({ session, token, trigger }) => {
+      if (trigger === "update") {
+        session.user.firstname = token.firstname;
+        session.user.lastname = token.lastname;
+        session.user.isNewUser = token.isNewUser;
+      }
       if (token) {
         session.user.id = token.id;
         session.user.firstname = token.firstname;
@@ -121,7 +127,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/signin",
-    signOut: "/",
+    signOut: "/signin",
     error: "/signin",
   },
 };

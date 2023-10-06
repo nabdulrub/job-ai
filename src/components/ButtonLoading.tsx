@@ -8,7 +8,13 @@ interface ButtonLoadingProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   loadingText?: string;
   className?: string;
-  variant?: VariantProps<typeof buttonVariants>;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
   buttonIcon?: React.ReactNode;
 }
 

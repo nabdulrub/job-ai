@@ -9,7 +9,7 @@ import WorkExperience from "./form/Work";
 import FormSteps from "@/context/FormSteps";
 
 type Props = {
-  session: UserSession;
+  session?: UserSession;
   formStep: number;
   setFormStep: (forStep: number) => void;
 };

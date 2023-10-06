@@ -2,13 +2,13 @@
 
 import { ChangePasswordSchema, TChangePasswordSchema } from "@/lib/type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Form } from "../ui/form";
-import Field from "../Field";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
 import ButtonLoading from "../ButtonLoading";
+import Field from "../Field";
+import { Form } from "../ui/form";
+import { ToastAction } from "../ui/toast";
+import { toast } from "../ui/use-toast";
 
 type Props = {};
 
@@ -27,7 +27,6 @@ const ChangePassword = (props: Props) => {
   const {
     handleSubmit,
     control,
-    watch,
     setError,
     reset,
     formState: { errors, isSubmitting },
@@ -48,11 +47,43 @@ const ChangePassword = (props: Props) => {
 
       const result = await response.json();
 
-      console.log(result.message);
+      console.log(response);
+
+      if (response.ok) {
+        toast({
+          title: "Password Changed!",
+          description: "Your password has been successfully changed!",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-green-800 text-white hover:text-black"
+            >
+              Dismiss
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+      }
+
+      if (!response.ok) {
+        toast({
+          title: "Failed to Change Password",
+          description: "Failed to change your password, please try again!",
+          action: (
+            <ToastAction
+              altText="Back to form"
+              className="bg-red-700 text-white"
+            >
+              Try Again
+            </ToastAction>
+          ),
+          duration: 2000,
+        });
+      }
 
       if (result?.message === "Same Password") {
         return setError("newPassword", {
-          message: "You're currently using this",
+          message: "You're currently using this password",
         });
       }
 
@@ -75,19 +106,19 @@ const ChangePassword = (props: Props) => {
             control={control}
             name="oldPassword"
             label="Current Password"
-            type="password"
+            password
           />
           <Field
             control={control}
             name="newPassword"
             label="New Password"
-            type="password"
+            password
           />
           <Field
             control={control}
             name="verifyNewPassword"
             label="Verify New Password"
-            type="password"
+            password
           />
         </div>
         <div className="self-end">

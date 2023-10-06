@@ -22,7 +22,6 @@ import { Form } from "../ui/form";
 type Props = {};
 
 const SignInForm = (props: Props) => {
-  const [viewPassword, setViewPassword] = useState(false);
   const { refresh, replace } = useRouter();
 
   const form = useForm<TSignInSchema>({
@@ -49,7 +48,7 @@ const SignInForm = (props: Props) => {
       });
 
       if (response?.ok) {
-        replace("/dashboard");
+        replace("/resume/form");
       }
 
       if (!response?.ok) {
@@ -79,10 +78,7 @@ const SignInForm = (props: Props) => {
               control={control}
               name="password"
               label="Password"
-              view={viewPassword}
               password
-              setView={setViewPassword}
-              type={viewPassword ? "text" : "password"}
             />
             <CardDescription>
               Don&apos;t have an account?{" "}
