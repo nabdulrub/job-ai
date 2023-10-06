@@ -30,6 +30,17 @@ export const RegisterSchema = z.object({
 
 export type TRegisterSchema = z.infer<typeof RegisterSchema>;
 
+export const ChangePasswordSchema = z.object({
+  oldPassword: z
+    .string()
+    .nonempty("Old password is required!")
+    .min(6, "Invalid"),
+  newPassword: z.string().nonempty("Password is required!").min(6, "Invalid"),
+  verifyNewPassword: z.string().nonempty("Password does not match!"),
+});
+
+export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
+
 export const NewsSchema = z.object({
   email: z
     .string()
@@ -196,3 +207,64 @@ export const EducationSkillsSchema = z
   );
 
 export type TEducationSkillsSchema = z.infer<typeof EducationSkillsSchema>;
+
+export type TUser = {
+  id: string;
+  email: string;
+  hashedPassword: string | null;
+  firstname: string;
+  lastname: string;
+  isNewUser: boolean | null;
+  location: string | null;
+  phone: string | null;
+};
+
+export type TProject = {
+  id: string;
+  title: string;
+  location: string;
+  startMonth: string;
+  startYear: number;
+  endMonth: string;
+  endYear: number;
+  description: string;
+};
+
+export type TJob = {
+  id: string;
+  title: string;
+  employer: string;
+  location: string;
+  startMonth: string;
+  startYear: number;
+  endMonth: string;
+  endYear: number;
+  present: boolean;
+  description: string;
+  resumeId: string;
+};
+
+export type TSkill = {
+  id: string;
+  name: string;
+  resumeId: string;
+};
+
+export type TEducation = {
+  id: string;
+  school: string;
+  degree: string;
+  gpa: number;
+  location: string;
+  graduationMonth: string;
+  graduationYear: number;
+  resumeId: string;
+};
+
+export type TUserData = {
+  user: TUser;
+  jobs: TJob[];
+  projects: TProject[];
+  skills: TSkill[];
+  education: TEducation[];
+};

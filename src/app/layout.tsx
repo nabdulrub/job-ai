@@ -29,7 +29,7 @@ export default async function RootLayout({
       <body
         className={cn(
           inter.className,
-          "max-w-[120rem] mx-auto md:p-8 p-4 relative pb-[200px]"
+          "max-w-[120rem] mx-auto md:p-8 p-4 relative"
         )}
       >
         <Providers>

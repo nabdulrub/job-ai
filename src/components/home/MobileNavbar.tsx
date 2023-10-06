@@ -14,15 +14,15 @@ import { Button } from "../ui/button";
 import { getAuthSession } from "@/lib/nextauth";
 import SignInButton from "../auth/SignInButton";
 import { NavbarProps } from "./DesktopNavbar";
+import { unauthorizedLinks } from "@/data/NavbarLinks";
+import JobAI from "../JobAI";
 
 const MobileNavbar = ({ session }: NavbarProps) => {
   return (
     <div className="md:hidden block">
       <Sheet>
         <Link href={"/"}>
-          <h2 className="absolute top-8 left-8 text-2xl font-semibold">
-            Job AI
-          </h2>
+          <JobAI size="lg" />
         </Link>
         <SheetTrigger>
           <Menu className="cursor-pointer absolute right-8 top-8" size={40} />
@@ -36,27 +36,17 @@ const MobileNavbar = ({ session }: NavbarProps) => {
 
           <div className="flex flex-col justify-between h-[calc(100%-50px)]">
             <ul className="flex flex-col gap-12 mt-10">
-              <Link href={"/"}>
-                <li className="text-xl font-normal flex items-center">
-                  Home
-                  <ChevronRight />
-                </li>
-              </Link>
-              <Link href={"/"}>
-                <li className="text-xl font-normal flex items-center">
-                  Pricing
-                  <ChevronRight />
-                </li>
-              </Link>
-              <Link href={"/"}>
-                <li className="text-xl font-normal flex items-center">
-                  Newletter
-                  <ChevronRight />
-                </li>
-              </Link>
+              {unauthorizedLinks.map((path, i) => (
+                <Link href={path.path} key={i}>
+                  <li className="text-xl font-normal flex items-center">
+                    {path.title}
+                    <ChevronRight />
+                  </li>
+                </Link>
+              ))}
             </ul>
             <div>
-              {!session && (
+              {!session ? (
                 <div className="flex gap-4 w-full">
                   <Link href={"/signin"} className="flex-1">
                     <Button
@@ -73,9 +63,7 @@ const MobileNavbar = ({ session }: NavbarProps) => {
                     </Button>
                   </Link>
                 </div>
-              )}
-
-              {session && (
+              ) : (
                 <>
                   <SignInButton />
                   <Link href={"/dashboard"} className="w-full">

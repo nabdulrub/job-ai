@@ -16,6 +16,7 @@ import {
 } from "react-hook-form";
 import {
   TBasicInfoSchema,
+  TChangePasswordSchema,
   TEducationSkillsSchema,
   TJobSchema,
   TProjectSchema,
@@ -26,7 +27,13 @@ import {
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   control: any;
   name: FieldPath<
-    TJobSchema | TBasicInfoSchema | TEducationSkillsSchema | TProjectSchema
+    | TJobSchema
+    | TChangePasswordSchema
+    | TBasicInfoSchema
+    | TEducationSkillsSchema
+    | TProjectSchema
+    | TRegisterSchema
+    | TSignInSchema
   >;
   label?: string;
   view?: boolean;
@@ -38,12 +45,12 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   rules?:
     | Omit<
         RegisterOptions<
+          | TRegisterSchema
+          | TSignInSchema
           | TJobSchema
           | TBasicInfoSchema
           | TEducationSkillsSchema
           | TProjectSchema
-          | TSignInSchema
-          | TRegisterSchema
         >,
         "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
       >

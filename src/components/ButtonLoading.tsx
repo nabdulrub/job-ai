@@ -26,13 +26,13 @@ const ButtonLoading = ({
       disabled={isLoading}
       className={className}
       {...props}
-      variant={variant?.variant}
+      variant={variant}
     >
       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       {loadingText}
     </Button>
   ) : (
-    <Button className={className} {...props} variant={variant?.variant}>
+    <Button className={className} {...props} variant={variant}>
       {text}
       {buttonIcon}
     </Button>

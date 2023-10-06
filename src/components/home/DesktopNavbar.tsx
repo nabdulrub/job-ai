@@ -3,6 +3,8 @@ import React from "react";
 import { Button } from "../ui/button";
 import SignOutButton from "../auth/SignInButton";
 import { UserSession } from "@/lib/type";
+import { unauthorizedLinks } from "@/data/NavbarLinks";
+import JobAI from "../JobAI";
 
 export type NavbarProps = {
   session?: UserSession;
@@ -13,18 +15,14 @@ const DesktopNavbar = ({ session }: NavbarProps) => {
     <nav className="md:flex hidden justify-between relative px-12">
       <div className="flex gap-8 items-center justify-center">
         <Link href={"/"}>
-          <h2 className="font-bold text-xl">Job AI</h2>
+          <JobAI size="md" />
         </Link>
         <ul className="flex gap-4">
-          <li>
-            <Link href={"/"}>Home</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Pricing</Link>
-          </li>
-          <li>
-            <Link href={"/"}>Newletter</Link>
-          </li>
+          {unauthorizedLinks.map((path, i) => (
+            <li key={i}>
+              <Link href={path.path}>{path.title}</Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="flex gap-4">

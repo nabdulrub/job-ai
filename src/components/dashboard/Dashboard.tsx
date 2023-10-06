@@ -29,7 +29,7 @@ const Dashboard = (props: Props) => {
         <Actions />
       </div>
       <div className="self-start w-full">
-       <Recent/>
+        <Recent />
       </div>
     </div>
   );
