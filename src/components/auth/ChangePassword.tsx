@@ -42,11 +42,23 @@ const ChangePassword = (props: Props) => {
       }
 
       const response = await fetch("/api/user/changepassword", {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(data),
       });
 
       const result = await response.json();
+
+      console.log(result.message);
+
+      if (result?.message === "Same Password") {
+        return setError("newPassword", {
+          message: "You're currently using this",
+        });
+      }
+
+      if (result.message === "Passwords Don't Match") {
+        return setError("oldPassword", { message: "Wrong Password" });
+      }
 
       reset();
       router.refresh();
@@ -62,20 +74,20 @@ const ChangePassword = (props: Props) => {
           <Field
             control={control}
             name="oldPassword"
-            label="Old Password"
-            type="text"
+            label="Current Password"
+            type="password"
           />
           <Field
             control={control}
             name="newPassword"
             label="New Password"
-            type="text"
+            type="password"
           />
           <Field
             control={control}
             name="verifyNewPassword"
             label="Verify New Password"
-            type="text"
+            type="password"
           />
         </div>
         <div className="self-end">

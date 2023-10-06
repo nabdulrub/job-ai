@@ -31,11 +31,11 @@ export const RegisterSchema = z.object({
 export type TRegisterSchema = z.infer<typeof RegisterSchema>;
 
 export const ChangePasswordSchema = z.object({
-  oldPassword: z
+  oldPassword: z.string().nonempty("Old password is required!"),
+  newPassword: z
     .string()
-    .nonempty("Old password is required!")
-    .min(6, "Invalid"),
-  newPassword: z.string().nonempty("Password is required!").min(6, "Invalid"),
+    .nonempty("Password is required!")
+    .min(6, "6 Characters Minimum"),
   verifyNewPassword: z.string().nonempty("Password does not match!"),
 });
 

@@ -34,7 +34,21 @@ export const PUT = async (req: Request, res: Response) => {
       getOldPassword?.hashedPassword as string
     );
 
+    if (!comparePassword)
+      return NextResponse.json(
+        { message: "Passwords Don't Match" },
+        { status: 415 }
+      );
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const comparedNewPassword = await bcrypt.compare(
+      newPassword,
+      getOldPassword?.hashedPassword as string
+    );
+
+    if (comparedNewPassword)
+      return NextResponse.json({ message: "Same Password" }, { status: 415 });
 
     const updatePassword = await prisma.user.update({
       where: {
@@ -44,6 +58,8 @@ export const PUT = async (req: Request, res: Response) => {
         hashedPassword: hashedPassword,
       },
     });
+
+    return NextResponse.json({ message: "Updated Password" }, { status: 201 });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json({ error: error.issues }, { status: 415 });

@@ -3,7 +3,7 @@ import React from "react";
 
 type Props = {
   size?: "sm" | "md" | "lg";
-  className: string;
+  className?: string;
 };
 
 const JobAI = ({ size, className }: Props) => {
