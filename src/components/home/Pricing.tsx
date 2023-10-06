@@ -4,9 +4,11 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Plan from "./Plan";
 
-type Props = {};
+type Props = {
+  isPricingPage: boolean;
+};
 
-const Pricing = (props: Props) => {
+const Pricing = ({ isPricingPage}: Props) => {
   return (
     <div className="flex flex-col items-center justify-center gap-8 w-full max-w-6xl">
       <div className="flex flex-col gap-2 text-center">
@@ -35,12 +37,16 @@ const Pricing = (props: Props) => {
           className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full"
         >
           <Plan
+            isPlan={true}
+            planPage={isPricingPage}
             title="Student Starter"
             description="Our recommended plan for students."
             price={15}
             duration="MONTHLY"
           />
           <Plan
+            isPlan={false}
+            planPage={isPricingPage}
             top
             topTitle="Unlimited"
             title="Career Accelerator"
@@ -54,12 +60,16 @@ const Pricing = (props: Props) => {
           className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full -mt-6"
         >
           <Plan
+            isPlan={true}
+            planPage={isPricingPage}
             title="Student Starter"
             description="Our recommended plan for students."
             price={80}
             duration="ANNUALLY"
           />
           <Plan
+            isPlan={false}
+            planPage={isPricingPage}
             top
             topTitle="Unlimited"
             title="Career Accelerator"
