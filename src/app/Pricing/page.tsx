@@ -1,4 +1,4 @@
-import PricingPage from "@/components/Pricing-page/PricingPage";
+import PricingPage from "@/components/pricing/PricingPage";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import React from "react";

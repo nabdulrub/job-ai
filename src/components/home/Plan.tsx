@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import Details from "../Pricing-page/Details";
+import Details from "../pricing/Details";
 
 type PlanProps = {
   isPlan: boolean;
@@ -62,7 +62,10 @@ const Plan = ({
         </CardContent>
       </div>
       {planPage ? (
-        <CardContent className=" "> <Details isStudentPlan={isPlan}/></CardContent>
+        <CardContent className=" ">
+          {" "}
+          <Details isStudentPlan={isPlan} />
+        </CardContent>
       ) : (
         ""
       )}

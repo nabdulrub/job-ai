@@ -3,7 +3,7 @@ import { FileText, LayoutDashboard, Search } from "lucide-react";
 export const unauthorizedLinks = [
   { title: "Home", path: "/" },
   { title: "Newsletter", path: "/" },
-  { title: "Pricing", path: "/" },
+  { title: "Pricing", path: "/pricing" },
 ];
 
 export const authorizedLinks = [
