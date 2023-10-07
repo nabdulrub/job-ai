@@ -1,23 +1,23 @@
-import React from "react";
+import React from "react"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import { ClipboardCheck, Plus } from "lucide-react";
+} from "../ui/card"
+import { Button } from "../ui/button"
+import { ClipboardCheck, Plus } from "lucide-react"
 
 type ActionCardProps = {
-  image: string;
-  title: string;
-  description: string;
-  action?: string;
-  actionIcon?: React.ReactNode;
-  secondary?: string;
-  secondaryIcon?: React.ReactNode;
-};
+  image: string
+  title: string
+  description: string
+  action?: string
+  actionIcon?: React.ReactNode
+  secondary?: string
+  secondaryIcon?: React.ReactNode
+}
 
 const ActionCard = ({
   image,
@@ -30,11 +30,11 @@ const ActionCard = ({
 }: ActionCardProps) => {
   const overlayStyle = {
     backgroundImage: `url(${image})`,
-  };
+  }
   return (
-    <Card className=" relative flex-1 flex flex-col justify-end shadow-none h-[250px]  rounded-[20px] bg-gradient-to-r from-gray-100 via-white to-gray-300  border-[1px] border-gray-300">
+    <Card className=" relative flex h-[250px] flex-1 flex-col justify-end rounded-[20px]  border-[1px] border-gray-300 bg-gradient-to-r from-gray-100 via-white  to-gray-300 shadow-none">
       <div
-        className="absolute inset-0 bg-mix-overlay opacity-40 rounded-[20px] bg-cover  md:bg-top bg-no-repeat "
+        className="bg-mix-overlay absolute inset-0 rounded-[20px] bg-cover bg-no-repeat  opacity-40 md:bg-top "
         style={overlayStyle}
       ></div>
 
@@ -42,19 +42,19 @@ const ActionCard = ({
         <CardTitle className="text-xl font-bold">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex gap-2 relative">
-        <Button className="py-0 px-4 text-xs h-7 bg-black">
+      <CardContent className="relative flex gap-2">
+        <Button className="h-7 bg-black px-4 py-0 text-xs">
           {actionIcon} {action}
         </Button>
         <Button
-          className="py-0 px-4 text-xs h-7 bg-white"
+          className="h-7 bg-white px-4 py-0 text-xs"
           variant={"secondary"}
         >
           {secondaryIcon} {secondary}
         </Button>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default ActionCard;
+export default ActionCard

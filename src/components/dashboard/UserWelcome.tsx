@@ -1,19 +1,19 @@
-import React from "react";
+import React from "react"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
+} from "../ui/card"
+import { Button } from "../ui/button"
 
 type UserWelcomeProps = {
-  name?: string[] | undefined;
-};
+  name?: string[]
+}
 
 const UserWelcome = ({ name }: UserWelcomeProps) => {
-  const fullname = name?.join(" ");
+  const fullname = name?.join(" ")
 
   return (
     <div>
@@ -21,13 +21,13 @@ const UserWelcome = ({ name }: UserWelcomeProps) => {
         <CardTitle className=" text-2xl md:text-3xl">
           Welcome, {fullname}!
         </CardTitle>
-        <CardDescription className="text-gray-600 md:text-md">
+        <CardDescription className="md:text-md text-gray-600">
           Explore all your resumes and generate new cover letters and resumes on
           the fly!
         </CardDescription>
       </h2>
     </div>
-  );
-};
+  )
+}
 
-export default UserWelcome;
+export default UserWelcome

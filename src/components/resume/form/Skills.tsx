@@ -1,44 +1,44 @@
-"use client";
+"use client"
 
-import ButtonLoading from "@/components/ButtonLoading";
-import Field from "@/components/Field";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import ButtonLoading from "@/components/ButtonLoading"
+import Field from "@/components/Field"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Tag, TagInput } from "@/components/ui/tag-input";
-import { ToastAction } from "@/components/ui/toast";
-import { toast } from "@/components/ui/use-toast";
-import { useFormStepContext } from "@/context/FormSteps";
-import { resumeMonths, resumeYears } from "@/data/resumeFormData";
-import { EducationSkillsSchema, TEducationSkillsSchema } from "@/lib/type";
-import { handlePrev } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Award, Check, GraduationCap } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+} from "@/components/ui/select"
+import { Tag, TagInput } from "@/components/ui/tag-input"
+import { ToastAction } from "@/components/ui/toast"
+import { toast } from "@/components/ui/use-toast"
+import { useFormStepContext } from "@/context/FormSteps"
+import { resumeMonths, resumeYears } from "@/data/resumeFormData"
+import { EducationSkillsSchema, TEducationSkillsSchema } from "@/lib/type"
+import { handlePrev } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Award, Check, GraduationCap } from "lucide-react"
+import { signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 
 type Props = {
-  formStep: number;
-  setFormStep: (forStep: number) => void;
-};
+  formStep: number
+  setFormStep: (forStep: number) => void
+}
 
 const Skills = ({ formStep, setFormStep }: Props) => {
-  const { isStepCompleted, setComplete } = useFormStepContext();
+  const { isStepCompleted, setComplete } = useFormStepContext()
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<Tag[]>([])
 
-  const { data: session, update } = useSession();
+  const { data: session, update } = useSession()
 
   const updateNewUser = async () => {
     await update({
@@ -47,10 +47,10 @@ const Skills = ({ formStep, setFormStep }: Props) => {
         ...session?.user,
         isNewUser: false,
       },
-    });
-  };
+    })
+  }
 
-  const getYears = resumeYears();
+  const getYears = resumeYears()
 
   const form = useForm<TEducationSkillsSchema>({
     resolver: zodResolver(EducationSkillsSchema),
@@ -63,7 +63,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
       graduationMonth: undefined,
       graduationYear: undefined,
     },
-  });
+  })
 
   const {
     handleSubmit,
@@ -72,18 +72,18 @@ const Skills = ({ formStep, setFormStep }: Props) => {
     setValue,
     reset,
     formState: { isSubmitting, isSubmitSuccessful },
-  } = form;
+  } = form
 
   const onSubmit = async (data: TEducationSkillsSchema) => {
     try {
       const response = await fetch("/api/skills", {
         method: "POST",
         body: JSON.stringify(data),
-      });
+      })
 
       if (response.ok) {
-        reset();
-        updateNewUser();
+        reset()
+        updateNewUser()
         toast({
           title: "Info Submitted!, Redirecting...",
           action: (
@@ -95,9 +95,9 @@ const Skills = ({ formStep, setFormStep }: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
-        setComplete(formStep);
-        router.replace("/dashboard");
+        })
+        setComplete(formStep)
+        await signOut({ redirect: true, callbackUrl: "/signin" })
       }
 
       if (!response.ok) {
@@ -113,18 +113,18 @@ const Skills = ({ formStep, setFormStep }: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
+        })
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="md:text-xl text-md font-semibold flex gap-[2px] items-center mb-4">
+          <h2 className="text-md mb-4 flex items-center gap-[2px] font-semibold md:text-xl">
             Skills <Award className="w-5" />
           </h2>
           <div className="mb-4">
@@ -143,21 +143,21 @@ const Skills = ({ formStep, setFormStep }: Props) => {
                   textStyle={"bold"}
                   className="sm:min-w-[450px]"
                   setTags={(newTags: Tag[]) => {
-                    setTags(newTags);
-                    const filteredTags = newTags.map((v: Tag) => v.text);
-                    setValue("skills", filteredTags as [string, ...string[]]);
+                    setTags(newTags)
+                    const filteredTags = newTags.map((v: Tag) => v.text)
+                    setValue("skills", filteredTags as [string, ...string[]])
                   }}
                 />
               )}
             />
           </div>
 
-          <h2 className="md:text-xl text-md font-semibold flex gap-[2px] items-center mb-2 mt-6">
+          <h2 className="text-md mb-2 mt-6 flex items-center gap-[2px] font-semibold md:text-xl">
             Education <GraduationCap className="w-5" />
           </h2>
-          <div className="relative flex flex-col md:flex-row  gap-4 overflow-auto max-h-[575px] md:h-auto pb-6 px-1 job-experience-scroll">
-            <div className="grid grid-cols-1 gap-4 flex-1">
-              <div className="flex flex-col md:flex-row gap-2">
+          <div className="job-experience-scroll relative flex max-h-[575px]  flex-col gap-4 overflow-auto px-1 pb-6 md:h-auto md:flex-row">
+            <div className="grid flex-1 grid-cols-1 gap-4">
+              <div className="flex flex-col gap-2 md:flex-row">
                 <Field
                   control={control}
                   label="School"
@@ -174,7 +174,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
                   className="bg-white"
                 />
               </div>
-              <div className="flex md:flex-row flex-col gap-2">
+              <div className="flex flex-col gap-2 md:flex-row">
                 <Field
                   control={control}
                   label="Degree Acquired"
@@ -183,14 +183,14 @@ const Skills = ({ formStep, setFormStep }: Props) => {
                   className="bg-white"
                 />
 
-                <div className="flex flex-1 gap-[1px] w-full">
+                <div className="flex w-full flex-1 gap-[1px]">
                   <Field
                     label="Graduation Date"
                     name={`graduationMonth`}
                     control={control}
                     render={(field) => (
                       <Select onValueChange={field.onChange} {...field}>
-                        <SelectTrigger className="bg-white rounded-tr-none border-r-0 rounded-br-none">
+                        <SelectTrigger className="rounded-br-none rounded-tr-none border-r-0 bg-white">
                           <SelectValue placeholder="Month" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -215,10 +215,10 @@ const Skills = ({ formStep, setFormStep }: Props) => {
                     render={(field) => (
                       <Select
                         onValueChange={(val) => {
-                          field.onChange(parseInt(val));
+                          field.onChange(parseInt(val))
                         }}
                       >
-                        <SelectTrigger className="bg-white flex-1 rounded-tl-none border-l-0 rounded-bl-none">
+                        <SelectTrigger className="flex-1 rounded-bl-none rounded-tl-none border-l-0 bg-white">
                           <SelectValue placeholder="Year" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -246,7 +246,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
                       max={5}
                       min={1}
                       onChange={(v) => {
-                        setValue("gpa", parseInt(v.target.value));
+                        setValue("gpa", parseInt(v.target.value))
                       }}
                     />
                   )}
@@ -259,8 +259,8 @@ const Skills = ({ formStep, setFormStep }: Props) => {
               text="Finish"
               loadingText="Finalizing..."
               isLoading={isSubmitting}
-              buttonIcon={<Check className="w-5 ml-1 -mr-2" />}
-              className="absolute bottom-6 right-6 bg-green-600 hover:bg-green-900 shadow-none"
+              buttonIcon={<Check className="-mr-2 ml-1 w-5" />}
+              className="absolute bottom-6 right-6 bg-green-600 shadow-none hover:bg-green-900"
             />
 
             <Button
@@ -275,7 +275,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
         </form>
       </Form>
     </>
-  );
-};
+  )
+}
 
-export default Skills;
+export default Skills

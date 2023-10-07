@@ -2,6 +2,7 @@ import { getAuthSession } from "@/lib/nextauth";
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 import DashboardNavbar from "../dashboard/DashboardNavbar";
+import DashboardMobileNavbar from "../dashboard/DashboardMobileNavbar";
 
 type Props = {};
 
@@ -14,7 +15,10 @@ const Navbar = async (props: Props) => {
       <MobileNavbar session={session?.user} />
     </>
   ) : (
-    <DashboardNavbar session={session?.user} />
+    <>
+      <DashboardNavbar session={session?.user} />
+      <DashboardMobileNavbar session={session?.user} />
+    </>
   );
 };
 

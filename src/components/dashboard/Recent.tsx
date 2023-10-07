@@ -1,18 +1,18 @@
-import React from "react";
-import RecentCard from "./RecentCard";
-import { RecentsData } from "@/data/RecentsData";
-import { Newspaper } from "lucide-react";
+import React from "react"
+import RecentCard from "./RecentCard"
+import { RecentsData } from "@/data/RecentsData"
+import { Newspaper } from "lucide-react"
 
-type Props = {};
+type Props = {}
 
 const Recent = (props: Props) => {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl flex items-center font-bold">
-        <Newspaper className="mr-2 bg-gray-200 w-8 h-8 p-[6px] rounded-sm" />{" "}
+      <h2 className="flex items-center text-2xl font-bold">
+        <Newspaper className="mr-2 h-8 w-8 rounded-sm bg-gray-200 p-[6px]" />{" "}
         Recent Resumes
       </h2>
-      <div className="grid lg:grid-cols-4  md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-4">
+      <div className="grid grid-cols-1  gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
         {RecentsData.map((r) => {
           return (
             <>
@@ -23,11 +23,11 @@ const Recent = (props: Props) => {
                 image={r.image}
               />
             </>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Recent;
+export default Recent

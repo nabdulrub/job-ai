@@ -1,26 +1,22 @@
-"use client";
+"use client"
 
 import React, {
   HTMLAttributes,
   InputHTMLAttributes,
   ReactNode,
   useState,
-} from "react";
+} from "react"
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import ViewPassword from "./auth/ViewPassword";
-import { Input } from "./ui/input";
-import { cn } from "@/lib/utils";
-import {
-  FieldPath,
-  RegisterOptions,
-  UseControllerProps,
-} from "react-hook-form";
+} from "./ui/form"
+import ViewPassword from "./auth/ViewPassword"
+import { Input } from "./ui/input"
+import { cn } from "@/lib/utils"
+import { FieldPath, RegisterOptions, UseControllerProps } from "react-hook-form"
 import {
   TBasicInfoSchema,
   TChangePasswordSchema,
@@ -29,10 +25,10 @@ import {
   TProjectSchema,
   TRegisterSchema,
   TSignInSchema,
-} from "@/lib/type";
+} from "@/lib/type"
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  control: any;
+  control: any
   name: FieldPath<
     | TJobSchema
     | TChangePasswordSchema
@@ -41,13 +37,12 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
     | TProjectSchema
     | TRegisterSchema
     | TSignInSchema
-  >;
-  label?: string;
-  password?: boolean;
-  placeholder?: string;
-  className?: string;
-  size?: number;
-  value?: string | undefined;
+  >
+  label?: string
+  password?: boolean
+  placeholder?: string
+  className?: string
+  size?: number
   rules?:
     | Omit<
         RegisterOptions<
@@ -61,8 +56,8 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
         >,
         "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
       >
-    | undefined;
-  render?: (field: any) => ReactNode; // New prop for rendering custom elements
+    | undefined
+  render?: (field: any) => ReactNode // New prop for rendering custom elements
 }
 
 const Field = ({
@@ -74,11 +69,10 @@ const Field = ({
   className,
   render,
   rules,
-  value,
   size = 1,
   ...props
 }: FieldProps) => {
-  const [viewPassword, setViewPassword] = useState(false);
+  const [viewPassword, setViewPassword] = useState(false)
 
   return (
     <FormField
@@ -108,7 +102,7 @@ const Field = ({
                   }
                   className={className}
                   placeholder={placeholder}
-                  onChange={field.onChange}
+                  {...field}
                   {...props}
                 />
               )}
@@ -118,7 +112,7 @@ const Field = ({
         </FormItem>
       )}
     />
-  );
-};
+  )
+}
 
-export default Field;
+export default Field

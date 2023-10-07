@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { Button } from "../ui/button";
-import { signIn, signOut } from "next-auth/react";
-import { LogOut } from "lucide-react";
+import { Button } from "../ui/button"
+import { signIn, signOut } from "next-auth/react"
+import { LogOut } from "lucide-react"
 
-type Props = {};
+type Props = {}
 
 const SignOutButton = (props: Props) => {
   return (
@@ -13,9 +13,9 @@ const SignOutButton = (props: Props) => {
       variant={"outline"}
       title="Already have an account?"
     >
-      Sign Out <LogOut className="ml-2 w-4 h-4" />
+      Sign Out <LogOut className="ml-2 h-4 w-4" />
     </Button>
-  );
-};
+  )
+}
 
-export default SignOutButton;
+export default SignOutButton

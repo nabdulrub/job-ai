@@ -1,6 +1,12 @@
 "use client"
 
-import React, { useState } from "react"
+import { authorizedLinks, unauthorizedLinks } from "@/data/NavbarLinks"
+import { ChevronRight, LogOut, Menu, Settings, Settings2 } from "lucide-react"
+import Link from "next/link"
+import JobAI from "../JobAI"
+import SignInButton from "../auth/SignInButton"
+import { NavbarProps } from "../home/DesktopNavbar"
+import { Button } from "../ui/button"
 import {
   Sheet,
   SheetContent,
@@ -8,20 +14,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet"
-import { Menu, ChevronRight } from "lucide-react"
-import Link from "next/link"
-import { Button } from "../ui/button"
-import { getAuthSession } from "@/lib/nextauth"
-import SignInButton from "../auth/SignInButton"
-import { NavbarProps } from "./DesktopNavbar"
-import { unauthorizedLinks } from "@/data/NavbarLinks"
-import JobAI from "../JobAI"
+import UserProfileNav from "../UserProfileNav"
+import { useState } from "react"
+import SignOutButton from "../auth/SignInButton"
+import { signOut } from "next-auth/react"
 
-const MobileNavbar = ({ session }: NavbarProps) => {
+const DashboardMobileNavbar = ({ session }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="block md:hidden">
+    <div className="block lg:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <Link href={"/"}>
           <JobAI size="lg" className="absolute left-8 top-8" />
@@ -38,11 +40,11 @@ const MobileNavbar = ({ session }: NavbarProps) => {
 
           <div className="flex h-[calc(100%-50px)] flex-col justify-between">
             <ul className="mt-10 flex flex-col gap-12">
-              {unauthorizedLinks.map((path, i) => (
+              {authorizedLinks.map((path, i) => (
                 <Link href={path.path} key={i} onClick={() => setIsOpen(false)}>
                   <li className="flex items-center text-xl font-normal">
                     {path.title}
-                    <ChevronRight />
+                    <span className="ml-2">{path.icon}</span>
                   </li>
                 </Link>
               ))}
@@ -66,12 +68,22 @@ const MobileNavbar = ({ session }: NavbarProps) => {
                   </Link>
                 </div>
               ) : (
-                <>
-                  <SignInButton />
-                  <Link href={"/dashboard"} className="w-full">
-                    <Button>Dashboard</Button>
-                  </Link>
-                </>
+                <div className="flex items-center justify-between gap-4">
+                  <p>{session.firstname + " " + session.lastname}</p>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/profile/${session?.id}`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Button variant={"secondary"}>
+                        <Settings className=" w-6" />
+                      </Button>
+                    </Link>
+                    <Button onClick={() => signOut()} variant={"destructive"}>
+                      <LogOut className="w-5 px-0" />{" "}
+                    </Button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -81,4 +93,4 @@ const MobileNavbar = ({ session }: NavbarProps) => {
   )
 }
 
-export default MobileNavbar
+export default DashboardMobileNavbar

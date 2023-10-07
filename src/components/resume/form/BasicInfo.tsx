@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import Field from "@/components/Field";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { ToastAction } from "@/components/ui/toast";
-import { toast } from "@/components/ui/use-toast";
-import { BasicInfoSchema, TBasicInfoSchema, UserSession } from "@/lib/type";
-import { handleNext } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronRight } from "lucide-react";
-import { useForm } from "react-hook-form";
+import Field from "@/components/Field"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import { ToastAction } from "@/components/ui/toast"
+import { toast } from "@/components/ui/use-toast"
+import { BasicInfoSchema, TBasicInfoSchema, UserSession } from "@/lib/type"
+import { handleNext } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ChevronRight } from "lucide-react"
+import { useForm } from "react-hook-form"
 
 type Props = {
-  session?: UserSession;
-  formStep: number;
-  setFormStep: (forStep: number) => void;
-};
+  session?: UserSession
+  formStep: number
+  setFormStep: (forStep: number) => void
+}
 
 const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
   const form = useForm<TBasicInfoSchema>({
@@ -26,7 +26,7 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
       location: "",
       phone: "",
     },
-  });
+  })
 
   const {
     handleSubmit,
@@ -34,14 +34,14 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
     watch,
     reset,
     formState: { isSubmitting },
-  } = form;
+  } = form
 
   const onSubmit = async (data: TBasicInfoSchema) => {
     try {
       const response = await fetch("/api/user", {
         method: "POST",
         body: JSON.stringify(data),
-      });
+      })
 
       if (response?.ok) {
         toast({
@@ -56,9 +56,9 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
               Next Step
             </ToastAction>
           ),
-        });
-        handleNext(setFormStep);
-        reset();
+        })
+        handleNext(setFormStep)
+        reset()
       }
 
       if (!response?.ok) {
@@ -74,20 +74,20 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
               Dismiss
             </ToastAction>
           ),
-        });
+        })
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
-  watch();
+  watch()
   return (
     <>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="text-xl font-semibold mb-4">Basic Info</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+          <h2 className="mb-4 text-xl font-semibold">Basic Info</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
             <Field
               control={control}
               name="firstname"
@@ -113,16 +113,16 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
               inputMode="tel"
             />
           </div>
-          <div className="flex justify-between mt-14">
-            <Button className="absolute right-6 bottom-6 bg-cyan-600 hover:bg-cyan-900 ">
+          <div className="mt-14 flex justify-between">
+            <Button className="absolute bottom-6 right-6 bg-cyan-600 hover:bg-cyan-900 ">
               {isSubmitting ? "Submitting..." : "Job Experience"}
-              <ChevronRight className="w-5 mt-[1px]" />
+              <ChevronRight className="mt-[1px] w-5" />
             </Button>
           </div>
         </form>
       </Form>
     </>
-  );
-};
+  )
+}
 
-export default BasicInfo;
+export default BasicInfo

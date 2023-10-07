@@ -1,16 +1,16 @@
-import ResumeHolder from "@/components/resumeform/ResumeHolder";
-import { getAuthSession } from "@/lib/nextauth";
-import { redirect } from "next/navigation";
-import React from "react";
+import ResumeHolder from "@/components/resume/ResumeHolder"
+import { getAuthSession } from "@/lib/nextauth"
+import { redirect } from "next/navigation"
+import React from "react"
 
-type Props = {};
+type Props = {}
 
 const ResumeFormPage = async (props: Props) => {
-  const session = await getAuthSession();
+  const session = await getAuthSession()
 
-  if (!session?.user) return redirect("/");
+  if (!session?.user) return redirect("/")
 
-  return <ResumeHolder />;
-};
+  return <ResumeHolder />
+}
 
-export default ResumeFormPage;
+export default ResumeFormPage

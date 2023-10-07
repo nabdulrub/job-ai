@@ -1,43 +1,43 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { JobSchema, TJobSchema } from "@/lib/type";
-import { ChevronRight, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
+import { JobSchema, TJobSchema } from "@/lib/type"
+import { ChevronRight, Plus } from "lucide-react"
 
-import Field from "@/components/Field";
-import { Checkbox } from "@/components/ui/checkbox";
+import Field from "@/components/Field"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { resumeMonths, resumeYears } from "@/data/resumeFormData";
-import { handleNext, handlePrev } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { useSession } from "next-auth/react";
-import ButtonLoading from "@/components/ButtonLoading";
-import { useFormStepContext } from "@/context/FormSteps";
+} from "@/components/ui/select"
+import { resumeMonths, resumeYears } from "@/data/resumeFormData"
+import { handleNext, handlePrev } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useContext, useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast"
+import { useSession } from "next-auth/react"
+import ButtonLoading from "@/components/ButtonLoading"
+import { useFormStepContext } from "@/context/FormSteps"
 
 type Props = {
-  formStep: number;
-  setFormStep: (forStep: number) => void;
-};
+  formStep: number
+  setFormStep: (forStep: number) => void
+}
 
 const WorkExperience = ({ formStep, setFormStep }: Props) => {
-  const { isStepCompleted, setComplete } = useFormStepContext();
-  const isComplete = isStepCompleted[formStep]?.completed;
+  const { isStepCompleted, setComplete } = useFormStepContext()
+  const isComplete = isStepCompleted[formStep]?.completed
 
-  const getYears = resumeYears();
+  const getYears = resumeYears()
 
-  const { data: userSession } = useSession();
+  const { data: userSession } = useSession()
 
   const form = useForm<TJobSchema>({
     resolver: zodResolver(JobSchema),
@@ -52,7 +52,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
       description: "",
       present: false,
     },
-  });
+  })
 
   const {
     handleSubmit,
@@ -62,14 +62,14 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
     setValue,
     reset,
     formState: { isSubmitting, errors, isSubmitSuccessful },
-  } = form;
+  } = form
 
   const onSubmit = async (data: TJobSchema) => {
     try {
       const response = await fetch("/api/job", {
         method: "POST",
         body: JSON.stringify(data),
-      });
+      })
       if (response.ok) {
         toast({
           title: "Job Added!",
@@ -83,9 +83,9 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
-        setComplete(formStep);
-        reset();
+        })
+        setComplete(formStep)
+        reset()
       }
 
       if (!response.ok) {
@@ -101,17 +101,17 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
-        console.log(response);
+        })
+        console.log(response)
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleNextError = () => {
     if (isComplete) {
-      return handleNext(setFormStep);
+      return handleNext(setFormStep)
     }
     toast({
       title: "No Added Jobs",
@@ -123,17 +123,17 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
         </ToastAction>
       ),
       duration: 2000,
-    });
-  };
+    })
+  }
 
-  watch();
+  watch()
 
   return (
     <>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-between">
-            <h2 className="text-xl font-semibold mb-4">Work Experience</h2>
+            <h2 className="mb-4 text-xl font-semibold">Work Experience</h2>
             {isComplete && (
               <ButtonLoading
                 text="Add Job"
@@ -141,13 +141,13 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                 className=" z-20"
                 isLoading={isSubmitting}
                 type="submit"
-                buttonIcon={<Plus className="w-5 ml-[3px]" />}
+                buttonIcon={<Plus className="ml-[3px] w-5" />}
               />
             )}
           </div>
-          <div className="relative flex flex-col md:flex-row  gap-4 overflow-auto max-h-[575px] md:h-auto pb-6 px-1 job-experience-scroll scroll-smooth">
-            <div className="grid grid-cols-1 gap-4  flex-1 min-w-full">
-              <div className="flex flex-col md:flex-row gap-2">
+          <div className="job-experience-scroll relative flex max-h-[575px]  flex-col gap-4 overflow-auto scroll-smooth px-1 pb-6 md:h-auto md:flex-row">
+            <div className="grid min-w-full flex-1  grid-cols-1 gap-4">
+              <div className="flex flex-col gap-2 md:flex-row">
                 <Field
                   control={control}
                   label="Job Title"
@@ -164,7 +164,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                   className="bg-white"
                 />
               </div>
-              <div className="flex md:flex-row flex-col gap-2">
+              <div className="flex flex-col gap-2 md:flex-row">
                 <Field
                   control={control}
                   label="Employer"
@@ -173,14 +173,14 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                   className="bg-white"
                 />
 
-                <div className="flex flex-[0.7] gap-[1px] w-full">
+                <div className="flex w-full flex-[0.7] gap-[1px]">
                   <Field
                     label="Start Date"
                     name={`startMonth`}
                     control={control}
                     render={(field) => (
                       <Select onValueChange={field.onChange} {...field}>
-                        <SelectTrigger className="bg-white rounded-tr-none border-r-0 rounded-br-none">
+                        <SelectTrigger className="rounded-br-none rounded-tr-none border-r-0 bg-white">
                           <SelectValue placeholder="Month" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -205,10 +205,10 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                     render={(field) => (
                       <Select
                         onValueChange={(val) => {
-                          field.onChange(parseInt(val));
+                          field.onChange(parseInt(val))
                         }}
                       >
-                        <SelectTrigger className="bg-white flex-1 rounded-tl-none border-l-0 rounded-bl-none">
+                        <SelectTrigger className="flex-1 rounded-bl-none rounded-tl-none border-l-0 bg-white">
                           <SelectValue placeholder="Year" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -227,7 +227,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                   />
                 </div>
 
-                <div className="flex gap-2 flex-1">
+                <div className="flex flex-1 gap-2">
                   <div className="flex flex-1 gap-[1px]">
                     <Field
                       label="End Date"
@@ -241,7 +241,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                           onValueChange={field.onChange}
                           disabled={getValues(`present`)}
                         >
-                          <SelectTrigger className="bg-white rounded-tr-none border-r-0 rounded-br-none">
+                          <SelectTrigger className="rounded-br-none rounded-tr-none border-r-0 bg-white">
                             <SelectValue placeholder="Month" />
                           </SelectTrigger>
                           <SelectContent className="max-h-[300px]">
@@ -269,10 +269,10 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                         <Select
                           disabled={getValues(`present`)}
                           onValueChange={(val) => {
-                            field.onChange(parseInt(val));
+                            field.onChange(parseInt(val))
                           }}
                         >
-                          <SelectTrigger className="bg-white rounded-tl-none border-l-0 rounded-bl-none">
+                          <SelectTrigger className="rounded-bl-none rounded-tl-none border-l-0 bg-white">
                             <SelectValue placeholder="Year" />
                           </SelectTrigger>
                           <SelectContent className="max-h-[300px]">
@@ -296,18 +296,18 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                     size={0.1}
                     control={control}
                     render={(field) => (
-                      <div className="flex gap-1 items-center">
+                      <div className="flex items-center gap-1">
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={(val) => {
                             if (val) {
-                              setValue("endMonth", undefined);
-                              setValue("endYear", undefined);
+                              setValue("endMonth", undefined)
+                              setValue("endYear", undefined)
                             }
-                            field.onChange(val);
+                            field.onChange(val)
                           }}
                         />
-                        <label className="font-semibold text-sm">
+                        <label className="text-sm font-semibold">
                           Present?
                         </label>
                       </div>
@@ -331,12 +331,12 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
               />
             </div>
           </div>
-          <div className="flex justify-between mt-8">
+          <div className="mt-8 flex justify-between">
             <div className="absolute bottom-6 right-6">
               {isSubmitSuccessful || isComplete ? (
                 <Button
                   type="button"
-                  className={` bg-green-700 hover:bg-green-300 hover:text-black shadow-none`}
+                  className={` bg-green-700 shadow-none hover:bg-green-300 hover:text-black`}
                   onClick={handleNextError}
                 >
                   Project Experience
@@ -349,7 +349,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                   className=" z-20"
                   isLoading={isSubmitting}
                   type="submit"
-                  buttonIcon={<Plus className="w-5 ml-[3px]" />}
+                  buttonIcon={<Plus className="ml-[3px] w-5" />}
                 />
               )}
             </div>
@@ -365,7 +365,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
         </form>
       </Form>
     </>
-  );
-};
+  )
+}
 
-export default WorkExperience;
+export default WorkExperience

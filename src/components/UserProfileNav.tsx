@@ -1,27 +1,27 @@
-import React from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Avatar } from "./ui/avatar";
-import { signOut, useSession } from "next-auth/react";
-import { UserSession } from "@/lib/type";
-import { Button } from "./ui/button";
-import Link from "next/link";
+import React from "react"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import { Avatar } from "./ui/avatar"
+import { signOut, useSession } from "next-auth/react"
+import { UserSession } from "@/lib/type"
+import { Button } from "./ui/button"
+import Link from "next/link"
 
 type Props = {
-  user?: UserSession;
-};
+  user?: UserSession
+}
 
 const UserProfileNav = ({ user }: Props) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Avatar className="flex items-center justify-center border-[2px] border-black text-xl font-semibold transition-all duration-200 hover:cursor-pointer hover:border-gray-500 hover:text-gray-500">
-          {user?.firstname[0]}
+          {user?.firstname[0].toUpperCase()}
         </Avatar>
       </PopoverTrigger>
-      <PopoverContent className="max-w-[200px] w-fit mr-2">
+      <PopoverContent className="mr-2 w-fit max-w-[200px]">
         <div className="flex flex-col gap-2">
           <p>{user?.firstname + " " + user?.lastname}</p>
-          <span className="block w-full h-[1px] bg-gray-300"></span>
+          <span className="block h-[1px] w-full bg-gray-300"></span>
           <p>{user?.email}</p>
           <div>
             <Button
@@ -37,7 +37,7 @@ const UserProfileNav = ({ user }: Props) => {
         </div>
       </PopoverContent>
     </Popover>
-  );
-};
+  )
+}
 
-export default UserProfileNav;
+export default UserProfileNav

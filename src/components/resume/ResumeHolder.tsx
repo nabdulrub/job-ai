@@ -1,27 +1,27 @@
-"use client";
+"use client"
 
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { useState } from "react";
-import ResumeForm from "./ResumeForm";
-import TextFadeIn from "./TextFadeIn";
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
+import { useState } from "react"
+import ResumeForm from "./ResumeForm"
+import TextFadeIn from "./TextFadeIn"
 
-type Props = {};
+type Props = {}
 
 const ResumeHolder = (props: Props) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showForm, setShowForm] = useState(false);
-  const [formStep, setFormStep] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [showForm, setShowForm] = useState(false)
+  const [formStep, setFormStep] = useState(0)
 
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/signin");
+      redirect("/signin")
     },
-  });
+  })
 
   return (
-    <div className="md:h-full  h-[calc(100vh-50px)] w-full">
+    <div className="h-[calc(100vh-50px)] w-full md:h-full">
       {!showForm && (
         <div className="mt-60">
           <TextFadeIn
@@ -40,7 +40,7 @@ const ResumeHolder = (props: Props) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ResumeHolder;
+export default ResumeHolder

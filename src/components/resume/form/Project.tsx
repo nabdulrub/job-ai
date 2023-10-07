@@ -1,39 +1,39 @@
-"use client";
+"use client"
 
-import ButtonLoading from "@/components/ButtonLoading";
-import Field from "@/components/Field";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import ButtonLoading from "@/components/ButtonLoading"
+import Field from "@/components/Field"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { ToastAction } from "@/components/ui/toast";
-import { toast } from "@/components/ui/use-toast";
-import { useFormStepContext } from "@/context/FormSteps";
-import { resumeMonths, resumeYears } from "@/data/resumeFormData";
-import { ProjectSchema, TProjectSchema, UserSession } from "@/lib/type";
-import { handleNext, handlePrev } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronRight, GanttChartSquare, Plus } from "lucide-react";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { ToastAction } from "@/components/ui/toast"
+import { toast } from "@/components/ui/use-toast"
+import { useFormStepContext } from "@/context/FormSteps"
+import { resumeMonths, resumeYears } from "@/data/resumeFormData"
+import { ProjectSchema, TProjectSchema, UserSession } from "@/lib/type"
+import { handleNext, handlePrev } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ChevronRight, GanttChartSquare, Plus } from "lucide-react"
+import React, { useState } from "react"
+import { useForm } from "react-hook-form"
 
 type Props = {
-  session: UserSession;
-  formStep: number;
-  setFormStep: (forStep: number) => void;
-};
+  session?: UserSession
+  formStep: number
+  setFormStep: (forStep: number) => void
+}
 
 const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
-  const { isStepCompleted, setComplete } = useFormStepContext();
-  const isComplete = isStepCompleted[formStep]?.completed;
+  const { isStepCompleted, setComplete } = useFormStepContext()
+  const isComplete = isStepCompleted[formStep]?.completed
 
-  const getYears = resumeYears();
+  const getYears = resumeYears()
 
   const form = useForm<TProjectSchema>({
     resolver: zodResolver(ProjectSchema),
@@ -46,7 +46,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
       endYear: undefined,
       description: "",
     },
-  });
+  })
 
   const {
     handleSubmit,
@@ -54,14 +54,14 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
     watch,
     reset,
     formState: { isSubmitting, isSubmitSuccessful },
-  } = form;
+  } = form
 
   const onSubmit = async (data: TProjectSchema) => {
     try {
       const response = await fetch("/api/project", {
         method: "POST",
         body: JSON.stringify(data),
-      });
+      })
 
       if (response.ok) {
         toast({
@@ -76,9 +76,9 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
-        reset();
-        setComplete(formStep);
+        })
+        reset()
+        setComplete(formStep)
       }
 
       if (!response.ok) {
@@ -94,16 +94,16 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
+        })
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleNextError = () => {
     if (isComplete) {
-      return handleNext(setFormStep);
+      return handleNext(setFormStep)
     }
     toast({
       title: "No Added Projects",
@@ -114,16 +114,16 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
         </ToastAction>
       ),
       duration: 3000,
-    });
-  };
+    })
+  }
 
-  watch();
+  watch()
   return (
     <>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="md:text-xl text-md font-semibold flex gap-2 items-center">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-md flex items-center gap-2 font-semibold md:text-xl">
               Project Experience <GanttChartSquare className="w-6" />{" "}
             </h2>
             <div className="flex gap-2">
@@ -147,9 +147,9 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
               )}
             </div>
           </div>
-          <div className="relative flex flex-col md:flex-row  gap-4 overflow-auto max-h-[575px] md:h-auto pb-6 px-1 job-experience-scroll scroll-smooth">
-            <div className="grid grid-cols-1 gap-4 flex-1">
-              <div className="flex flex-col md:flex-row gap-2">
+          <div className="job-experience-scroll relative flex max-h-[575px]  flex-col gap-4 overflow-auto scroll-smooth px-1 pb-6 md:h-auto md:flex-row">
+            <div className="grid flex-1 grid-cols-1 gap-4">
+              <div className="flex flex-col gap-2 md:flex-row">
                 <Field
                   control={control}
                   label="Project Title"
@@ -166,15 +166,15 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                   className="bg-white"
                 />
               </div>
-              <div className="flex md:flex-row flex-col gap-2">
-                <div className="flex flex-1 gap-[1px] w-full">
+              <div className="flex flex-col gap-2 md:flex-row">
+                <div className="flex w-full flex-1 gap-[1px]">
                   <Field
                     label="Start Date"
                     name={`startMonth`}
                     control={control}
                     render={(field) => (
                       <Select onValueChange={field.onChange} {...field}>
-                        <SelectTrigger className="bg-white rounded-tr-none border-r-0 rounded-br-none">
+                        <SelectTrigger className="rounded-br-none rounded-tr-none border-r-0 bg-white">
                           <SelectValue placeholder="Month" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -199,10 +199,10 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                     render={(field) => (
                       <Select
                         onValueChange={(val) => {
-                          field.onChange(parseInt(val));
+                          field.onChange(parseInt(val))
                         }}
                       >
-                        <SelectTrigger className="bg-white flex-1 rounded-tl-none border-l-0 rounded-bl-none">
+                        <SelectTrigger className="flex-1 rounded-bl-none rounded-tl-none border-l-0 bg-white">
                           <SelectValue placeholder="Year" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -228,7 +228,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                     control={control}
                     render={(field) => (
                       <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="bg-white rounded-tr-none border-r-0 rounded-br-none">
+                        <SelectTrigger className="rounded-br-none rounded-tr-none border-r-0 bg-white">
                           <SelectValue placeholder="Month" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -252,10 +252,10 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                     render={(field) => (
                       <Select
                         onValueChange={(val) => {
-                          field.onChange(parseInt(val));
+                          field.onChange(parseInt(val))
                         }}
                       >
-                        <SelectTrigger className="bg-white rounded-tl-none border-l-0 rounded-bl-none">
+                        <SelectTrigger className="rounded-bl-none rounded-tl-none border-l-0 bg-white">
                           <SelectValue placeholder="Year" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
@@ -290,11 +290,11 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
               />
             </div>
           </div>
-          <div className="flex justify-between mt-8">
+          <div className="mt-8 flex justify-between">
             {isComplete ? (
               <Button
                 type="button"
-                className={`absolute bottom-6 right-6 bg-orange-600 hover:bg-orange-300 hover:text-black shadow-none`}
+                className={`absolute bottom-6 right-6 bg-orange-600 shadow-none hover:bg-orange-300 hover:text-black`}
                 onClick={handleNextError}
               >
                 Skills & Education
@@ -306,7 +306,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                 loadingText="Adding..."
                 type="submit"
                 isLoading={isSubmitting}
-                className="absolute right-6 bottom-6"
+                className="absolute bottom-6 right-6"
                 buttonIcon={<Plus className="w-5 md:ml-[3px]" />}
               />
             )}
@@ -322,7 +322,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
         </form>
       </Form>
     </>
-  );
-};
+  )
+}
 
-export default ProjectExperience;
+export default ProjectExperience

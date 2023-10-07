@@ -1,41 +1,43 @@
-import { connectToDatabase } from "@/lib/connectdb";
-import bcrypt from "bcrypt";
+import { connectToDatabase } from "@/lib/connectdb"
+import bcrypt from "bcrypt"
 import {
   DefaultSession,
   NextAuthOptions,
   User,
   getServerSession,
-} from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "../../prisma/index";
-import { SignInSchema } from "./type";
+} from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { prisma } from "../../prisma"
+import { SignInSchema } from "./type"
+import { setCookie } from "nookies"
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id: string;
-      firstname: string;
-      name: string;
-      lastname: string;
-      email: string;
-      isNewUser: boolean;
-    };
+      id: string
+      firstname: string
+      name: string
+      lastname: string
+      email: string
+      isNewUser: boolean
+    }
   }
 }
 
 type NewUser = User & {
-  isNewUser: boolean;
-  lastname: string;
-  firstname: string;
-};
+  isNewUser: boolean
+  lastname: string
+  firstname: string
+}
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: string;
-    email: string;
-    firstname: string;
-    lastname: string;
-    isNewUser: boolean;
+    id: string
+    email: string
+    firstname: string
+    lastname: string
+    isNewUser: boolean
   }
 }
 
@@ -49,27 +51,27 @@ export const authOptions: NextAuthOptions = {
       credentials: {},
 
       async authorize(credentials, req) {
-        const { email, password } = SignInSchema.parse(credentials);
+        const { email, password } = SignInSchema.parse(credentials)
 
-        if (!credentials || !email || !password) return null;
+        if (!credentials || !email || !password) return null
 
         try {
-          await connectToDatabase();
+          await connectToDatabase()
           const verifyUser = await prisma.user.findFirst({
             where: { email },
-          });
+          })
 
           if (!verifyUser) {
-            throw new Error("User does not exist");
-            return null;
+            throw new Error("User does not exist")
+            return null
           }
 
-          const hashedPassword = verifyUser.hashedPassword || "";
+          const hashedPassword = verifyUser.hashedPassword || ""
 
           const isPasswordCorrect = await bcrypt.compare(
             password,
             hashedPassword
-          );
+          )
 
           if (isPasswordCorrect) {
             return {
@@ -78,14 +80,14 @@ export const authOptions: NextAuthOptions = {
               firstname: verifyUser.firstname,
               lastname: verifyUser.lastname,
               isNewUser: verifyUser.isNewUser,
-            };
+            }
           }
 
-          return null;
+          return null
         } catch (error) {
-          return null;
+          return null
         } finally {
-          prisma.$disconnect();
+          prisma.$disconnect()
         }
       },
     }),
@@ -93,32 +95,32 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user, trigger, session }) => {
       if (trigger === "update") {
-        token.isNewUser = (user as NewUser).isNewUser;
-        return { ...token, ...session.user };
+        token.isNewUser = (user as NewUser).isNewUser
+        return { ...token, ...session.user }
       }
 
       if (user) {
-        token.id = user.id;
-        token.firstname = (user as NewUser).firstname;
-        token.lastname = (user as NewUser).lastname;
-        token.isNewUser = (user as NewUser).isNewUser;
+        token.id = user.id
+        token.firstname = (user as NewUser).firstname
+        token.lastname = (user as NewUser).lastname
+        token.isNewUser = (user as NewUser).isNewUser
       }
-      return token;
+      return token
     },
 
     session: ({ session, token, trigger }) => {
       if (trigger === "update") {
-        session.user.firstname = token.firstname;
-        session.user.lastname = token.lastname;
-        session.user.isNewUser = token.isNewUser;
+        session.user.firstname = token.firstname
+        session.user.lastname = token.lastname
+        session.user.isNewUser = token.isNewUser
       }
       if (token) {
-        session.user.id = token.id;
-        session.user.firstname = token.firstname;
-        session.user.lastname = token.lastname;
-        session.user.isNewUser = token.isNewUser;
+        session.user.id = token.id
+        session.user.firstname = token.firstname
+        session.user.lastname = token.lastname
+        session.user.isNewUser = token.isNewUser
       }
-      return session;
+      return session
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
@@ -130,8 +132,8 @@ export const authOptions: NextAuthOptions = {
     signOut: "/signin",
     error: "/signin",
   },
-};
+}
 
 export const getAuthSession = () => {
-  return getServerSession(authOptions);
-};
+  return getServerSession(authOptions)
+}
