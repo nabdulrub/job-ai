@@ -1,12 +1,13 @@
 import { TJob, TUser } from "@/lib/type"
 import React from "react"
-import JobCard from "../JobCard"
+import JobCard from "./JobCard"
 import { PlusIcon, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import JobDialog from "../JobDialog"
+import JobDialog from "./JobDialog"
+import { Job } from "@prisma/client"
 
 type Props = {
-  jobs?: TJob[]
+  jobs?: Job[]
 }
 
 const Jobs = ({ jobs }: Props) => {

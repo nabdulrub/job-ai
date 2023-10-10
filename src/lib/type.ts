@@ -1,6 +1,8 @@
 import { resumeMonths } from "@/data/resumeFormData"
+import { Education, Job, Project, Skill, User } from "@prisma/client"
 import z from "zod"
 
+// USER SIGN IN SCHEMA
 export const SignInSchema = z.object({
   email: z.string().nonempty("Email is required!").email("Invalid Email"),
   password: z
@@ -11,6 +13,7 @@ export const SignInSchema = z.object({
 
 export type TSignInSchema = z.infer<typeof SignInSchema>
 
+// USER REGISTERATION SCHEMA
 export const RegisterSchema = z.object({
   firstname: z
     .string()
@@ -30,6 +33,7 @@ export const RegisterSchema = z.object({
 
 export type TRegisterSchema = z.infer<typeof RegisterSchema>
 
+// USER CHANGE PASSWORD SCHEMA
 export const ChangePasswordSchema = z.object({
   oldPassword: z.string().nonempty("Old password is required!"),
   newPassword: z
@@ -41,6 +45,7 @@ export const ChangePasswordSchema = z.object({
 
 export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>
 
+// NEWSLETTER EMAIL SCHEMA LANDING PAGE
 export const NewsSchema = z.object({
   email: z
     .string()
@@ -50,8 +55,7 @@ export const NewsSchema = z.object({
 
 export type TNewsSchema = z.infer<typeof NewsSchema>
 
-//Session Type
-
+// USER SESSION SCHEMA
 export type UserSession = {
   name: string
   email: string
@@ -61,6 +65,7 @@ export type UserSession = {
   isNewUser: boolean
 }
 
+// RESUME BASIC INFO SCHEMA
 export const BasicInfoSchema = z.object({
   firstname: z
     .string()
@@ -79,6 +84,7 @@ export const BasicInfoSchema = z.object({
 
 export type TBasicInfoSchema = z.infer<typeof BasicInfoSchema>
 
+// RESUME JOB EXPERIENCE SCHEMA
 export const JobSchema = z
   .object({
     id: z.string().optional(),
@@ -121,7 +127,9 @@ export const JobSchema = z
 
 export type TJobSchema = z.infer<typeof JobSchema>
 
+// RESUME PROJECT EXPERIENCE SCHEMA
 export const ProjectSchema = z.object({
+  id: z.string().optional(),
   title: z.string().nonempty("Title is required!").max(75, "Title too long!"),
   location: z.string().nonempty("Location is required!"),
   startMonth: z.enum(resumeMonths as [string, ...string[]], {
@@ -143,6 +151,7 @@ export const ProjectSchema = z.object({
 
 export type TProjectSchema = z.infer<typeof ProjectSchema>
 
+// RESUME EDUCATION & SKILLS SCHEMA
 export const EducationSkillsSchema = z
   .object({
     skills: z.string().array().nonempty("Skills are Required!"),
@@ -209,67 +218,31 @@ export const EducationSkillsSchema = z
 
 export type TEducationSkillsSchema = z.infer<typeof EducationSkillsSchema>
 
-export type TUser = {
-  id: string
-  email: string
-  hashedPassword: string | null
-  firstname: string
-  lastname: string
-  isNewUser: boolean | null
-  location: string | null
-  phone: string | null
-}
+// RESUME EDUCATION SCHEMA
+export const EducationSchema = z.object({
+  id: z.string().optional(),
+  school: z.string().optional(),
+  degree: z.string().optional(),
+  gpa: z
+    .number({ required_error: "Invalid" })
+    .min(0, "Invalid GPA")
+    .max(5, "Invalid GPA")
+    .optional(),
+  location: z.string().optional(),
+  graduationMonth: z.enum(resumeMonths as [string, ...string[]]).optional(),
+  graduationYear: z.number().min(1950).max(new Date().getFullYear()).optional(),
+})
 
-export type TProject = {
-  id: string
-  title: string
-  location: string
-  startMonth: string
-  startYear: number
-  endMonth: string
-  endYear: number
-  description: string
-}
-
-export type TJob = {
-  id: string
-  title: string
-  employer: string
-  location: string
-  startMonth: string
-  startYear: number
-  endMonth: string
-  endYear: number
-  present: boolean
-  description: string
-  resumeId: string
-}
-
-export type TSkill = {
-  id: string
-  name: string
-  resumeId: string
-}
-
-export type TEducation = {
-  id: string
-  school: string
-  degree: string
-  gpa: number
-  location: string
-  graduationMonth: string
-  graduationYear: number
-  resumeId: string
-}
-
+// DATABASE COMPLETE RESUME TYPE
 export type TUserData = {
-  user: TUser
-  jobs: TJob[]
-  projects: TProject[]
-  skills: TSkill[]
-  education: TEducation[]
+  user: User
+  jobs: Job[]
+  projects: Project[]
+  skills: Skill[]
+  education: Education[]
 }
 
+// DELETING RECORDS SCHEMA
 export const DeleteSchema = z.object({
   id: z.string().nonempty(),
 })

@@ -1,12 +1,13 @@
-import { TUser } from "@/lib/type"
 import React from "react"
-import TabField from "../TabField"
+import TabField from "../../TabField"
 import { Info, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ChangePassword from "@/components/auth/ChangePassword"
+import ProfileDialog from "./ProfileDialog"
+import { User } from "@prisma/client"
 
 type Props = {
-  user?: TUser
+  user?: User
 }
 
 const Profile = ({ user }: Props) => {
@@ -17,7 +18,7 @@ const Profile = ({ user }: Props) => {
           <p className="mb-4 flex items-center gap-2 text-2xl font-semibold">
             My Info <Info />
           </p>
-          <Button>Edit</Button>
+          <ProfileDialog user={user} />
         </div>
         <div className="grid grid-cols-1 gap-8  ">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

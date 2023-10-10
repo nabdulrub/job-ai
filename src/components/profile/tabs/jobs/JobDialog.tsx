@@ -1,4 +1,3 @@
-import React, { useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -8,32 +7,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useForm } from "react-hook-form"
-import { JobSchema, TJob, TJobSchema } from "@/lib/type"
+import { resumeMonths, resumeYears } from "@/data/resumeFormData"
+import { JobSchema, TJobSchema } from "@/lib/type"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ToastAction } from "../ui/toast"
-import { toast } from "../ui/use-toast"
-import { Button } from "../ui/button"
-import Field from "../Field"
-import { Form } from "../ui/form"
+import { Job } from "@prisma/client"
+import { PlusIcon, Save } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import ButtonLoading from "../../../ButtonLoading"
+import Field from "../../../Field"
+import { Button } from "../../../ui/button"
+import { Checkbox } from "../../../ui/checkbox"
+import { Form } from "../../../ui/form"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select"
-import { resumeMonths, resumeYears } from "@/data/resumeFormData"
-import { Checkbox } from "../ui/checkbox"
-import { Textarea } from "../ui/textarea"
-import { PlusIcon, Save } from "lucide-react"
-import ButtonLoading from "../ButtonLoading"
-import { useRouter } from "next/navigation"
-import DeleteButton from "./DeleteButton"
+} from "../../../ui/select"
+import { Textarea } from "../../../ui/textarea"
+import { ToastAction } from "../../../ui/toast"
+import { toast } from "../../../ui/use-toast"
+import DeleteButton from "../../DeleteButton"
 
 type Props = {
   editMode?: boolean
-  job?: TJob
+  job?: Job
 }
 
 const JobDialog = ({ editMode, job }: Props) => {
@@ -82,7 +83,7 @@ const JobDialog = ({ editMode, job }: Props) => {
               altText="Back to form"
               className="bg-green-800 text-white hover:text-black"
             >
-              Add More
+              Dismiss
             </ToastAction>
           ),
           duration: 2000,
@@ -126,7 +127,7 @@ const JobDialog = ({ editMode, job }: Props) => {
               altText="Back to form"
               className="bg-green-800 text-white hover:text-black"
             >
-              Add More
+              Dismiss
             </ToastAction>
           ),
           duration: 2000,
@@ -161,11 +162,11 @@ const JobDialog = ({ editMode, job }: Props) => {
       <DialogTrigger>
         {editMode ? (
           <Button variant={"outline"} className="border-gray-400 px-2">
-            Edit
+            Change Info
           </Button>
         ) : (
           <Button className="bg-amber-600  hover:bg-amber-900">
-            Add <PlusIcon className="ml-1 w-4" />
+            Add Job <PlusIcon className="ml-1 w-4" />
           </Button>
         )}
       </DialogTrigger>
@@ -243,7 +244,11 @@ const JobDialog = ({ editMode, job }: Props) => {
                           onValueChange={(val) => {
                             field.onChange(parseInt(val))
                           }}
-                          value={editMode && getValues("startYear").toString()}
+                          value={
+                            editMode
+                              ? getValues("startYear")?.toString()
+                              : undefined
+                          }
                         >
                           <SelectTrigger className="flex-1 rounded-bl-none rounded-tl-none border-l-0 bg-white">
                             <SelectValue placeholder="Year" />
@@ -310,7 +315,9 @@ const JobDialog = ({ editMode, job }: Props) => {
                               field.onChange(parseInt(val))
                             }}
                             value={
-                              editMode && getValues("startYear").toString()
+                              editMode
+                                ? getValues("endYear")?.toString()
+                                : undefined
                             }
                           >
                             <SelectTrigger className="rounded-bl-none rounded-tl-none border-l-0 bg-white">

@@ -3,8 +3,8 @@
 import { TUserData, UserSession } from "@/lib/type"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { TabsContent } from "@radix-ui/react-tabs"
-import Profile from "./tabs/Profile"
-import Jobs from "./tabs/Jobs"
+import Profile from "./tabs/profile/Profile"
+import Jobs from "./tabs/jobs/Jobs"
 import {
   Select,
   SelectContent,
@@ -13,6 +13,12 @@ import {
   SelectTrigger,
 } from "../ui/select"
 import { useState } from "react"
+import Projects from "./tabs/projects/Projects"
+import Education from "./tabs/education/Education"
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
+import { table } from "console"
+import Skills from "./tabs/skills/Skills"
 
 type Props = {
   session?: UserSession
@@ -20,7 +26,10 @@ type Props = {
 }
 
 const ProfileTabs = ({ session, user }: Props) => {
-  const [currentTab, setCurrentTab] = useState("profile")
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const selectedTab = searchParams.get("tab")
+  const [currentTab, setCurrentTab] = useState(selectedTab || "profile")
   const ProfileTabs = ["profile", "jobs", "projects", "education", "skills"]
 
   const ProfileContent = []
@@ -36,18 +45,19 @@ const ProfileTabs = ({ session, user }: Props) => {
         <TabsList className="flex w-full items-center justify-start rounded-none bg-transparent md:border-b-[2px] md:border-gray-200">
           <div className="hidden w-full items-center justify-start rounded-none bg-transparent md:flex md:border-b-[2px] md:border-gray-200">
             {ProfileTabs.map((tab, i) => (
-              <TabsTrigger
-                value={tab}
-                className="data-[state=active]:bg-transprent flex w-full rounded-none border-b-2 border-transparent text-base capitalize leading-7 data-[state=active]:border-black data-[state=active]:shadow-none"
-                key={i}
-              >
-                <p>{tab}</p>
-              </TabsTrigger>
+              <Link href={`?tab=${tab}`} key={i} className="flex-1">
+                <TabsTrigger
+                  value={tab}
+                  className="data-[state=active]:bg-transprent flex w-full rounded-none border-b-2 border-transparent text-base capitalize leading-7 data-[state=active]:border-black data-[state=active]:shadow-none"
+                >
+                  <p>{tab}</p>
+                </TabsTrigger>
+              </Link>
             ))}
           </div>
 
           <div className="block w-full md:hidden">
-            <Select defaultValue={ProfileTabs[0]} onValueChange={setCurrentTab}>
+            <Select defaultValue={currentTab} onValueChange={setCurrentTab}>
               <SelectTrigger className="w-full text-lg capitalize text-black">
                 <SelectValue placeholder="Tab" />
               </SelectTrigger>
@@ -65,10 +75,19 @@ const ProfileTabs = ({ session, user }: Props) => {
           <TabsContent value="profile">
             <Profile user={user?.user} />
           </TabsContent>
+          <TabsContent value="jobs">
+            <Jobs jobs={user?.jobs} />
+          </TabsContent>
+          <TabsContent value="projects">
+            <Projects projects={user?.projects} />
+          </TabsContent>
+          <TabsContent value="education">
+            <Education education={user?.education} />
+          </TabsContent>
+          <TabsContent value="skills">
+            <Skills skills={user?.skills} />
+          </TabsContent>
         </div>
-        <TabsContent value="jobs">
-          <Jobs jobs={user?.jobs} />
-        </TabsContent>
       </Tabs>
     </div>
   )

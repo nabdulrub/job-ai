@@ -23,9 +23,10 @@ type Props = {
   project?: boolean
   skill?: boolean
   education?: boolean
+  x?: boolean
 }
 
-const DeleteButton = ({ id, job, project, skill, education }: Props) => {
+const DeleteButton = ({ id, job, project, skill, education, x }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -52,7 +53,7 @@ const DeleteButton = ({ id, job, project, skill, education }: Props) => {
       })
       if (response.ok) {
         toast({
-          title: "Job Deleted!",
+          title: "Record Deleted!",
           action: (
             <ToastAction
               altText="Back to form"
@@ -69,7 +70,7 @@ const DeleteButton = ({ id, job, project, skill, education }: Props) => {
 
       if (!response.ok) {
         toast({
-          title: "Failed to delete job!",
+          title: "Failed to delete!",
           action: (
             <ToastAction
               altText="Back to form"
@@ -91,9 +92,17 @@ const DeleteButton = ({ id, job, project, skill, education }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button type="button" className="w-full flex-1" variant={"destructive"}>
-          Delete
-        </Button>
+        {x ? (
+          <X className="text-red-800" />
+        ) : (
+          <Button
+            type="button"
+            className="w-full flex-1"
+            variant={"destructive"}
+          >
+            Delete
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="w-[calc(100%-50px)]">
         <DialogHeader>
