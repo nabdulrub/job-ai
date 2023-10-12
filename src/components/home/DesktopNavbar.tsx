@@ -1,19 +1,27 @@
-import Link from "next/link";
-import React from "react";
-import { Button } from "../ui/button";
-import SignOutButton from "../auth/SignInButton";
-import { UserSession } from "@/lib/type";
-import { unauthorizedLinks } from "@/data/NavbarLinks";
-import JobAI from "../JobAI";
+"use client"
+
+import Link from "next/link"
+import React from "react"
+import { Button } from "../ui/button"
+import SignOutButton from "../auth/SignInButton"
+import { UserSession } from "@/lib/type"
+import { unauthorizedLinks } from "@/data/NavbarLinks"
+import JobAI from "../JobAI"
+import { usePathname } from "next/navigation"
 
 export type NavbarProps = {
-  session?: UserSession;
-};
+  session?: UserSession
+}
 
 const DesktopNavbar = ({ session }: NavbarProps) => {
-  return (
-    <nav className="md:flex hidden justify-between relative px-12">
-      <div className="flex gap-8 items-center justify-center">
+  const path = usePathname()
+
+  const loginPath = path === "/signin"
+  const registerPath = path === "/register"
+
+  return !loginPath && !registerPath ? (
+    <nav className="relative hidden justify-between p-4 px-12 md:flex md:px-24 md:py-8">
+      <div className="flex items-center justify-center gap-8">
         <Link href={"/"}>
           <JobAI size="md" />
         </Link>
@@ -28,12 +36,12 @@ const DesktopNavbar = ({ session }: NavbarProps) => {
       <div className="flex gap-4">
         {!session && (
           <>
-            <Link href={"/signin"}>
+            <Link href={"/signin?auth=signin"}>
               <Button variant={"outline"} title="Already have an account?">
                 Login
               </Button>
             </Link>
-            <Link href={"/register"}>
+            <Link href={"/signin?auth=register"}>
               <Button title="Sign up now!">Sign up</Button>
             </Link>
           </>
@@ -53,7 +61,7 @@ const DesktopNavbar = ({ session }: NavbarProps) => {
         )}
       </div>
     </nav>
-  );
-};
+  ) : null
+}
 
-export default DesktopNavbar;
+export default DesktopNavbar

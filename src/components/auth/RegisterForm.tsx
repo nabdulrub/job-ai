@@ -87,11 +87,8 @@ const RegisterForm = (props: Props) => {
   watch()
   return (
     <>
-      <Card className="mx-auto max-w-lg">
-        <CardHeader>
-          <CardTitle className="text-xl">Start your journey today!</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="mx-auto max-w-lg border-none shadow-none">
+        <CardContent className="pt-6">
           <Form {...form}>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -130,21 +127,13 @@ const RegisterForm = (props: Props) => {
                 label="Re-enter Password"
                 password
               />
-              <CardDescription>
-                Already have an account?{" "}
-                <Link
-                  href={"/signin"}
-                  className="cursor-pointer border-b-[1px] border-black transition-all duration-150 hover:text-black"
-                >
-                  Sign In
-                </Link>
-              </CardDescription>
+
               <ButtonLoading
                 type="submit"
                 text="Register"
                 loadingText="Registering..."
                 isLoading={isSubmitting}
-                className="hover:bg-black hover:text-white"
+                className="bg-teal-700 py-6 text-white hover:bg-teal-900"
                 variant="secondary"
               />
             </form>

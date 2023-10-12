@@ -1,18 +1,15 @@
-import React from "react";
-import ActionCard from "./ActionCard";
-import { Share2 } from "lucide-react";
-import { ActionsData } from "@/data/ActionsData";
+import React from "react"
+import ActionCard from "./ActionCard"
+import { Share2 } from "lucide-react"
+import { ActionsData } from "@/data/ActionsData"
 
-type Props = {};
+type Props = {}
 
 const Actions = (props: Props) => {
   return (
     <div className="flex flex-col gap-4 ">
-      <h2 className="text-2xl flex items-center font-bold">
-        <Share2 className="mr-2 bg-gray-200 w-7 h-7 p-[6px] rounded-sm" />{" "}
-        Actions
-      </h2>
-      <div className="flex md:flex-row flex-col flex-wrap  gap-4">
+      <h2 className="flex items-center text-2xl font-semibold">Actions</h2>
+      <div className="flex flex-col flex-wrap gap-4  md:flex-row">
         {ActionsData.map((v, i) => (
           <ActionCard
             image={v.image}
@@ -23,7 +20,7 @@ const Actions = (props: Props) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Actions;
+export default Actions

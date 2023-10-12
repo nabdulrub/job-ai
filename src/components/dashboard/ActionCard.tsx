@@ -32,7 +32,7 @@ const ActionCard = ({
     backgroundImage: `url(${image})`,
   }
   return (
-    <Card className=" relative flex h-[250px] flex-1 flex-col justify-end rounded-[20px]  border-[1px] border-gray-300 bg-gradient-to-r from-gray-100 via-white  to-gray-300 shadow-none">
+    <Card className=" relative flex flex-1 flex-col justify-end rounded-[20px]  border-[1px] border-gray-300 bg-gradient-to-r from-gray-100 via-white  to-gray-300 shadow-none">
       <div
         className="bg-mix-overlay absolute inset-0 rounded-[20px] bg-cover bg-no-repeat  opacity-40 md:bg-top "
         style={overlayStyle}

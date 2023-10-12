@@ -1,26 +1,23 @@
 export const RecentsData = [
-    {
-        title: 'Recent resume',
-        description: 'Sales job',
-        image: 'ResumeCardTemplate@Dashboard.svg',
-        date: 'Yesterday'
-    },
-    {
-        title: 'Recent resume',
-        description: 'Software engineering job',
-        image: 'ResumeCardTemplate@Dashboard.svg',
-        date: 'This week'
-    },
-    {
-        title: 'Recent resume',
-        description: 'Nursing job',
-        image: 'ResumeCardTemplate@Dashboard.svg',
-        date: 'Today'
-    },
-    {
-        title: 'Recent resume',
-        description: 'CyberSecurity job',
-        image: 'ResumeCardTemplate@Dashboard.svg',
-        date: 'Last week'
-    },
+  {
+    title: "Bank Accountant",
+    description:
+      "Accounting position requiring accouting licenses and certifications.",
+    image: "ResumeCardTemplate@Dashboard.svg",
+    date: "October 2, 2023",
+  },
+  {
+    title: "Software Engineer",
+    description:
+      "Position involving the use of technologies like React, HTML, CSS, etc.",
+    image: "ResumeCardTemplate@Dashboard.svg",
+    date: "January 23, 2023",
+  },
+  {
+    title: "Certified Nurse",
+    description:
+      "Nursing position requiring a bachelor's degree with some prior experience.",
+    image: "ResumeCardTemplate@Dashboard.svg",
+    date: "August 10, 2023",
+  },
 ]

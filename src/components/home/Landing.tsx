@@ -1,22 +1,20 @@
-"use client";
+"use client"
 
-import React from "react";
-import Heading from "./Heading";
-import Preview from "./Preview";
-import Pricing from "./Pricing";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import React from "react"
+import Heading from "./Heading"
+import Preview from "./Preview"
+import Pricing from "./Pricing"
 
-type Props = {};
+type Props = {}
 
 const Landing = (props: Props) => {
   return (
-    <div className="grid place-items-center md:gap-24 gap-16">
+    <div className="mt-20 grid place-items-center gap-16 p-4 md:gap-24 md:p-8">
       <Heading />
       <Preview />
       <Pricing />
     </div>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing

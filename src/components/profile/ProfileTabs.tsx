@@ -32,8 +32,6 @@ const ProfileTabs = ({ session, user }: Props) => {
   const [currentTab, setCurrentTab] = useState(selectedTab || "profile")
   const ProfileTabs = ["profile", "jobs", "projects", "education", "skills"]
 
-  const ProfileContent = []
-
   return (
     <div className="mx-4 grid gap-8 md:mx-10 lg:mx-20 xl:mx-40">
       <h2 className="ml-2 text-3xl">Your Profile</h2>

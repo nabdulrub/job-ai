@@ -1,11 +1,19 @@
-import React from "react";
-import NewsletterForm from "../NewsletterForm";
+"use client"
 
-type Props = {};
+import React from "react"
+import NewsletterForm from "../NewsletterForm"
+import { usePathname } from "next/navigation"
+
+type Props = {}
 
 const Footer = (props: Props) => {
-  return (
-    <footer className="relative -mb-8 -ml-8 mt-8 bottom-0 w-[calc(100%+64px)] bg-black text-white flex flex-col items-center justify-center p-16 text-center gap-4 ">
+  const path = usePathname()
+
+  const loginPath = path === "/signin"
+  const registerPath = path === "/register"
+
+  return !loginPath && !registerPath ? (
+    <footer className="relative bottom-0 mt-8 flex w-full flex-col items-center justify-center gap-4 bg-black p-16 text-center text-white ">
       <div>
         <h2 className="text-2xl">Job AI</h2>
         <h2 className="mt-4">We are consistently adding new features!</h2>
@@ -14,8 +22,8 @@ const Footer = (props: Props) => {
       <div className="w-full max-w-[400px]">
         <NewsletterForm />
       </div>
-      <span className="w-full bg-white h-[1px] mt-12"></span>
-      <div className="flex md:flex-row flex-col w-full text-gray-400 justify-between items-center mt-4">
+      <span className="mt-12 h-[1px] w-full bg-white"></span>
+      <div className="mt-4 flex w-full flex-col items-center justify-between text-gray-400 md:flex-row">
         <p>© 2023 Job AI. All rights reserved.</p>
         <ul className="flex gap-4 ">
           <li>Terms</li>
@@ -24,7 +32,7 @@ const Footer = (props: Props) => {
         </ul>
       </div>
     </footer>
-  );
-};
+  ) : null
+}
 
-export default Footer;
+export default Footer

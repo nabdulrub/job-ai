@@ -19,13 +19,15 @@ model User {
   isNewUser      Boolean? @default(true)
   location       String?
   phone          String?
-
+  createdAt      DateTime @default(now()) @db.Timestamp()
+  updatedAt      DateTime @updatedAt @db.Timestamp()
   relatedResumes Resume[]
 }
 
 model Newsletter {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
 
 model Resume {
@@ -51,7 +53,7 @@ model Job {
   description String?
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String? @db.ObjectId
+  resumeId String  @db.ObjectId
 }
 
 model Project {
@@ -65,7 +67,7 @@ model Project {
   description String?
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String? @db.ObjectId
+  resumeId String  @db.ObjectId
 }
 
 model Skill {
@@ -73,7 +75,7 @@ model Skill {
   name String?
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String? @db.ObjectId
+  resumeId String  @db.ObjectId
 }
 
 model Education {
@@ -86,5 +88,5 @@ model Education {
   graduationYear  Int?
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String? @db.ObjectId
+  resumeId String  @db.ObjectId
 }

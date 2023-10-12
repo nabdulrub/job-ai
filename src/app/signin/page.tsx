@@ -1,22 +1,23 @@
-import SignInForm from "@/components/auth/SignInForm";
-import { getAuthSession } from "@/lib/nextauth";
-import { redirect } from "next/navigation";
-import React from "react";
+import SignInForm from "@/components/auth/SignInForm"
+import SignInPage from "@/components/auth/SignInPage"
+import { getAuthSession } from "@/lib/nextauth"
+import { redirect } from "next/navigation"
+import React from "react"
 
-type Props = {};
+type Props = {}
 
 const SignIn = async (props: Props) => {
-  const session = await getAuthSession();
+  const session = await getAuthSession()
 
   if (session?.user) {
-    redirect("/dashboard");
+    redirect("/dashboard")
   }
 
   return (
     <>
-      <SignInForm />
+      <SignInPage />
     </>
-  );
-};
+  )
+}
 
-export default SignIn;
+export default SignIn

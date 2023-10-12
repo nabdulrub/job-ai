@@ -19,7 +19,7 @@ const DashboardNavbar = ({ session }: Props) => {
   const activeLinkStyles = "border-b-2 border-black text-black"
 
   return (
-    <div className="absolute top-0 mx-10 -ml-8 hidden w-full border-b-[1px] border-gray-200 px-20 pt-4 shadow-lg shadow-gray-50 lg:block">
+    <div className="mx-10 -ml-8 hidden w-full border-b-[1px] border-gray-200 px-20 pt-4 shadow-lg shadow-gray-50 lg:block">
       <div className="flex items-center justify-between">
         <Link href={"/"}>
           <JobAI size="md" className="-mt-3 ml-10" />
@@ -45,9 +45,7 @@ const DashboardNavbar = ({ session }: Props) => {
         </ul>
         <div className="-mt-3 flex items-center gap-4">
           <Link href={`/profile/${session?.id}`}>
-            <Button variant={"secondary"}>
-              <Settings2 className="w-5" />
-            </Button>
+            <Button className="bg-black">My Resume</Button>
           </Link>
           <UserProfileNav user={session} />
         </div>

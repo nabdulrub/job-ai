@@ -161,7 +161,8 @@ const ProjectDialog = ({ editMode, project }: Props) => {
           </Button>
         ) : (
           <Button className=" bg-lime-600  hover:bg-lime-900">
-            Add <PlusIcon className="ml-1 w-4" />
+            Add Project
+            <PlusIcon className="ml-1 w-4" />
           </Button>
         )}
       </DialogTrigger>

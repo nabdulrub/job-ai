@@ -13,9 +13,9 @@ const DashboardPage = async (props: Props) => {
   if (session.user.isNewUser) return redirect("/resume/form")
 
   return (
-    <>
+    <div className="p-4 md:p-8">
       <Dashboard />
-    </>
+    </div>
   )
 }
 

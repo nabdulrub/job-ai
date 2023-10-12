@@ -43,6 +43,7 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string
   className?: string
   size?: number
+  labelStyle?: string
   rules?:
     | Omit<
         RegisterOptions<
@@ -69,6 +70,7 @@ const Field = ({
   className,
   render,
   rules,
+  labelStyle,
   size = 1,
   ...props
 }: FieldProps) => {
@@ -81,7 +83,7 @@ const Field = ({
       name={name}
       render={({ field }) => (
         <FormItem style={{ flex: size }}>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className={labelStyle}>{label}</FormLabel>
           <FormControl>
             <div className={`${password && "relative"}`}>
               {password && (

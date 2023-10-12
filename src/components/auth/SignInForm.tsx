@@ -63,11 +63,8 @@ const SignInForm = (props: Props) => {
   }
 
   return (
-    <Card className="mx-auto max-w-lg">
-      <CardHeader>
-        <CardTitle className="text-xl">Sign in</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card className="mx-auto max-w-lg border-none shadow-none">
+      <CardContent className="pt-6">
         <Form {...form}>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -81,22 +78,13 @@ const SignInForm = (props: Props) => {
               label="Password"
               password
             />
-            <CardDescription>
-              Don&apos;t have an account?{" "}
-              <Link
-                href={"/register"}
-                className="cursor-pointer border-b-[1px] border-black transition-all duration-150 hover:text-black"
-              >
-                Register
-              </Link>
-            </CardDescription>
 
             <ButtonLoading
               type="submit"
-              text="Login"
-              loadingText="Logging in..."
+              text="Sign In"
+              loadingText="Signing in..."
               isLoading={isSubmitting}
-              className="hover:bg-black hover:text-white"
+              className=" bg-indigo-500 py-6 text-white hover:bg-indigo-800"
               variant="secondary"
             />
           </form>

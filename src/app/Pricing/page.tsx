@@ -1,18 +1,18 @@
-import PricingPage from "@/components/pricing/PricingPage";
-import { getAuthSession } from "@/lib/nextauth";
-import { redirect } from "next/navigation";
-import React from "react";
+import PricingPage from "@/components/pricing/PricingPage"
+import { getAuthSession } from "@/lib/nextauth"
+import { redirect } from "next/navigation"
+import React from "react"
 
-type Props = {};
+type Props = {}
 
 const page = async (props: Props) => {
-  const session = await getAuthSession();
-  if (session?.user) redirect("/dashboard");
+  const session = await getAuthSession()
+  if (session?.user) redirect("/dashboard")
   return (
-    <>
+    <div className="p-4 md:p-8">
       <PricingPage />
-    </>
-  );
-};
+    </div>
+  )
+}
 
-export default page;
+export default page

@@ -16,11 +16,16 @@ import SignInButton from "../auth/SignInButton"
 import { NavbarProps } from "./DesktopNavbar"
 import { unauthorizedLinks } from "@/data/NavbarLinks"
 import JobAI from "../JobAI"
+import { usePathname } from "next/navigation"
 
 const MobileNavbar = ({ session }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const path = usePathname()
 
-  return (
+  const loginPath = path === "/signin"
+  const registerPath = path === "/register"
+
+  return !loginPath && !registerPath ? (
     <div className="block md:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <Link href={"/"}>
@@ -50,7 +55,7 @@ const MobileNavbar = ({ session }: NavbarProps) => {
             <div>
               {!session ? (
                 <div className="flex w-full gap-4">
-                  <Link href={"/signin"} className="flex-1">
+                  <Link href={"/signin?auth=signin"} className="flex-1">
                     <Button
                       variant={"outline"}
                       title="Already have an account?"
@@ -59,7 +64,7 @@ const MobileNavbar = ({ session }: NavbarProps) => {
                       Login
                     </Button>
                   </Link>
-                  <Link href={"/register"}>
+                  <Link href={"/signin?auth=register"}>
                     <Button title="Sign up now!" className="bg-black">
                       Sign up
                     </Button>
@@ -78,7 +83,7 @@ const MobileNavbar = ({ session }: NavbarProps) => {
         </SheetContent>
       </Sheet>
     </div>
-  )
+  ) : null
 }
 
 export default MobileNavbar

@@ -1,10 +1,11 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+import { cn } from "@/lib/utils"
+import Link from "next/link"
+import React from "react"
 
 type Props = {
-  size?: "sm" | "md" | "lg";
-  className?: string;
-};
+  size?: "sm" | "md" | "lg"
+  className?: string
+}
 
 const JobAI = ({ size, className }: Props) => {
   const textSize =
@@ -14,9 +15,13 @@ const JobAI = ({ size, className }: Props) => {
       ? "text-xl"
       : size === "lg"
       ? "text-2xl"
-      : "text-base";
+      : "text-base"
 
-  return <h2 className={cn(className, `${textSize} font-semibold`)}>Job AI</h2>;
-};
+  return (
+    <Link href={"/"}>
+      <h2 className={cn(`${textSize} font-semibold`, className)}>Job AI</h2>
+    </Link>
+  )
+}
 
-export default JobAI;
+export default JobAI
