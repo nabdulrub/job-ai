@@ -1,10 +1,10 @@
-import { Tag } from "@/components/ui/tag-input";
+import { Tag } from "@/components/ui/tag-input"
 
 export const resumeFormData = [
   "Just one form away...",
   "...from lasting resume help.",
   "Lets get started!",
-];
+]
 
 export const resumeMonths = [
   "January",
@@ -19,19 +19,19 @@ export const resumeMonths = [
   "October",
   "November",
   "December",
-];
+]
 
 export const resumeYears = () => {
-  const startYear: number = 1970;
-  const endYear: number = new Date().getFullYear();
+  const startYear: number = 1970
+  const endYear: number = new Date().getFullYear()
 
-  const yearsArray: string[] = [];
+  const yearsArray: string[] = []
   for (let year = startYear; year <= endYear; year++) {
-    yearsArray.push(year.toString());
+    yearsArray.push(year.toString())
   }
 
-  return yearsArray.sort((a, b) => b - a);
-};
+  return yearsArray.sort((a, b) => b - a)
+}
 
 export const jobSkills: Tag[] = [
   { id: "1", text: "Programming" },
@@ -65,4 +65,11 @@ export const jobSkills: Tag[] = [
   { id: "29", text: "Troubleshooting" },
   { id: "30", text: "Research" },
   { id: "31", text: "Technical Support" },
-];
+]
+
+export const FormTitle = [
+  "Let's Create Your Resume",
+  "Work Experience Details",
+  "Highlight Your Projects",
+  "Showcase Education & Skills",
+]

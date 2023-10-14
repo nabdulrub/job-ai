@@ -8,6 +8,7 @@ import React, {
 } from "react"
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -43,6 +44,7 @@ interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string
   className?: string
   size?: number
+  description?: string
   labelStyle?: string
   rules?:
     | Omit<
@@ -70,6 +72,7 @@ const Field = ({
   className,
   render,
   rules,
+  description,
   labelStyle,
   size = 1,
   ...props
@@ -110,6 +113,7 @@ const Field = ({
               )}
             </div>
           </FormControl>
+          <FormDescription>{description}</FormDescription>
           <FormMessage />
         </FormItem>
       )}

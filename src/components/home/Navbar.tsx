@@ -1,13 +1,13 @@
-import { getAuthSession } from "@/lib/nextauth";
-import DesktopNavbar from "./DesktopNavbar";
-import MobileNavbar from "./MobileNavbar";
-import DashboardNavbar from "../dashboard/DashboardNavbar";
-import DashboardMobileNavbar from "../dashboard/DashboardMobileNavbar";
+import { getAuthSession } from "@/lib/nextauth"
+import DesktopNavbar from "./DesktopNavbar"
+import MobileNavbar from "./MobileNavbar"
+import DashboardNavbar from "../dashboard/DashboardNavbar"
+import DashboardMobileNavbar from "../dashboard/DashboardMobileNavbar"
 
-type Props = {};
+type Props = {}
 
 const Navbar = async (props: Props) => {
-  const session = await getAuthSession();
+  const session = await getAuthSession()
 
   return !session?.user ? (
     <>
@@ -16,10 +16,10 @@ const Navbar = async (props: Props) => {
     </>
   ) : (
     <>
-      <DashboardNavbar session={session?.user} />
-      <DashboardMobileNavbar session={session?.user} />
+      <DashboardNavbar />
+      <DashboardMobileNavbar />
     </>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

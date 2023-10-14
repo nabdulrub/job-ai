@@ -11,7 +11,7 @@ const ResumeFormPage = async (props: Props) => {
   if (!session?.user) return redirect("/")
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="py-4 md:p-0">
       <ResumeHolder />
     </div>
   )

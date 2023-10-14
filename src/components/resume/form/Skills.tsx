@@ -22,7 +22,7 @@ import { handlePrev } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Award, Check, GraduationCap } from "lucide-react"
 import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -40,15 +40,15 @@ const Skills = ({ formStep, setFormStep }: Props) => {
 
   const { data: session, update } = useSession()
 
-  const updateNewUser = async () => {
-    await update({
-      ...session,
-      user: {
-        ...session?.user,
-        isNewUser: false,
-      },
-    })
-  }
+  // const updateNewUser = async () => {
+  //   await update({
+  //     ...session,
+  //     user: {
+  //       ...session?.user,
+  //       isNewUser: false,
+  //     },
+  //   })
+  // }
 
   const getYears = resumeYears()
 
@@ -68,7 +68,6 @@ const Skills = ({ formStep, setFormStep }: Props) => {
   const {
     handleSubmit,
     control,
-    watch,
     setValue,
     reset,
     formState: { isSubmitting, isSubmitSuccessful },
@@ -83,7 +82,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
 
       if (response.ok) {
         reset()
-        updateNewUser()
+        // updateNewUser()
         toast({
           title: "Info Submitted!, Redirecting...",
           action: (
@@ -97,7 +96,8 @@ const Skills = ({ formStep, setFormStep }: Props) => {
           duration: 2000,
         })
         setComplete(formStep)
-        await signOut({ redirect: true, callbackUrl: "/signin" })
+        router.push(`/profile/${session?.user.id}`)
+        // await signOut({ redirect: true, callbackUrl: "/signin" })
       }
 
       if (!response.ok) {
@@ -124,10 +124,10 @@ const Skills = ({ formStep, setFormStep }: Props) => {
     <>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="text-md mb-4 flex items-center gap-[2px] font-semibold md:text-xl">
-            Skills <Award className="w-5" />
+          <h2 className="text-md mb-4 flex items-center gap-[2px] font-thin text-gray-500 md:text-xl">
+            Your Skills
           </h2>
-          <div className="mb-4">
+          <div className="mb-4 border-b-[1px] border-gray-200 pb-2">
             <Field
               control={control}
               label="Skills"
@@ -139,7 +139,7 @@ const Skills = ({ formStep, setFormStep }: Props) => {
                   placeholderWhenFull="Limit Reached!"
                   placeholder="Enter all your skills! Click Enter after each skill!"
                   tags={tags}
-                  size={"sm"}
+                  size={"md"}
                   textStyle={"bold"}
                   className="sm:min-w-[450px]"
                   setTags={(newTags: Tag[]) => {
@@ -152,8 +152,8 @@ const Skills = ({ formStep, setFormStep }: Props) => {
             />
           </div>
 
-          <h2 className="text-md mb-2 mt-6 flex items-center gap-[2px] font-semibold md:text-xl">
-            Education <GraduationCap className="w-5" />
+          <h2 className="text-md mb-2 mt-6 flex items-center gap-[2px] font-thin text-gray-500 md:text-xl">
+            Your Education
           </h2>
           <div className="job-experience-scroll relative flex max-h-[575px]  flex-col gap-4 overflow-auto px-1 pb-6 md:h-auto md:flex-row">
             <div className="grid flex-1 grid-cols-1 gap-4">
@@ -254,23 +254,14 @@ const Skills = ({ formStep, setFormStep }: Props) => {
               </div>
             </div>
           </div>
-          <div className="mt-8">
+          <div>
             <ButtonLoading
               text="Finish"
               loadingText="Finalizing..."
               isLoading={isSubmitting}
               buttonIcon={<Check className="-mr-2 ml-1 w-5" />}
-              className="absolute bottom-6 right-6 bg-green-600 shadow-none hover:bg-green-900"
+              className=" bg-green-600 shadow-none hover:bg-green-900"
             />
-
-            <Button
-              variant={"secondary"}
-              type="button"
-              className="absolute bottom-6 left-6"
-              onClick={() => handlePrev(setFormStep)}
-            >
-              Previous
-            </Button>
           </div>
         </form>
       </Form>

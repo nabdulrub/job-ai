@@ -1,11 +1,11 @@
 "use client"
 
-import { authorizedLinks, unauthorizedLinks } from "@/data/NavbarLinks"
-import { ChevronRight, LogOut, Menu, Settings, Settings2 } from "lucide-react"
+import { authorizedLinks } from "@/data/NavbarLinks"
+import { LogOut, Menu, Settings } from "lucide-react"
+import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
+import { useState } from "react"
 import JobAI from "../JobAI"
-import SignInButton from "../auth/SignInButton"
-import { NavbarProps } from "../home/DesktopNavbar"
 import { Button } from "../ui/button"
 import {
   Sheet,
@@ -14,15 +14,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet"
-import UserProfileNav from "../UserProfileNav"
-import { useState } from "react"
-import SignOutButton from "../auth/SignInButton"
-import { signOut } from "next-auth/react"
+import { usePathname } from "next/navigation"
 
-const DashboardMobileNavbar = ({ session }: NavbarProps) => {
+type Props = {}
+
+const DashboardMobileNavbar = (props: Props) => {
+  const { data: session } = useSession()
+  const path = usePathname()
+
   const [isOpen, setIsOpen] = useState(false)
 
-  return (
+  return path != "/resume/form" ? (
     <div className="block lg:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <Link href={"/"}>
@@ -57,22 +59,27 @@ const DashboardMobileNavbar = ({ session }: NavbarProps) => {
                       variant={"outline"}
                       title="Already have an account?"
                       className="w-full border-black text-black"
+                      onClick={() => setIsOpen(false)}
                     >
                       Login
                     </Button>
                   </Link>
                   <Link href={"/register"}>
-                    <Button title="Sign up now!" className="bg-black">
+                    <Button
+                      title="Sign up now!"
+                      className="bg-black"
+                      onClick={() => setIsOpen(false)}
+                    >
                       Sign up
                     </Button>
                   </Link>
                 </div>
               ) : (
                 <div className="flex items-center justify-between gap-4">
-                  <p>{session.firstname + " " + session.lastname}</p>
+                  <p>{session.user.firstname + " " + session.user.lastname}</p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href={`/profile/${session?.id}`}
+                      href={`/profile/${session?.user.id}`}
                       onClick={() => setIsOpen(false)}
                     >
                       <Button variant={"secondary"}>
@@ -90,7 +97,7 @@ const DashboardMobileNavbar = ({ session }: NavbarProps) => {
         </SheetContent>
       </Sheet>
     </div>
-  )
+  ) : null
 }
 
 export default DashboardMobileNavbar

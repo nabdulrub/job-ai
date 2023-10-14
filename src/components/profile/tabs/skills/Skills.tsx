@@ -1,5 +1,5 @@
 import { Skill } from "@prisma/client"
-import { Award } from "lucide-react"
+import { Award, Info } from "lucide-react"
 import React from "react"
 import SkillCard from "./SkillCard"
 import SkillsDialog from "./SkillsDialog"
@@ -17,9 +17,15 @@ const Skills = ({ skills }: Props) => {
         </p>
         <SkillsDialog />
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {skills?.map((skill) => <SkillCard skill={skill} key={skill.id} />)}
-      </div>
+      {skills?.length === 0 ? (
+        <p className="flex items-center gap-2 text-lg font-thin">
+          You don&apos;t have any skills <Info strokeWidth={0.8} />
+        </p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {skills?.map((skill) => <SkillCard skill={skill} key={skill.id} />)}
+        </div>
+      )}
     </div>
   )
 }

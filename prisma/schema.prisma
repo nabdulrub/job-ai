@@ -16,7 +16,6 @@ model User {
   hashedPassword String?
   firstname      String
   lastname       String
-  isNewUser      Boolean? @default(true)
   location       String?
   phone          String?
   createdAt      DateTime @default(now()) @db.Timestamp()

@@ -1,9 +1,7 @@
-import { TEducation } from "@/lib/type"
-import { Book, Trophy } from "lucide-react"
-import React from "react"
+import { Education } from "@prisma/client"
+import { Info, Trophy } from "lucide-react"
 import EducationCard from "./EducationCard"
 import EducationDialog from "./EducationDialog"
-import { Education } from "@prisma/client"
 
 type Props = {
   education?: Education[]
@@ -18,11 +16,17 @@ const Education = ({ education }: Props) => {
         </p>
         <EducationDialog />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {education?.map((education) => (
-          <EducationCard key={education.id} education={education} />
-        ))}
-      </div>
+      {education?.length === 0 ? (
+        <p className="flex items-center gap-2 text-lg font-thin">
+          You don&apos;t have any education <Info strokeWidth={0.8} />
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {education?.map((education) => (
+            <EducationCard key={education.id} education={education} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

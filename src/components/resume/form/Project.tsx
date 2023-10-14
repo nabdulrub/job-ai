@@ -123,8 +123,8 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-md flex items-center gap-2 font-semibold md:text-xl">
-              Project Experience <GanttChartSquare className="w-6" />{" "}
+            <h2 className="text-md text-thin flex items-center gap-2 text-gray-500 md:text-xl">
+              Your Project Experience
             </h2>
             <div className="flex gap-2">
               {isComplete && (
@@ -290,15 +290,16 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
               />
             </div>
           </div>
-          <div className="mt-8 flex justify-between">
+          <div className="flex justify-between">
             {isComplete ? (
               <Button
                 type="button"
-                className={`absolute bottom-6 right-6 bg-orange-600 shadow-none hover:bg-orange-300 hover:text-black`}
+                variant="outline"
+                className="border-gray-300 bg-gray-200"
                 onClick={handleNextError}
               >
                 Skills & Education
-                <ChevronRight className="w-5l -mr-2" />
+                <ChevronRight className="-mr-2 w-5" />
               </Button>
             ) : (
               <ButtonLoading
@@ -306,18 +307,10 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                 loadingText="Adding..."
                 type="submit"
                 isLoading={isSubmitting}
-                className="absolute bottom-6 right-6"
+                className=""
                 buttonIcon={<Plus className="w-5 md:ml-[3px]" />}
               />
             )}
-            <Button
-              variant={"secondary"}
-              type="button"
-              className="absolute bottom-6 left-6"
-              onClick={() => handlePrev(setFormStep)}
-            >
-              Previous
-            </Button>
           </div>
         </form>
       </Form>

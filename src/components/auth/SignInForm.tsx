@@ -48,10 +48,6 @@ const SignInForm = (props: Props) => {
         redirect: false,
       })
 
-      if (response?.ok) {
-        replace("/resume/form")
-      }
-
       if (!response?.ok) {
         setError("password", { message: "Invalid Password or Email" })
         setError("email", { message: "Invalid Password or Email" })

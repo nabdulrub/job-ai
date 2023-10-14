@@ -1,5 +1,6 @@
 "use client"
 
+import ButtonLoading from "@/components/ButtonLoading"
 import Field from "@/components/Field"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
@@ -86,38 +87,52 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
     <>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="mb-4 text-xl font-semibold">Basic Info</h2>
+          <h2 className="mb-4 text-xl font-thin text-gray-500">
+            Your Information
+          </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
             <Field
               control={control}
               name="firstname"
               label="First Name"
               inputMode="text"
+              placeholder="ex. John"
+              description="This is your first name"
             />
             <Field
               control={control}
               name="lastname"
               label="Last Name"
               inputMode="text"
+              placeholder="ex. Doe"
+              description="This is your surname name"
             />
             <Field
               control={control}
               name="location"
               label="Location"
               inputMode="text"
+              placeholder="ex. New York, NY"
+              description="This the location employers will see"
             />
             <Field
               control={control}
               name="phone"
               label="Mobile"
               inputMode="tel"
+              placeholder="ex. 1234567890"
+              description="This your personal phone number"
             />
           </div>
           <div className="mt-14 flex justify-between">
-            <Button className="absolute bottom-6 right-6 bg-cyan-600 hover:bg-cyan-900 ">
-              {isSubmitting ? "Submitting..." : "Job Experience"}
-              <ChevronRight className="mt-[1px] w-5" />
-            </Button>
+            <ButtonLoading
+              text="Next"
+              loadingText="Moving on..."
+              isLoading={isSubmitting}
+              variant="outline"
+              className="border-gray-300 bg-gray-200"
+              buttonIcon={<ChevronRight className="-mr-2 w-5" />}
+            />
           </div>
         </form>
       </Form>

@@ -133,7 +133,9 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-between">
-            <h2 className="mb-4 text-xl font-semibold">Work Experience</h2>
+            <h2 className="mb-4 text-xl font-thin text-gray-500">
+              Your Job Experience
+            </h2>
             {isComplete && (
               <ButtonLoading
                 text="Add Job"
@@ -331,16 +333,17 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
               />
             </div>
           </div>
-          <div className="mt-8 flex justify-between">
-            <div className="absolute bottom-6 right-6">
+          <div className="flex justify-between">
+            <div className="">
               {isSubmitSuccessful || isComplete ? (
                 <Button
                   type="button"
-                  className={` bg-green-700 shadow-none hover:bg-green-300 hover:text-black`}
+                  variant={"outline"}
+                  className={`border-gray-300 bg-gray-200`}
                   onClick={handleNextError}
                 >
                   Project Experience
-                  <ChevronRight className="w-5l -mr-2" />
+                  <ChevronRight className="-mr-2 w-5" />
                 </Button>
               ) : (
                 <ButtonLoading
@@ -353,14 +356,6 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
                 />
               )}
             </div>
-            <Button
-              variant={"secondary"}
-              type="button"
-              className="absolute bottom-6 left-6"
-              onClick={() => handlePrev(setFormStep)}
-            >
-              Previous
-            </Button>
           </div>
         </form>
       </Form>

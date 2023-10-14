@@ -23,12 +23,10 @@ declare module "next-auth" {
       isNewUser: boolean
     }
   }
-}
-
-type NewUser = User & {
-  isNewUser: boolean
-  lastname: string
-  firstname: string
+  interface User {
+    lastname: string
+    firstname: string
+  }
 }
 
 declare module "next-auth/jwt" {
@@ -62,7 +60,6 @@ export const authOptions: NextAuthOptions = {
           })
 
           if (!verifyUser) {
-            throw new Error("User does not exist")
             return null
           }
 
@@ -79,7 +76,6 @@ export const authOptions: NextAuthOptions = {
               email: verifyUser.email,
               firstname: verifyUser.firstname,
               lastname: verifyUser.lastname,
-              isNewUser: verifyUser.isNewUser,
             }
           }
 
@@ -93,32 +89,20 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, trigger, session }) => {
-      if (trigger === "update") {
-        token.isNewUser = (user as NewUser).isNewUser
-        return { ...token, ...session.user }
-      }
-
+    jwt: async ({ token, user, isNewUser }) => {
       if (user) {
         token.id = user.id
-        token.firstname = (user as NewUser).firstname
-        token.lastname = (user as NewUser).lastname
-        token.isNewUser = (user as NewUser).isNewUser
+        token.firstname = user.firstname
+        token.lastname = user.lastname
       }
       return token
     },
 
     session: ({ session, token, trigger }) => {
-      if (trigger === "update") {
-        session.user.firstname = token.firstname
-        session.user.lastname = token.lastname
-        session.user.isNewUser = token.isNewUser
-      }
       if (token) {
         session.user.id = token.id
         session.user.firstname = token.firstname
         session.user.lastname = token.lastname
-        session.user.isNewUser = token.isNewUser
       }
       return session
     },
@@ -131,6 +115,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/signin",
     signOut: "/signin",
     error: "/signin",
+    newUser: "/resume/form",
   },
 }
 
