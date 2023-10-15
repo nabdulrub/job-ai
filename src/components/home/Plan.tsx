@@ -1,25 +1,31 @@
-import React from "react";
+import React, { FormEvent } from "react"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import Details from "../pricing/Details";
+} from "../ui/card"
+import { Button } from "../ui/button"
+import Details from "../pricing/Details"
+import { Session } from "next-auth"
+import { UserSession } from "@/lib/type"
+import { redirect, useRouter } from "next/navigation"
+import { getUserSubscriptionPlan } from "@/lib/subscription"
 
 type PlanProps = {
-  isPlan: boolean;
-  title: string;
-  description: string;
-  price: number;
-  top?: boolean;
-  topTitle?: string;
-  planPage: boolean;
-  duration: "MONTHLY" | "ANNUALLY";
-  className?: string;
-};
+  isPlan?: boolean
+  title?: string
+  description?: string
+  price?: number
+  top?: boolean
+  topTitle?: string
+  planPage?: boolean
+  duration?: "MONTHLY" | "ANNUALLY"
+  className?: string
+  planId?: string
+  session?: UserSession
+}
 
 const Plan = ({
   isPlan,
@@ -31,52 +37,78 @@ const Plan = ({
   topTitle,
   duration,
   className,
+  planId,
+  session,
 }: PlanProps) => {
+  const router = useRouter()
+
   const durationCheck =
     duration === "MONTHLY"
       ? "per month"
       : duration === "ANNUALLY"
       ? "per year"
-      : null;
+      : null
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    try {
+      if (!session) return router.push("/signin?auth=signin")
+
+      const response = await fetch("/api/stripe", {
+        method: "POST",
+        body: JSON.stringify({ planId }),
+      })
+
+      const result = await response.json()
+      console.log(result)
+
+      if (response.ok) {
+        router.push(result.url)
+      }
+    } catch (error) {}
+  }
 
   return (
-    <Card className={className}>
-      <div className="flex items-center justify-between px-2">
-        <CardHeader>
-          <CardTitle className="text-xl font-bold flex items-center">
-            {title}
-            {top && (
-              <span className="text-sm border-2 border-blue-600 text-blue-600 px-2 ml-1 rounded-2xl">
-                {topTitle}
-              </span>
-            )}
-          </CardTitle>
-          <CardDescription className="text-sm">{description}</CardDescription>
-        </CardHeader>
-        <CardContent className="p-6 text-center">
-          <h2 className="text-5xl font-bold flex items-start gap-[0.5px]">
-            <span className=" text-4xl">$</span>
-            {price}
-          </h2>
-          <p className="text-xs ml-4">{durationCheck}</p>
-        </CardContent>
-      </div>
-      {planPage ? (
-        <CardContent className=" ">
-          {" "}
-          <Details isStudentPlan={isPlan} />
-        </CardContent>
-      ) : (
-        ""
-      )}
+    <form onSubmit={handleSubmit}>
+      <Card className={className}>
+        <div className="flex items-center justify-between px-2">
+          <CardHeader>
+            <CardTitle className="flex items-center text-xl font-bold">
+              {title}
+              {top && (
+                <span className="ml-1 rounded-2xl border-2 border-blue-600 px-2 text-sm text-blue-600">
+                  {topTitle}
+                </span>
+              )}
+            </CardTitle>
+            <CardDescription className="text-sm">{description}</CardDescription>
+          </CardHeader>
+          <CardContent className="p-6 text-center">
+            <h2 className="flex items-start gap-[0.5px] text-5xl font-bold">
+              <span className=" text-4xl">$</span>
+              {price}
+            </h2>
+            <p className="ml-4 text-xs">{durationCheck}</p>
+          </CardContent>
+        </div>
+        {planPage ? (
+          <CardContent className=" ">
+            {" "}
+            <Details isStudentPlan={isPlan} />
+          </CardContent>
+        ) : (
+          ""
+        )}
 
-      <CardContent className="border-t-2 borde-gray-900 pt-4">
-        <Button className="w-full py-6 bg-black hover:bg-white border-2 hover:border-black hover:text-black transition-all duration-300">
-          Get Started
-        </Button>
-      </CardContent>
-    </Card>
-  );
-};
+        <CardContent className="borde-gray-900 border-t-2 pt-4">
+          <Button className="w-full border-2 bg-black py-6 transition-all duration-300 hover:border-black hover:bg-white hover:text-black">
+            {session ? "Manage Plan" : "Get Started"}
+          </Button>
+        </CardContent>
+      </Card>
+    </form>
+  )
+}
 
-export default Plan;
+export default Plan

@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { getAuthSession } from "@/lib/nextauth"
 import { Toaster } from "@/components/ui/toaster"
 import { headers } from "next/headers"
+import DashboardNavbar from "@/components/dashboard/DashboardNavbar"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -30,10 +31,19 @@ export default async function RootLayout({
       <body className={cn(inter.className, "relative mx-auto max-w-[120rem]")}>
         <Providers>
           <Navbar />
-          <div>{children}</div>
+          <div className="flex">
+            {session?.user && <DashboardNavbar />}
+            <div
+              className={`flex-1 ${
+                session?.user && "mt-16 px-4 md:mt-0 md:px-0"
+              }`}
+            >
+              {children}
+            </div>
+          </div>
           <Toaster />
           <Analytics />
-          {!session?.user && <Footer />}
+          <Footer />
         </Providers>
       </body>
     </html>

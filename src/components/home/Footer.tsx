@@ -9,10 +9,12 @@ type Props = {}
 const Footer = (props: Props) => {
   const path = usePathname()
 
-  const loginPath = path === "/signin"
-  const registerPath = path === "/register"
+  const home = path === "/"
+  const pricing = path === "/pricing"
 
-  return !loginPath && !registerPath ? (
+  const authorizedPaths = home || pricing
+
+  return authorizedPaths ? (
     <footer className="relative bottom-0 mt-8 flex w-full flex-col items-center justify-center gap-4 bg-black p-16 text-center text-white ">
       <div>
         <h2 className="text-2xl">Job AI</h2>

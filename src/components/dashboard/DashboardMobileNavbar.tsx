@@ -25,7 +25,7 @@ const DashboardMobileNavbar = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return path != "/resume/form" ? (
-    <div className="block lg:hidden">
+    <div className="block md:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <Link href={"/"}>
           <JobAI size="lg" className="absolute left-8 top-8" />

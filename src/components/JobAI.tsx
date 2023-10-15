@@ -19,7 +19,9 @@ const JobAI = ({ size, className }: Props) => {
 
   return (
     <Link href={"/"}>
-      <h2 className={cn(`${textSize} font-semibold`, className)}>Job AI</h2>
+      <h2 className={cn(`${textSize}  font-semibold`, className)}>
+        Job AI <sup className="-top-2 text-[12px] font-medium">BETA</sup>
+      </h2>
     </Link>
   )
 }

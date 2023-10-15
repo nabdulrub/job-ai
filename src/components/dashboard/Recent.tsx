@@ -12,7 +12,7 @@ const Recent = (props: Props) => {
       <h2 className="flex items-center text-2xl font-semibold">
         Recent Resumes
       </h2>
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="flex flex-col flex-wrap gap-4 md:flex-row">
         {RecentsData.map((r) => {
           return (
             <>

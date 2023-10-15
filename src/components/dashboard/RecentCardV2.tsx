@@ -20,7 +20,7 @@ type Props = {
 
 const RecentCardV2 = ({ title, description, date }: Props) => {
   return (
-    <Card className="relative border-teal-400 bg-teal-800 shadow-none">
+    <Card className="relative w-full min-w-[200px] flex-1 border-teal-400 bg-teal-800  shadow-none">
       <CardHeader>
         <Badge className="mb-2 w-fit bg-teal-400 text-black shadow-none hover:text-white">
           Resume

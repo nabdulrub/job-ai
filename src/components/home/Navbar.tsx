@@ -11,12 +11,12 @@ const Navbar = async (props: Props) => {
 
   return !session?.user ? (
     <>
-      <DesktopNavbar session={session?.user} />
       <MobileNavbar session={session?.user} />
+      <DesktopNavbar session={session?.user} />
     </>
   ) : (
     <>
-      <DashboardNavbar />
+      <DesktopNavbar session={session?.user} />
       <DashboardMobileNavbar />
     </>
   )

@@ -3,12 +3,17 @@
 import React from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Plan from "./Plan"
+import { storeSubscriptionPlans } from "@/data/subscriptions"
+import { useSession } from "next-auth/react"
+import { Session } from "next-auth"
+import { UserSession } from "@/lib/type"
 
 type Props = {
   isPricingPage?: boolean
+  session?: UserSession
 }
 
-const Pricing = ({ isPricingPage }: Props) => {
+const Pricing = ({ isPricingPage, session }: Props) => {
   return (
     <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-8">
       <div className="flex flex-col gap-2 text-center">
@@ -36,7 +41,20 @@ const Pricing = ({ isPricingPage }: Props) => {
           value="monthly"
           className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2"
         >
-          <Plan
+          {storeSubscriptionPlans.map((plan, i) => (
+            <Plan
+              key={i}
+              isPlan={true}
+              session={session}
+              planPage={isPricingPage || false}
+              title={plan.name}
+              planId={plan.stripePriceId}
+              description={plan.description}
+              price={plan.price}
+              duration="MONTHLY"
+            />
+          ))}
+          {/* <Plan
             isPlan={true}
             planPage={isPricingPage}
             title="Student Starter"
@@ -53,7 +71,7 @@ const Pricing = ({ isPricingPage }: Props) => {
             description="Our most popular plan for job seekers."
             price={35}
             duration="MONTHLY"
-          />
+          /> */}
         </TabsContent>
         <TabsContent
           value="annual"
@@ -61,7 +79,7 @@ const Pricing = ({ isPricingPage }: Props) => {
         >
           <Plan
             isPlan={true}
-            planPage={isPricingPage}
+            planPage={isPricingPage || false}
             title="Student Starter"
             description="Our recommended plan for students."
             price={80}
@@ -69,7 +87,7 @@ const Pricing = ({ isPricingPage }: Props) => {
           />
           <Plan
             isPlan={false}
-            planPage={isPricingPage}
+            planPage={isPricingPage || false}
             top
             topTitle="Unlimited"
             title="Career Accelerator"
