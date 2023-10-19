@@ -1,4 +1,4 @@
-import { ProjectSchema, TProjectSchema } from "@/lib/type"
+import { ProjectSchema, TProjectSchema } from "@/types/type"
 import React, { useState } from "react"
 import {
   Dialog,

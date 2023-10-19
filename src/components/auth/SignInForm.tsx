@@ -1,6 +1,6 @@
 "use client"
 
-import { SignInSchema, TSignInSchema } from "@/lib/type"
+import { SignInSchema, TSignInSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
 import Link from "next/link"

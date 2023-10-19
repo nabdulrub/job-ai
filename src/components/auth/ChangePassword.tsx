@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { ChangePasswordSchema, TChangePasswordSchema } from "@/lib/type";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import ButtonLoading from "../ButtonLoading";
-import Field from "../Field";
-import { Form } from "../ui/form";
-import { ToastAction } from "../ui/toast";
-import { toast } from "../ui/use-toast";
+import { ChangePasswordSchema, TChangePasswordSchema } from "@/types/type"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import ButtonLoading from "../ButtonLoading"
+import Field from "../Field"
+import { Form } from "../ui/form"
+import { ToastAction } from "../ui/toast"
+import { toast } from "../ui/use-toast"
 
-type Props = {};
+type Props = {}
 
 const ChangePassword = (props: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<TChangePasswordSchema>({
     resolver: zodResolver(ChangePasswordSchema),
@@ -22,7 +22,7 @@ const ChangePassword = (props: Props) => {
       newPassword: "",
       verifyNewPassword: "",
     },
-  });
+  })
 
   const {
     handleSubmit,
@@ -30,24 +30,24 @@ const ChangePassword = (props: Props) => {
     setError,
     reset,
     formState: { errors, isSubmitting },
-  } = form;
+  } = form
 
   const onSubmit = async (data: TChangePasswordSchema) => {
     try {
       if (data.newPassword !== data.verifyNewPassword) {
         return setError("verifyNewPassword", {
           message: "Passwords do not match",
-        });
+        })
       }
 
       const response = await fetch("/api/user/changepassword", {
         method: "PUT",
         body: JSON.stringify(data),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
-      console.log(response);
+      console.log(response)
 
       if (response.ok) {
         toast({
@@ -62,7 +62,7 @@ const ChangePassword = (props: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
+        })
       }
 
       if (!response.ok) {
@@ -78,30 +78,30 @@ const ChangePassword = (props: Props) => {
             </ToastAction>
           ),
           duration: 2000,
-        });
+        })
       }
 
       if (result?.message === "Same Password") {
         return setError("newPassword", {
           message: "You're currently using this password",
-        });
+        })
       }
 
       if (result.message === "Passwords Don't Match") {
-        return setError("oldPassword", { message: "Wrong Password" });
+        return setError("oldPassword", { message: "Wrong Password" })
       }
 
-      reset();
-      router.refresh();
+      reset()
+      router.refresh()
     } catch (error) {
-      console.error("Error: ", error);
+      console.error("Error: ", error)
     }
-  };
+  }
 
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 ">
-        <div className="flex gap-4 md:flex-row flex-col">
+        <div className="flex flex-col gap-4 md:flex-row">
           <Field
             control={control}
             name="oldPassword"
@@ -131,7 +131,7 @@ const ChangePassword = (props: Props) => {
         </div>
       </form>
     </Form>
-  );
-};
+  )
+}
 
-export default ChangePassword;
+export default ChangePassword

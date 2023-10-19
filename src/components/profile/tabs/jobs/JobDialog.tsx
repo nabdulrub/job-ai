@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { resumeMonths, resumeYears } from "@/data/resumeFormData"
-import { JobSchema, TJobSchema } from "@/lib/type"
+import { JobSchema, TJobSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Job } from "@prisma/client"
 import { PlusIcon, Save } from "lucide-react"

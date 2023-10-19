@@ -1,21 +1,21 @@
-import { Loader2 } from "lucide-react";
-import { Button, ButtonProps, buttonVariants } from "./ui/button";
-import { ButtonHTMLAttributes } from "react";
-import { VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react"
+import { Button, ButtonProps, buttonVariants } from "./ui/button"
+import { ButtonHTMLAttributes } from "react"
+import { VariantProps } from "class-variance-authority"
 
 interface ButtonLoadingProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isLoading?: boolean;
-  text?: string;
-  loadingText?: string;
-  className?: string;
+  isLoading?: boolean
+  text?: string
+  loadingText?: string
+  className?: string
   variant?:
     | "default"
     | "destructive"
     | "outline"
     | "secondary"
     | "ghost"
-    | "link";
-  buttonIcon?: React.ReactNode;
+    | "link"
+  buttonIcon?: React.ReactNode
 }
 
 const ButtonLoading = ({
@@ -42,7 +42,7 @@ const ButtonLoading = ({
       {text}
       {buttonIcon}
     </Button>
-  );
-};
+  )
+}
 
-export default ButtonLoading;
+export default ButtonLoading

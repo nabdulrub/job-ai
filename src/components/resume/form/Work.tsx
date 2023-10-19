@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
-import { JobSchema, TJobSchema } from "@/lib/type"
+import { JobSchema, TJobSchema } from "@/types/type"
 import { ChevronRight, Plus } from "lucide-react"
 
 import Field from "@/components/Field"

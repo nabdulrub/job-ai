@@ -1,7 +1,7 @@
 "use client"
 
 import { resumeMonths, resumeYears } from "@/data/resumeFormData"
-import { EducationSchema } from "@/lib/type"
+import { EducationSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Education } from "@prisma/client"
 import { PlusIcon, Save } from "lucide-react"

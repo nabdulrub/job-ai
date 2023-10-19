@@ -17,7 +17,7 @@ export async function getUserSubscriptionPlan() {
     },
   })
 
-  if (!user) throw new Error("User not found!")
+  if (!user) return null
 
   const isSubscribed =
     user.stripePriceId &&

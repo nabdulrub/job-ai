@@ -11,8 +11,8 @@ const DashboardPage = async (props: Props) => {
   if (!session?.user) return redirect("/")
 
   return (
-    <div className="p-4 md:p-8">
-      <Dashboard />
+    <div className="h-full p-4 md:p-8">
+      <Dashboard session={session.user} />
     </div>
   )
 }

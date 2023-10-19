@@ -7,6 +7,8 @@ export default async function Home() {
   const session = await getAuthSession()
   const subscription = await getUserSubscriptionPlan()
 
+  console.log(subscription)
+
   return (
     <>
       <Landing session={session?.user} />

@@ -1,7 +1,7 @@
 "use client"
 
 import { authorizedLinks } from "@/data/NavbarLinks"
-import { UserSession } from "@/lib/type"
+import { UserSession } from "@/types/type"
 import { Settings, Settings2 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -16,9 +16,19 @@ const DashboardNavbar = (props: Props) => {
   const { data: session } = useSession()
   const currentPath = usePathname()
 
-  const activeLinkStyles = "relative "
+  const activeLinkStyles = "relative"
 
-  return currentPath != "/resume/form" && currentPath != "/" ? (
+  const dashboard = currentPath === "/dashboard"
+  const settings = currentPath === `/profile/${session?.user.id}`
+  const resumes = currentPath === "/resumes"
+  const discover = currentPath === "/discover"
+  const billing = currentPath === "/billing"
+  const generatedResume = currentPath.includes("/generated/resume")
+
+  const authorizedPaths =
+    dashboard || settings || resumes || discover || billing || generatedResume
+
+  return authorizedPaths ? (
     <div className="relative hidden h-full w-full max-w-[250px] border-r-2 border-gray-100 bg-gray-50 bg-opacity-40 py-10 shadow-lg shadow-gray-50 md:block md:h-screen">
       <div className="flex h-full flex-col items-center justify-between">
         <div className="grid w-full max-w-[170px] gap-12">

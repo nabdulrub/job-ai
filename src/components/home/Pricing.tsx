@@ -6,7 +6,7 @@ import Plan from "./Plan"
 import { storeSubscriptionPlans } from "@/data/subscriptions"
 import { useSession } from "next-auth/react"
 import { Session } from "next-auth"
-import { UserSession } from "@/lib/type"
+import { UserSession } from "@/types/type"
 
 type Props = {
   isPricingPage?: boolean

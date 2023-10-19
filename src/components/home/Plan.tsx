@@ -1,4 +1,8 @@
-import React, { FormEvent } from "react"
+import { UserSession } from "@/types/type"
+import { useRouter } from "next/navigation"
+import { FormEvent, useState } from "react"
+import Details from "../pricing/Details"
+import { Button } from "../ui/button"
 import {
   Card,
   CardContent,
@@ -6,12 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
-import { Button } from "../ui/button"
-import Details from "../pricing/Details"
-import { Session } from "next-auth"
-import { UserSession } from "@/lib/type"
-import { redirect, useRouter } from "next/navigation"
-import { getUserSubscriptionPlan } from "@/lib/subscription"
 
 type PlanProps = {
   isPlan?: boolean
@@ -40,6 +38,7 @@ const Plan = ({
   planId,
   session,
 }: PlanProps) => {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const durationCheck =
@@ -53,6 +52,7 @@ const Plan = ({
     e.preventDefault()
 
     try {
+      setLoading(true)
       if (!session) return router.push("/signin?auth=signin")
 
       const response = await fetch("/api/stripe", {
@@ -66,7 +66,11 @@ const Plan = ({
       if (response.ok) {
         router.push(result.url)
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -102,7 +106,10 @@ const Plan = ({
         )}
 
         <CardContent className="borde-gray-900 border-t-2 pt-4">
-          <Button className="w-full border-2 bg-black py-6 transition-all duration-300 hover:border-black hover:bg-white hover:text-black">
+          <Button
+            className="w-full border-2 bg-black py-6 transition-all duration-300 hover:border-black hover:bg-white hover:text-black"
+            disabled={loading}
+          >
             {session ? "Manage Plan" : "Get Started"}
           </Button>
         </CardContent>

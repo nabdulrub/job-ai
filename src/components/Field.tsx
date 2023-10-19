@@ -26,7 +26,7 @@ import {
   TProjectSchema,
   TRegisterSchema,
   TSignInSchema,
-} from "@/lib/type"
+} from "@/types/type"
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   control: any

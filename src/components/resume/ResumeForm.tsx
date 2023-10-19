@@ -1,6 +1,6 @@
 "use client"
 
-import { UserSession } from "@/lib/type"
+import { UserSession } from "@/types/type"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import BasicInfo from "./form/BasicInfo"
 import ProjectExperience from "./form/Project"

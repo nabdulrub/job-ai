@@ -1,6 +1,6 @@
 "use client"
 
-import { TUserData, UserSession } from "@/lib/type"
+import { TUserData, UserSession } from "@/types/type"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { TabsContent } from "@radix-ui/react-tabs"
 import Profile from "./tabs/profile/Profile"
@@ -33,7 +33,7 @@ const ProfileTabs = ({ session, user }: Props) => {
   const ProfileTabs = ["profile", "jobs", "projects", "education", "skills"]
 
   return (
-    <div className="mx-4 grid gap-8 md:mx-10 lg:mx-20 xl:mx-40">
+    <div className="mx-4 grid gap-8 ">
       <h2 className="ml-2 text-3xl">Your Profile</h2>
       <Tabs
         defaultValue={ProfileTabs[0]}

@@ -1,6 +1,6 @@
 "use client"
 
-import { RegisterSchema, TRegisterSchema } from "@/lib/type"
+import { RegisterSchema, TRegisterSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -22,9 +22,7 @@ import { signIn } from "next-auth/react"
 type Props = {}
 
 const RegisterForm = (props: Props) => {
-  const [viewPassword, setViewPassword] = useState(false)
-  const [viewVerifyPassword, setViewVerifyPassword] = useState(false)
-
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const form = useForm<TRegisterSchema>({
@@ -44,11 +42,12 @@ const RegisterForm = (props: Props) => {
     watch,
     setError,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = form
 
   const onSubmit = async (data: TRegisterSchema) => {
     try {
+      setLoading(true)
       if (data.password !== data.verifyPassword) {
         return setError("verifyPassword", {
           message: "Passwords do not match",
@@ -59,6 +58,9 @@ const RegisterForm = (props: Props) => {
         method: "POST",
         body: JSON.stringify(data),
       })
+      const result = await response.json()
+
+      console.log(result)
 
       if (response.ok) {
         await signIn("credentials", {
@@ -68,8 +70,6 @@ const RegisterForm = (props: Props) => {
           redirect: true,
         })
       }
-
-      const result = await response.json()
 
       reset()
       router.push("/signin")
@@ -81,6 +81,8 @@ const RegisterForm = (props: Props) => {
       }
     } catch (error) {
       console.log("Error: ", error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -131,8 +133,10 @@ const RegisterForm = (props: Props) => {
               <ButtonLoading
                 type="submit"
                 text="Register"
-                loadingText="Registering..."
-                isLoading={isSubmitting}
+                loadingText={
+                  isSubmitSuccessful ? "Logging in..." : "Registering..."
+                }
+                isLoading={loading}
                 className="bg-teal-700 py-6 text-white hover:bg-teal-900"
                 variant="secondary"
               />

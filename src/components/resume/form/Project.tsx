@@ -16,7 +16,7 @@ import { ToastAction } from "@/components/ui/toast"
 import { toast } from "@/components/ui/use-toast"
 import { useFormStepContext } from "@/context/FormSteps"
 import { resumeMonths, resumeYears } from "@/data/resumeFormData"
-import { ProjectSchema, TProjectSchema, UserSession } from "@/lib/type"
+import { ProjectSchema, TProjectSchema, UserSession } from "@/types/type"
 import { handleNext, handlePrev } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChevronRight, GanttChartSquare, Plus } from "lucide-react"
@@ -135,7 +135,6 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
                     type="submit"
                     className="hidden md:block"
                     isLoading={isSubmitting}
-                    buttonIcon={<Plus className="w-5 md:ml-[3px]" />}
                   />
                   <ButtonLoading
                     type="submit"

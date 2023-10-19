@@ -2,7 +2,7 @@ import { handleNext, handlePrev } from "@/lib/utils"
 import React from "react"
 import { Button, ButtonProps } from "../ui/button"
 import { FieldErrors } from "react-hook-form"
-import { TBasicInfoSchema } from "@/lib/type"
+import { TBasicInfoSchema } from "@/types/type"
 
 interface StepsButtonProps extends ButtonProps {
   goNext?: boolean

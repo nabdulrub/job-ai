@@ -25,7 +25,7 @@ const DashboardMobileNavbar = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return path != "/resume/form" ? (
-    <div className="block md:hidden">
+    <div className="block  md:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <Link href={"/"}>
           <JobAI size="lg" className="absolute left-8 top-8" />
@@ -33,7 +33,7 @@ const DashboardMobileNavbar = (props: Props) => {
         <SheetTrigger>
           <Menu className="absolute right-8 top-8 cursor-pointer" size={40} />
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent className="max-w-[300px]">
           <SheetHeader>
             <Link href={"/"}>
               <SheetTitle className="text-2xl font-semibold">Job AI</SheetTitle>

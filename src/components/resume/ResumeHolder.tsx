@@ -8,7 +8,7 @@ import ResumeForm from "./ResumeForm"
 type Props = {}
 
 const ResumeHolder = (props: Props) => {
-  const [formStep, setFormStep] = useState(2)
+  const [formStep, setFormStep] = useState(0)
 
   const { data: session } = useSession({
     required: true,

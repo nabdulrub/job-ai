@@ -9,7 +9,7 @@ import {
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "../../prisma"
-import { SignInSchema } from "./type"
+import { SignInSchema } from "../types/type"
 import { setCookie } from "nookies"
 
 declare module "next-auth" {

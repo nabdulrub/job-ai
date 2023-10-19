@@ -2,7 +2,7 @@ import { connectToDatabase } from "@/lib/connectdb"
 import { NextResponse } from "next/server"
 import { prisma } from "../../../../prisma"
 import { getAuthSession } from "@/lib/nextauth"
-import { BasicInfoSchema } from "@/lib/type"
+import { BasicInfoSchema } from "@/types/type"
 import { ZodError } from "zod"
 
 export const GET = async (req: Request, res: Response) => {

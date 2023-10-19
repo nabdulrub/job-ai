@@ -5,7 +5,7 @@ import Heading from "./Heading"
 import Preview from "./Preview"
 import Pricing from "./Pricing"
 import { Session } from "next-auth"
-import { UserSession } from "@/lib/type"
+import { UserSession } from "@/types/type"
 
 type Props = {
   session?: UserSession
