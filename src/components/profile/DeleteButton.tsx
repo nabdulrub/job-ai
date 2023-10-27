@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog"
 import ButtonLoading from "../ButtonLoading"
+import { cn } from "@/lib/utils"
 
 type Props = {
   id?: string
@@ -23,10 +24,21 @@ type Props = {
   project?: boolean
   skill?: boolean
   education?: boolean
+  generatedResume?: boolean
   x?: boolean
+  className?: string
 }
 
-const DeleteButton = ({ id, job, project, skill, education, x }: Props) => {
+const DeleteButton = ({
+  id,
+  job,
+  project,
+  skill,
+  education,
+  x,
+  className,
+  generatedResume,
+}: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -41,6 +53,8 @@ const DeleteButton = ({ id, job, project, skill, education, x }: Props) => {
       ? "skills"
       : education
       ? "education"
+      : generatedResume
+      ? "/generate/resume"
       : ""
   }`
 
@@ -97,7 +111,7 @@ const DeleteButton = ({ id, job, project, skill, education, x }: Props) => {
         ) : (
           <Button
             type="button"
-            className="w-full flex-1"
+            className={cn("w-full flex-1", className)}
             variant={"destructive"}
           >
             Delete

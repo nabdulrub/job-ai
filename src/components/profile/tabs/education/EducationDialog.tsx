@@ -4,7 +4,7 @@ import { resumeMonths, resumeYears } from "@/data/resumeFormData"
 import { EducationSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Education } from "@prisma/client"
-import { PlusIcon, Save } from "lucide-react"
+import { Plus, PlusIcon, Save } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -235,12 +235,18 @@ const EducationDialog = ({ education, editMode }: Props) => {
               </div>
             </div>
             <div className="flex w-full justify-between">
-              <DeleteButton id={education?.id} education />
+              {editMode ? <DeleteButton id={education?.id} education /> : null}
               <ButtonLoading
-                text={editMode ? "Save Changes" : "Add Education"}
+                text={editMode ? "Save Changes" : "Add"}
                 loadingText={editMode ? "Saving..." : "Adding..."}
                 isLoading={isSubmitting}
-                buttonIcon={<Save className="-mr-2 ml-1 w-5" />}
+                buttonIcon={
+                  editMode ? (
+                    <Save className="ml-2 w-5" />
+                  ) : (
+                    <PlusIcon className="ml-1 w-5" />
+                  )
+                }
                 className=" bg-green-700"
               />
             </div>

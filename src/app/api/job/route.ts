@@ -31,6 +31,8 @@ export const POST = async (req: Request, res: Response) => {
       present,
     } = JobSchema.parse(body)
 
+    const newdescription = description.replace(/•|(\n)/g, "")
+
     const resume = await prisma.resume.findFirst({
       where: {
         userId: session.user.id,
@@ -57,7 +59,7 @@ export const POST = async (req: Request, res: Response) => {
             startYear,
             endMonth,
             endYear,
-            description,
+            description: newdescription,
             present,
           },
         },
@@ -120,6 +122,8 @@ export const PUT = async (req: Request, res: Response) => {
         { status: 404 }
       )
 
+    const newdescription = description.replace(/•|(\n)/g, "")
+
     const newJob = await prisma.resume.update({
       where: {
         id: resume.id,
@@ -138,7 +142,7 @@ export const PUT = async (req: Request, res: Response) => {
               startYear,
               endMonth,
               endYear,
-              description,
+              description: newdescription,
               present,
             },
           },

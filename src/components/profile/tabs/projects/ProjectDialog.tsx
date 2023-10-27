@@ -335,9 +335,9 @@ const ProjectDialog = ({ editMode, project }: Props) => {
             </div>
             <DialogFooter className="mt-6 flex w-full md:mt-0">
               <div className="flex w-full justify-between">
-                <DeleteButton id={project?.id} project />
+                {editMode ? <DeleteButton id={project?.id} project /> : null}
                 <ButtonLoading
-                  text={editMode ? "Save Changes" : "Edit"}
+                  text={editMode ? "Save Changes" : "Add"}
                   loadingText={editMode ? "Editing..." : "Adding..."}
                   isLoading={isSubmitting}
                   buttonIcon={

@@ -381,7 +381,7 @@ const JobDialog = ({ editMode, job }: Props) => {
             </div>
             <DialogFooter className="mt-6 flex w-full md:mt-0">
               <div className="flex w-full justify-between">
-                <DeleteButton id={job?.id} job />
+                {editMode ? <DeleteButton id={job?.id} job /> : null}
                 <ButtonLoading
                   text={editMode ? "Save Changes" : "Edit"}
                   loadingText={editMode ? "Editing..." : "Adding..."}

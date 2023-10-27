@@ -1,3 +1,11 @@
+import {
+  GeneratedEducation,
+  GeneratedJob,
+  GeneratedProject,
+  GeneratedResume,
+  GeneratedSkill,
+} from "@prisma/client"
+
 export type jobs = {
   title?: string
   employer?: string
@@ -37,6 +45,12 @@ export type TailorJob = {
     education?: string
     projectExperience?: string
     skills?: string
-    info?: string
   }
+}
+
+export interface databaseResume extends GeneratedResume {
+  jobs?: GeneratedJob[]
+  projects?: GeneratedProject[]
+  skills?: GeneratedSkill[]
+  education?: GeneratedEducation[]
 }

@@ -62,7 +62,8 @@ export type UserSession = {
   id: string
   firstname: string
   lastname: string
-  isNewUser: boolean
+  location: string
+  phone: string
 }
 
 // RESUME BASIC INFO SCHEMA

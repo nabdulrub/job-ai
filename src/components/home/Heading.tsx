@@ -9,13 +9,8 @@ type Props = {}
 const Heading = (props: Props) => {
   return (
     <div className="bg-red grid w-full place-items-center justify-center gap-4">
-      <Image
-        src={pattern}
-        alt="pattern"
-        width={1500}
-        className="absolute top-0 -z-10"
-      />
-      <NewFeature /> {/*New feature announcer*/}
+      <Image src={pattern} alt="pattern" className="absolute top-0 -z-10" />
+      <NewFeature />
       <div className="grid gap-4 text-center">
         <h1 className="max-w-4xl text-3xl font-bold md:text-6xl">
           Innovative Job Seeking with AI-Powered Resume Magic

@@ -34,7 +34,7 @@ const GeneratedResume = async ({ params: { id } }: Props) => {
   return (
     <div className="h-full p-4 md:p-8">
       <Suspense fallback={<Loader2 size={60} className="animate-spin" />}>
-        <ResumeViewer resume={resume} />
+        <ResumeViewer resume={resume} session={session.user} />
       </Suspense>
     </div>
   )

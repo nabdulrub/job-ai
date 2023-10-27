@@ -15,6 +15,7 @@ import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import Link from "next/link"
 import { GeneratedResume } from "@prisma/client"
+import RecentOptions from "./RecentOptions"
 
 type Props = {
   recent: GeneratedResume
@@ -23,7 +24,7 @@ type Props = {
 const RecentCardV2 = ({ recent }: Props) => {
   const createdDate = recent.createdAt?.toDateString()
   return (
-    <Card className="relative w-full min-w-[200px] flex-1 border-teal-400 bg-teal-800  shadow-none md:max-w-[450px]">
+    <Card className="relative w-full flex-1 border-teal-400 bg-teal-800  shadow-none md:min-w-[300px]">
       <CardHeader>
         <Badge className="mb-2 w-fit bg-teal-400 text-black shadow-none hover:text-white">
           Resume
@@ -49,7 +50,7 @@ const RecentCardV2 = ({ recent }: Props) => {
             </Link>
           </div>
         </div>
-        <MoreHorizontal className="absolute right-4 top-2 cursor-pointer text-white transition-all duration-200 hover:text-gray-300" />
+        <RecentOptions id={recent.id} />
       </CardContent>
     </Card>
   )

@@ -20,12 +20,15 @@ declare module "next-auth" {
       name: string
       lastname: string
       email: string
-      isNewUser: boolean
+      location: string
+      phone: string
     }
   }
   interface User {
     lastname: string
     firstname: string
+    location: string
+    phone: string
   }
 }
 
@@ -35,7 +38,8 @@ declare module "next-auth/jwt" {
     email: string
     firstname: string
     lastname: string
-    isNewUser: boolean
+    location: string
+    phone: string
   }
 }
 
@@ -76,6 +80,8 @@ export const authOptions: NextAuthOptions = {
               email: verifyUser.email,
               firstname: verifyUser.firstname,
               lastname: verifyUser.lastname,
+              location: verifyUser.location,
+              phone: verifyUser.phone,
             }
           }
 
@@ -94,6 +100,8 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id
         token.firstname = user.firstname
         token.lastname = user.lastname
+        token.phone = user.phone
+        token.location = user.location
       }
       return token
     },
@@ -103,6 +111,8 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id
         session.user.firstname = token.firstname
         session.user.lastname = token.lastname
+        session.user.phone = token.phone
+        session.user.location = token.location
       }
       return session
     },
