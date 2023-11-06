@@ -1,17 +1,9 @@
 "use client"
 
-import React, { Key, useEffect, useState } from "react"
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  Font,
-} from "@react-pdf/renderer"
-import { databaseResume, generatedResume } from "@/types/generatedResume"
+import { databaseResume } from "@/types/generatedResume"
 import { UserSession } from "@/types/type"
-import { Dot } from "lucide-react"
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
+import { Key } from "react"
 
 type Props = {
   resume: databaseResume

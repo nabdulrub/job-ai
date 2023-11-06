@@ -5,6 +5,7 @@ import React from "react"
 import { prisma } from "../../../../prisma"
 import { connectToDatabase } from "@/lib/connectdb"
 import { tailorJob } from "@/lib/gpt"
+import Loading from "@/components/Loading"
 
 type Props = {
   params: {

@@ -146,11 +146,7 @@ export const tailorJob = async ({
       },
       {
         role: "user",
-        content: `Tailor my job and project descriptions with my following job experience: ${user?.jobExperience}, project experience ${user?.projectExperience}, education: ${user?.education}, my skills: ${user?.skills}.`,
-      },
-      {
-        role: "assistant",
-        content: `Tailor my descriptions to the following job description: ${jobDescription} >>> Highlight my best skills, job experiences and projects. Add other skills that might increase my chances of getting the job, but ensure they are related to my experience, limit the total skills to 10! Each job should have a maxiumum of 4 bullets, each having a max character length of 125. Each bullet needs to start with the following star symbol '*'`,
+        content: `Tailor my job to this job ${jobDescription} and project descriptions with my following job experience: ${user?.jobExperience}, project experience ${user?.projectExperience}, education: ${user?.education}, my skills: ${user?.skills}. Highlight my best skills, job experiences and projects. Add other skills that might increase my chances of getting the job, but ensure they are related to my experience, limit the total skills to 10! Each job should 4 bullets points description, each having a max character length of 125.`,
       },
     ],
     model: "gpt-3.5-turbo",

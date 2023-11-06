@@ -2,7 +2,7 @@ import { FileText, LayoutDashboard, Search } from "lucide-react"
 
 export const unauthorizedLinks = [
   { title: "Home", path: "/" },
-  { title: "Newsletter", path: "/" },
+  { title: "Newsletter", path: "#newsletter" },
   { title: "Pricing", path: "/pricing" },
 ]
 
@@ -14,7 +14,7 @@ export const authorizedLinks = [
   },
   {
     title: "Resumes",
-    path: "/",
+    path: "/all/resumes",
     icon: <FileText className="w-5" strokeWidth={2.1} />,
   },
   {

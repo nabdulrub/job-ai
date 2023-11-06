@@ -383,7 +383,7 @@ const JobDialog = ({ editMode, job }: Props) => {
               <div className="flex w-full justify-between">
                 {editMode ? <DeleteButton id={job?.id} job /> : null}
                 <ButtonLoading
-                  text={editMode ? "Save Changes" : "Edit"}
+                  text={editMode ? "Save Changes" : "Add"}
                   loadingText={editMode ? "Editing..." : "Adding..."}
                   isLoading={isSubmitting}
                   buttonIcon={

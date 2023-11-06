@@ -20,7 +20,7 @@ const DashboardNavbar = (props: Props) => {
 
   const dashboard = currentPath === "/dashboard"
   const settings = currentPath === `/profile/${session?.user.id}`
-  const resumes = currentPath === "/resumes"
+  const resumes = currentPath === "/all/resumes"
   const discover = currentPath === "/discover"
   const billing = currentPath === "/billing"
   const generatedResume = currentPath.includes("/generated/resume")
@@ -83,9 +83,6 @@ const DashboardNavbar = (props: Props) => {
           </ul>
         </div>
         <div className="-mt-3 flex w-full items-center gap-4">
-          {/* <Link href={`/profile/${session?.user.id}`}>
-            <Button className="bg-black">My Resume</Button>
-          </Link> */}
           <UserProfileNav user={session?.user} />
         </div>
       </div>

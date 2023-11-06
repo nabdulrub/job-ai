@@ -236,7 +236,7 @@ export const EducationSchema = z.object({
 
 // DATABASE COMPLETE RESUME TYPE
 export type TUserData = {
-  user: User
+  user: Omit<User, "hashedPassword">
   jobs: Job[]
   projects: Project[]
   skills: Skill[]

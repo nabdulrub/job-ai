@@ -22,7 +22,7 @@ import Skills from "./tabs/skills/Skills"
 
 type Props = {
   session?: UserSession
-  user: TUserData | null | undefined
+  user?: TUserData | null | undefined
 }
 
 const ProfileTabs = ({ session, user }: Props) => {
