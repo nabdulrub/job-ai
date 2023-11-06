@@ -3,16 +3,23 @@ import { stripe } from "@/utils/stripe"
 import { headers } from "next/headers"
 import Stripe from "stripe"
 import { prisma } from "../../../../../prisma"
+import getRawBody from "raw-body"
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
 export const POST = async (req: Request, res: Response) => {
-  const body = await req.text()
-  const sig = headers().get("Stripe-Signature") || ""
+  const rawBody = await getRawBody(req)
+  const sig = headers().get("stripe-signature") || ""
 
   let event: Stripe.Event
 
   try {
     event = stripe.webhooks.constructEvent(
-      body,
+      rawBody,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET || ""
     )
