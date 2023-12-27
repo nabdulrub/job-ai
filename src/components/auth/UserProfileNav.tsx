@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "next-auth/react"
 import { UserSession } from "@/types/type"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import Link from "next/link"
 import { ChevronDown, Loader2 } from "lucide-react"
 import { error } from "console"

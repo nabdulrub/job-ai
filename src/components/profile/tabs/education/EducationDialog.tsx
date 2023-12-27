@@ -30,7 +30,7 @@ import {
 } from "../../../ui/select"
 import { ToastAction } from "../../../ui/toast"
 import { toast } from "../../../ui/use-toast"
-import DeleteButton from "../../DeleteButton"
+import DeleteButton from "../../partials/DeleteButton"
 
 type Props = {
   education?: Education
@@ -47,7 +47,7 @@ const EducationDialog = ({ education, editMode }: Props) => {
     defaultValues: {
       id: education?.id ? education.id : undefined,
       school: education?.school ? education.school : "",
-      degree: education?.id ? education.id : "",
+      degree: education?.degree ? education.degree : "",
       gpa: education?.gpa ? education.gpa : undefined,
       location: education?.location ? education.location : "",
       graduationMonth: education?.graduationMonth

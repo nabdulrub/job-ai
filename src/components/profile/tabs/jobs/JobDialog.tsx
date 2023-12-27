@@ -30,7 +30,7 @@ import {
 import { Textarea } from "../../../ui/textarea"
 import { ToastAction } from "../../../ui/toast"
 import { toast } from "../../../ui/use-toast"
-import DeleteButton from "../../DeleteButton"
+import DeleteButton from "../../partials/DeleteButton"
 
 type Props = {
   editMode?: boolean

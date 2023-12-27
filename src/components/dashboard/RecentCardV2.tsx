@@ -1,8 +1,10 @@
 "use client"
 
-import Image from "next/image"
-import React from "react"
-import mockResume from "../../../public/resume-mock.png"
+import { GeneratedResume } from "@prisma/client"
+import { CalendarDaysIcon } from "lucide-react"
+import Link from "next/link"
+import { Badge } from "../ui/badge"
+import { Button } from "../ui/button"
 import {
   Card,
   CardContent,
@@ -10,11 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
-import { CalendarDaysIcon, MoreHorizontal } from "lucide-react"
-import { Badge } from "../ui/badge"
-import { Button } from "../ui/button"
-import Link from "next/link"
-import { GeneratedResume } from "@prisma/client"
 import RecentOptions from "./RecentOptions"
 
 type Props = {
@@ -24,7 +21,7 @@ type Props = {
 const RecentCardV2 = ({ recent }: Props) => {
   const createdDate = recent.createdAt?.toDateString()
   return (
-    <Card className="relative w-full flex-1 border-teal-400 bg-teal-800  shadow-none md:min-w-[300px]">
+    <Card className="relative w-full flex-1 border-teal-400 bg-teal-800  shadow-none ">
       <CardHeader>
         <Badge className="mb-2 w-fit bg-teal-400 text-black shadow-none hover:text-white">
           Resume

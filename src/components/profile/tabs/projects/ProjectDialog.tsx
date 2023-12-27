@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "../../../ui/select"
 import { Textarea } from "../../../ui/textarea"
-import DeleteButton from "../../DeleteButton"
+import DeleteButton from "../../partials/DeleteButton"
 import ButtonLoading from "../../../ButtonLoading"
 import { useRouter } from "next/navigation"
 import { Project } from "@prisma/client"

@@ -1,5 +1,5 @@
 import React from "react"
-import TabField from "../../TabField"
+import TabField from "../../partials/TabField"
 import { Info, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ChangePassword from "@/components/auth/ChangePassword"
@@ -7,7 +7,7 @@ import ProfileDialog from "./ProfileDialog"
 import { User } from "@prisma/client"
 
 type Props = {
-  user?: User
+  user?: Omit<User, "hashedPassword">
 }
 
 const Profile = ({ user }: Props) => {

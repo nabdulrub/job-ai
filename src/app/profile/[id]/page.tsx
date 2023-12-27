@@ -1,11 +1,8 @@
 import ProfileTabs from "@/components/profile/ProfileTabs"
+import { connectToDatabase } from "@/lib/connectdb"
 import { getAuthSession } from "@/lib/nextauth"
 import { redirect } from "next/navigation"
-import React from "react"
 import { prisma } from "../../../../prisma"
-import { connectToDatabase } from "@/lib/connectdb"
-import { tailorJob } from "@/lib/gpt"
-import Loading from "@/components/Loading"
 
 type Props = {
   params: {
@@ -30,11 +27,6 @@ const UserProfile = async ({ params: { id } }: Props) => {
         include: {
           user: {
             select: {
-              firstname: true,
-              lastname: true,
-              email: true,
-              location: true,
-              phone: true,
               hashedPassword: false,
             },
           },
@@ -48,6 +40,8 @@ const UserProfile = async ({ params: { id } }: Props) => {
       return user
     } catch (error) {
       console.error("Error Fetch User Data:", error)
+    } finally {
+      prisma.$disconnect()
     }
   }
 

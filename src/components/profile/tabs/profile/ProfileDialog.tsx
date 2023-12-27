@@ -13,7 +13,7 @@ import {
 import { Button } from "../../../ui/button"
 import Field from "../../../Field"
 import { Form } from "../../../ui/form"
-import DeleteButton from "../../DeleteButton"
+import DeleteButton from "../../partials/DeleteButton"
 import ButtonLoading from "../../../ButtonLoading"
 import { Save } from "lucide-react"
 import { ToastAction } from "../../../ui/toast"

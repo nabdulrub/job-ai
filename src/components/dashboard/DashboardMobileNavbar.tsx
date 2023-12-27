@@ -5,7 +5,7 @@ import { LogOut, Menu, Settings } from "lucide-react"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { useState } from "react"
-import JobAI from "../JobAI"
+import JobAI from "../branding/JobAI"
 import { Button } from "../ui/button"
 import {
   Sheet,

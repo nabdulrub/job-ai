@@ -15,7 +15,7 @@ import {
 import { Tag, TagInput } from "@/components/ui/tag-input"
 import { ToastAction } from "@/components/ui/toast"
 import { toast } from "@/components/ui/use-toast"
-import { useFormStepContext } from "@/context/FormSteps"
+import { useFormStepContext } from "@/store/FormSteps"
 import { resumeMonths, resumeYears } from "@/data/resumeFormData"
 import { EducationSkillsSchema, TEducationSkillsSchema } from "@/types/type"
 import { handlePrev } from "@/lib/utils"
@@ -25,30 +25,19 @@ import { signOut, useSession } from "next-auth/react"
 import { redirect, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import useFormStepStore from "@/store/useFormStepStore"
+import { handleToast } from "@/lib/toast"
 
-type Props = {
-  formStep: number
-  setFormStep: (forStep: number) => void
-}
+type Props = {}
 
-const Skills = ({ formStep, setFormStep }: Props) => {
-  const { isStepCompleted, setComplete } = useFormStepContext()
-
-  const router = useRouter()
+const Skills = (props: Props) => {
+  const { data: session } = useSession()
 
   const [tags, setTags] = useState<Tag[]>([])
+  const router = useRouter()
 
-  const { data: session, update } = useSession()
-
-  // const updateNewUser = async () => {
-  //   await update({
-  //     ...session,
-  //     user: {
-  //       ...session?.user,
-  //       isNewUser: false,
-  //     },
-  //   })
-  // }
+  const { nextStep, status, activeStep, setComplete } = useFormStepStore()
+  const isStepComplete = status[activeStep].completed
 
   const getYears = resumeYears()
 
@@ -75,45 +64,27 @@ const Skills = ({ formStep, setFormStep }: Props) => {
 
   const onSubmit = async (data: TEducationSkillsSchema) => {
     try {
-      const response = await fetch("/api/skills", {
-        method: "POST",
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        reset()
-        // updateNewUser()
-        toast({
-          title: "Info Submitted!, Redirecting...",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-green-800 text-white hover:text-black"
-            >
-              Dismiss
-            </ToastAction>
-          ),
-          duration: 2000,
+      if (!isStepComplete) {
+        const response = await fetch("/api/skills", {
+          method: "POST",
+          body: JSON.stringify(data),
         })
-        setComplete(formStep)
-        router.push(`/profile/${session?.user.id}`)
-        // await signOut({ redirect: true, callbackUrl: "/signin" })
-      }
 
-      if (!response.ok) {
-        toast({
-          title: "Failed to add submit info!",
-          description: "Please try again...",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-red-800 text-white hover:text-black"
-            >
-              Sure!
-            </ToastAction>
-          ),
-          duration: 2000,
-        })
+        if (response?.ok) {
+          handleToast({
+            title: "Info Submitted!, Redirecting...",
+          })
+          reset()
+          setComplete()
+          router.push(`/profile/${session?.user.id}`)
+        }
+
+        if (!response?.ok) {
+          handleToast({
+            title: "Failed to add submit info!",
+            variant: "destructive",
+          })
+        }
       }
     } catch (error) {
       console.error(error)

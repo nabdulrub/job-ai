@@ -12,26 +12,19 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { ToastAction } from "@/components/ui/toast"
-import { toast } from "@/components/ui/use-toast"
-import { useFormStepContext } from "@/context/FormSteps"
+import useFormStepStore from "@/store/useFormStepStore"
 import { resumeMonths, resumeYears } from "@/data/resumeFormData"
-import { ProjectSchema, TProjectSchema, UserSession } from "@/types/type"
-import { handleNext, handlePrev } from "@/lib/utils"
+import { handleToast } from "@/lib/toast"
+import { ProjectSchema, TProjectSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ChevronRight, GanttChartSquare, Plus } from "lucide-react"
-import React, { useState } from "react"
+import { ChevronRight, Plus } from "lucide-react"
 import { useForm } from "react-hook-form"
 
-type Props = {
-  session?: UserSession
-  formStep: number
-  setFormStep: (forStep: number) => void
-}
+type Props = {}
 
-const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
-  const { isStepCompleted, setComplete } = useFormStepContext()
-  const isComplete = isStepCompleted[formStep]?.completed
+const ProjectExperience = (props: Props) => {
+  const { nextStep, status, activeStep, setComplete } = useFormStepStore()
+  const isStepComplete = status[activeStep].completed
 
   const getYears = resumeYears()
 
@@ -58,43 +51,26 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
 
   const onSubmit = async (data: TProjectSchema) => {
     try {
-      const response = await fetch("/api/project", {
-        method: "POST",
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        toast({
-          title: "Doing Great, Project Added!",
-          description: "Add another project!",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-green-800 text-white hover:text-black"
-            >
-              Add More
-            </ToastAction>
-          ),
-          duration: 2000,
+      if (!isStepComplete) {
+        const response = await fetch("/api/project", {
+          method: "POST",
+          body: JSON.stringify(data),
         })
-        reset()
-        setComplete(formStep)
-      }
 
-      if (!response.ok) {
-        toast({
-          title: "Failed to add project!",
-          description: "Please try again...",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-red-800 text-white hover:text-black"
-            >
-              Sure
-            </ToastAction>
-          ),
-          duration: 2000,
-        })
+        if (response?.ok) {
+          handleToast({
+            title: "Doing Great, Project Added!",
+          })
+          reset()
+          setComplete()
+        }
+
+        if (!response?.ok) {
+          handleToast({
+            title: "Failed to add project!",
+            variant: "destructive",
+          })
+        }
       }
     } catch (error) {
       console.error(error)
@@ -102,18 +78,12 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
   }
 
   const handleNextError = () => {
-    if (isComplete) {
-      return handleNext(setFormStep)
-    }
-    toast({
+    if (isStepComplete) return nextStep()
+
+    handleToast({
       title: "No Added Projects",
       description: `You must add a project to proceed!\n Hint: Press the "Add Project" button`,
-      action: (
-        <ToastAction altText="Back to form" className="bg-red-800 text-white">
-          Dismiss
-        </ToastAction>
-      ),
-      duration: 3000,
+      variant: "destructive",
     })
   }
 
@@ -127,7 +97,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
               Your Project Experience
             </h2>
             <div className="flex gap-2">
-              {isComplete && (
+              {isStepComplete && (
                 <>
                   <ButtonLoading
                     text="Add Project"
@@ -290,7 +260,7 @@ const ProjectExperience = ({ session, formStep, setFormStep }: Props) => {
             </div>
           </div>
           <div className="flex justify-between">
-            {isComplete ? (
+            {isStepComplete ? (
               <Button
                 type="button"
                 variant="outline"

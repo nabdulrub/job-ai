@@ -2,28 +2,27 @@
 
 import ButtonLoading from "@/components/ButtonLoading"
 import Field from "@/components/Field"
-import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
-import { ToastAction } from "@/components/ui/toast"
-import { toast } from "@/components/ui/use-toast"
+import useFormStepStore from "@/store/useFormStepStore"
+import { handleToast } from "@/lib/toast"
 import { BasicInfoSchema, TBasicInfoSchema, UserSession } from "@/types/type"
-import { handleNext } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChevronRight } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 
-type Props = {
-  session?: UserSession
-  formStep: number
-  setFormStep: (forStep: number) => void
-}
+type Props = {}
 
-const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
+const BasicInfo = (props: Props) => {
+  const { data: session } = useSession()
+  const { nextStep, status, activeStep, setComplete } = useFormStepStore()
+  const isStepComplete = status[activeStep].completed
+
   const form = useForm<TBasicInfoSchema>({
     resolver: zodResolver(BasicInfoSchema),
     defaultValues: {
-      firstname: session?.firstname ? session.firstname : "",
-      lastname: session?.lastname ? session.lastname : "",
+      firstname: session?.user.firstname ? session.user.firstname : "",
+      lastname: session?.user.lastname ? session.user.lastname : "",
       location: "",
       phone: "",
     },
@@ -39,43 +38,30 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
 
   const onSubmit = async (data: TBasicInfoSchema) => {
     try {
-      const response = await fetch("/api/user", {
-        method: "POST",
-        body: JSON.stringify(data),
-      })
-
-      if (response?.ok) {
-        toast({
-          title: "Step one done!",
-
-          description: "Lets keep going, just a few more to go!",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-green-800 text-white hover:text-black"
-            >
-              Next Step
-            </ToastAction>
-          ),
+      if (!isStepComplete) {
+        const response = await fetch("/api/user", {
+          method: "POST",
+          body: JSON.stringify(data),
         })
-        handleNext(setFormStep)
-        reset()
-      }
 
-      if (!response?.ok) {
-        toast({
-          title: "Failed to submit info",
-          variant: "destructive",
-          description: "Please try again!",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-gray-100 text-black "
-            >
-              Dismiss
-            </ToastAction>
-          ),
-        })
+        if (response?.ok) {
+          handleToast({
+            title: "Step one done!",
+            description: "Lets keep going, just a few more to go!",
+            actionText: "Next Step",
+          })
+          reset()
+          setComplete()
+          nextStep()
+        }
+
+        if (!response?.ok) {
+          handleToast({
+            title: "Failed to submit info",
+            description: "Please try again!",
+            actionText: "Dismiss",
+          })
+        }
       }
     } catch (error) {
       console.error(error)
@@ -127,8 +113,10 @@ const BasicInfo = ({ session, formStep, setFormStep }: Props) => {
           <div className="mt-14 flex justify-between">
             <ButtonLoading
               text="Next"
+              type={isStepComplete ? "button" : "submit"}
               loadingText="Moving on..."
               isLoading={isSubmitting}
+              onClick={() => (isStepComplete ? nextStep() : null)}
               variant="outline"
               className="border-gray-300 bg-gray-200"
               buttonIcon={<ChevronRight className="-mr-2 w-5" />}

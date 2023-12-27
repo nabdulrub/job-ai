@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import NewsletterForm from "../NewsletterForm"
+import NewsletterForm from "../forms/NewsletterForm"
 import { usePathname } from "next/navigation"
-import JobAI from "../JobAI"
+import JobAI from "../branding/JobAI"
 
 type Props = {}
 

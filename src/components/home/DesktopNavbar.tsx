@@ -6,7 +6,7 @@ import { Button } from "../ui/button"
 import SignOutButton from "../auth/SignInButton"
 import { UserSession } from "@/types/type"
 import { unauthorizedLinks } from "@/data/NavbarLinks"
-import JobAI from "../JobAI"
+import JobAI from "../branding/JobAI"
 import { usePathname } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 

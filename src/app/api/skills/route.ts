@@ -1,10 +1,7 @@
 import { connectToDatabase } from "@/lib/connectdb"
 import { getAuthSession } from "@/lib/nextauth"
-import {
-  DeleteSchema,
-  EducationSkillsSchema,
-  ProjectSchema,
-} from "@/types/type"
+import { EducationSkillsSchema } from "@/types/type"
+import { DeleteSchema } from "@/types/delete"
 import { NextResponse } from "next/server"
 import { ZodError } from "zod"
 import { prisma } from "../../../../prisma"
@@ -85,17 +82,6 @@ export const POST = async (req: Request, res: Response) => {
               graduationYear,
             },
           },
-        },
-      })
-    }
-
-    if (session.user.isNewUser) {
-      const updateNewUser = await prisma.user.update({
-        where: {
-          id: session.user.id,
-        },
-        data: {
-          isNewUser: false,
         },
       })
     }

@@ -1,8 +1,7 @@
+import RecentCardV2 from "@/components/dashboard/RecentCardV2"
 import { getAuthSession } from "@/lib/nextauth"
 import { redirect } from "next/navigation"
-import React from "react"
 import { prisma } from "../../../../prisma"
-import RecentCardV2 from "@/components/dashboard/RecentCardV2"
 
 type Props = {}
 

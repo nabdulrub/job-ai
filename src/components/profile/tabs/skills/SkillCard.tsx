@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skill } from "@prisma/client"
 import React from "react"
-import DeleteButton from "../../DeleteButton"
+import DeleteButton from "../../partials/DeleteButton"
 
 type Props = {
   skill?: Skill

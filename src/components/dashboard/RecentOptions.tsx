@@ -2,7 +2,7 @@
 
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
-import DeleteButton from "../profile/DeleteButton"
+import DeleteButton from "../profile/partials/DeleteButton"
 import {
   DropdownMenu,
   DropdownMenuContent,

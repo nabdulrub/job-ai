@@ -1,6 +1,7 @@
 import { connectToDatabase } from "@/lib/connectdb"
 import { getUserSubscriptionPlan } from "@/lib/subscription"
-import { DeleteSchema, NewResumeSchema } from "@/types/type"
+import { NewResumeSchema } from "@/types/type"
+import { DeleteSchema } from "@/types/delete"
 import { NextResponse } from "next/server"
 import { prisma } from "../../../../../prisma"
 import {
@@ -10,7 +11,6 @@ import {
   jobs,
 } from "@/types/generatedResume"
 import { ZodError } from "zod"
-import { getAuthSession } from "@/lib/nextauth"
 import { tailorJob } from "@/lib/gpt"
 
 export const POST = async (req: Request, res: Response) => {
@@ -61,6 +61,7 @@ export const POST = async (req: Request, res: Response) => {
       )
 
     const skills = resume?.skills.map((item) => item.name).join(", ")
+
     const jobs = resume?.jobs
       .map(
         (item) =>
@@ -81,6 +82,8 @@ export const POST = async (req: Request, res: Response) => {
       )
       .join(". ")
 
+    console.log("reached resume check -4")
+
     const education = resume?.education
       .map(
         (item) =>
@@ -89,6 +92,7 @@ export const POST = async (req: Request, res: Response) => {
           }, At: ${item.location}`
       )
       .join(". ")
+    console.log("reached resume check -5")
 
     const newResume = await tailorJob({
       jobDescription: description + `job title: ${title}`,
@@ -100,7 +104,7 @@ export const POST = async (req: Request, res: Response) => {
       },
     })
 
-    console.log(newResume)
+    console.log("reached resume check -6")
 
     if (!newResume)
       return NextResponse.json(
@@ -148,6 +152,8 @@ export const POST = async (req: Request, res: Response) => {
         },
       },
     })
+
+    console.log("reached resume check -8")
 
     return NextResponse.json({ data: newResume }, { status: 201 })
   } catch (error) {

@@ -8,8 +8,6 @@ import ResumeForm from "./ResumeForm"
 type Props = {}
 
 const ResumeHolder = (props: Props) => {
-  const [formStep, setFormStep] = useState(0)
-
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -19,11 +17,7 @@ const ResumeHolder = (props: Props) => {
 
   return (
     <div className="h-[calc(100vh-50px)] w-full md:h-full">
-      <ResumeForm
-        formStep={formStep}
-        setFormStep={setFormStep}
-        session={session?.user}
-      />
+      <ResumeForm />
     </div>
   )
 }

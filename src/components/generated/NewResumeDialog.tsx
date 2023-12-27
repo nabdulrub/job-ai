@@ -22,8 +22,8 @@ import { toast } from "../ui/use-toast"
 import { ToastAction } from "../ui/toast"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { useDashboardContext } from "@/context/DashboardContext"
 import { cn } from "@/lib/utils"
+import usePendingRequestStore from "@/store/usePendingRequestStore"
 
 type NewResumeProps = {
   cta?: string
@@ -31,7 +31,7 @@ type NewResumeProps = {
 }
 
 const NewResumeDialog = ({ cta, className }: NewResumeProps) => {
-  const { isCreatingResume, setIsCreatingResume } = useDashboardContext()
+  const { isPending, setPending } = usePendingRequestStore()
 
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
@@ -53,9 +53,11 @@ const NewResumeDialog = ({ cta, className }: NewResumeProps) => {
     formState: { isSubmitting },
   } = form
 
+  console.log(isPending)
+
   const onSubmit = async (data: TNewResume) => {
     try {
-      setIsCreatingResume(true)
+      setPending(true)
       const response = await fetch("/api/generate/resume", {
         method: "POST",
         body: JSON.stringify(data),
@@ -112,7 +114,7 @@ const NewResumeDialog = ({ cta, className }: NewResumeProps) => {
     } catch (error) {
       console.error(error)
     } finally {
-      setIsCreatingResume(false)
+      setPending(false)
     }
   }
 
@@ -121,10 +123,10 @@ const NewResumeDialog = ({ cta, className }: NewResumeProps) => {
       <DialogTrigger className={cn(className, "")}>
         <Button
           variant={"secondary"}
-          disabled={isCreatingResume}
+          disabled={isPending}
           className={`text-white transition-all duration-300 ${btnClr}`}
         >
-          {isCreatingResume ? "Creating Resume..." : cta}
+          {isPending ? "Creating Resume..." : cta}
         </Button>
       </DialogTrigger>
       .

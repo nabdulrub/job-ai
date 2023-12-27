@@ -15,7 +15,7 @@ import { getAuthSession } from "@/lib/nextauth"
 import SignInButton from "../auth/SignInButton"
 import { NavbarProps } from "./DesktopNavbar"
 import { unauthorizedLinks } from "@/data/NavbarLinks"
-import JobAI from "../JobAI"
+import JobAI from "../branding/JobAI"
 import { usePathname } from "next/navigation"
 
 const MobileNavbar = ({ session }: NavbarProps) => {

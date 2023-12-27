@@ -44,6 +44,8 @@ export const POST = async (req: Request, res: Response) => {
       )
     }
 
+    console.log(error)
+
     return NextResponse.json(
       { message: "Error Registering User!", error: error },
       { status: 400 }

@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { JobSchema, TJobSchema } from "@/types/type"
 import { ChevronRight, Plus } from "lucide-react"
 
+import ButtonLoading from "@/components/ButtonLoading"
 import Field from "@/components/Field"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -15,29 +16,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import useFormStepStore from "@/store/useFormStepStore"
 import { resumeMonths, resumeYears } from "@/data/resumeFormData"
-import { handleNext, handlePrev } from "@/lib/utils"
+import { handleToast } from "@/lib/toast"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "@/components/ui/use-toast"
-import { ToastAction } from "@/components/ui/toast"
-import { useSession } from "next-auth/react"
-import ButtonLoading from "@/components/ButtonLoading"
-import { useFormStepContext } from "@/context/FormSteps"
 
-type Props = {
-  formStep: number
-  setFormStep: (forStep: number) => void
-}
+type Props = {}
 
-const WorkExperience = ({ formStep, setFormStep }: Props) => {
-  const { isStepCompleted, setComplete } = useFormStepContext()
-  const isComplete = isStepCompleted[formStep]?.completed
-
+const WorkExperience = (props: Props) => {
+  const { nextStep, status, activeStep, setComplete } = useFormStepStore()
+  const isStepComplete = status[activeStep].completed
   const getYears = resumeYears()
-
-  const { data: userSession } = useSession()
 
   const form = useForm<TJobSchema>({
     resolver: zodResolver(JobSchema),
@@ -66,43 +56,29 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
 
   const onSubmit = async (data: TJobSchema) => {
     try {
-      const response = await fetch("/api/job", {
-        method: "POST",
-        body: JSON.stringify(data),
-      })
-      if (response.ok) {
-        toast({
-          title: "Job Added!",
-          description: "Add another job!",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-green-800 text-white hover:text-black"
-            >
-              Add More
-            </ToastAction>
-          ),
-          duration: 2000,
+      if (!isStepComplete) {
+        const response = await fetch("/api/job", {
+          method: "POST",
+          body: JSON.stringify(data),
         })
-        setComplete(formStep)
-        reset()
-      }
 
-      if (!response.ok) {
-        toast({
-          title: "Failed to add job!",
-          description: "Please try again...",
-          action: (
-            <ToastAction
-              altText="Back to form"
-              className="bg-red-800 text-white hover:text-black"
-            >
-              Sure
-            </ToastAction>
-          ),
-          duration: 2000,
-        })
-        console.log(response)
+        if (response?.ok) {
+          handleToast({
+            title: "Job Added!",
+            description: "Add another job!",
+            actionText: "Add More",
+          })
+          reset()
+          setComplete()
+        }
+
+        if (!response?.ok) {
+          handleToast({
+            title: "Failed to add job!",
+            description: "Please try again...",
+            actionText: "Dismiss",
+          })
+        }
       }
     } catch (error) {
       console.error(error)
@@ -110,23 +86,15 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
   }
 
   const handleNextError = () => {
-    if (isComplete) {
-      return handleNext(setFormStep)
-    }
-    toast({
+    if (isStepComplete) return nextStep()
+
+    handleToast({
       title: "No Added Jobs",
       description:
         "You must add a job to continue!\n Hint: Press the Add Job button",
-      action: (
-        <ToastAction altText="Back to form" className="bg-red-800 text-white">
-          Dismiss
-        </ToastAction>
-      ),
-      duration: 2000,
+      variant: "destructive",
     })
   }
-
-  watch()
 
   return (
     <>
@@ -136,7 +104,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
             <h2 className="mb-4 text-xl font-thin text-gray-500">
               Your Job Experience
             </h2>
-            {isComplete && (
+            {isStepComplete && (
               <ButtonLoading
                 text="Add Job"
                 loadingText="Adding..."
@@ -335,7 +303,7 @@ const WorkExperience = ({ formStep, setFormStep }: Props) => {
           </div>
           <div className="flex justify-between">
             <div className="">
-              {isSubmitSuccessful || isComplete ? (
+              {isSubmitSuccessful || isStepComplete ? (
                 <Button
                   type="button"
                   variant={"outline"}

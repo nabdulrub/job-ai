@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState } from "react"
-import { Button } from "../ui/button"
-import { toast } from "../ui/use-toast"
-import { ToastAction } from "../ui/toast"
+import { Button } from "../../ui/button"
+import { toast } from "../../ui/use-toast"
+import { ToastAction } from "../../ui/toast"
 import { useRouter } from "next/navigation"
 import { Delete, X } from "lucide-react"
 import {
@@ -14,8 +14,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog"
-import ButtonLoading from "../ButtonLoading"
+} from "../../ui/dialog"
+import ButtonLoading from "../../ButtonLoading"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -48,14 +48,14 @@ const DeleteButton = ({
     job
       ? "job"
       : project
-      ? "project"
-      : skill
-      ? "skills"
-      : education
-      ? "education"
-      : generatedResume
-      ? "/generate/resume"
-      : ""
+        ? "project"
+        : skill
+          ? "skills"
+          : education
+            ? "education"
+            : generatedResume
+              ? "/generate/resume"
+              : ""
   }`
 
   const onDelete = async () => {

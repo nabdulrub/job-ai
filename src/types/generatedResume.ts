@@ -31,10 +31,11 @@ export type educations = {
 export type generatedResume = {
   title?: string
   description?: string
+  company?: string
   jobs?: jobs[]
   projects?: projects[]
   skills?: string[]
-  educations?: educations
+  educations?: educations[]
 }
 
 // tailorJob() function params

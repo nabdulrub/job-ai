@@ -1,6 +1,7 @@
 import { connectToDatabase } from "@/lib/connectdb"
 import { getAuthSession } from "@/lib/nextauth"
-import { DeleteSchema, JobSchema } from "@/types/type"
+import { JobSchema } from "@/types/type"
+import { DeleteSchema } from "@/types/delete"
 import { NextResponse } from "next/server"
 import { ZodError } from "zod"
 import { prisma } from "../../../../prisma"

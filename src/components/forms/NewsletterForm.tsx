@@ -7,13 +7,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form"
-import { Input } from "./ui/input"
+} from "../ui/form"
+import { Input } from "../ui/input"
 import { useForm } from "react-hook-form"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import { NewsSchema, TNewsSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
-import Field from "./Field"
+import Field from "../Field"
 
 type Props = {}
 

@@ -2,22 +2,14 @@
 
 import { RegisterSchema, TRegisterSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
-import Link from "next/link"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import Field from "../Field"
-import { Button } from "../ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card"
-import { Form } from "../ui/form"
 import ButtonLoading from "../ButtonLoading"
-import { signIn } from "next-auth/react"
+import Field from "../Field"
+import { Card, CardContent } from "../ui/card"
+import { Form } from "../ui/form"
 
 type Props = {}
 

@@ -12,17 +12,15 @@ export const config = {
 }
 
 export const POST = async (req: Request, res: Response) => {
-  const rawBody = await getRawBody(req)
-  const sig = headers().get("stripe-signature") || ""
-
+  const body = await req.text()
+  const sig = headers().get("stripe-signature") as string
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string
   let event: Stripe.Event
 
   try {
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET || ""
-    )
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+
+    console.log(event)
   } catch (error) {
     return new Response(
       `Webhook Error: ${
@@ -42,7 +40,6 @@ export const POST = async (req: Request, res: Response) => {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
     )
-
     await connectToDatabase()
 
     await prisma.user.update({
