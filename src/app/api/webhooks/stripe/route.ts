@@ -5,12 +5,6 @@ import Stripe from "stripe"
 import { prisma } from "../../../../../prisma"
 import getRawBody from "raw-body"
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
 export const POST = async (req: Request, res: Response) => {
   const body = await req.text()
   const sig = headers().get("stripe-signature") as string
