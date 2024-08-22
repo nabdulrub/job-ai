@@ -1,4 +1,3 @@
-import { connectToDatabase } from "@/lib/connectdb"
 import bcrypt from "bcrypt"
 import {
   DefaultSession,
@@ -10,7 +9,6 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "../../prisma"
 import { SignInSchema } from "../types/type"
-import { setCookie } from "nookies"
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -44,6 +42,7 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
@@ -58,8 +57,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials || !email || !password) return null
 
         try {
-          await connectToDatabase()
-          const verifyUser = await prisma.user.findFirst({
+          const verifyUser = await prisma.user.findUnique({
             where: { email },
           })
 
@@ -87,15 +85,14 @@ export const authOptions: NextAuthOptions = {
 
           return null
         } catch (error) {
+          console.error("Error during authorization:", error)
           return null
-        } finally {
-          prisma.$disconnect()
         }
       },
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, isNewUser }) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         token.id = user.id
         token.firstname = user.firstname
@@ -106,13 +103,13 @@ export const authOptions: NextAuthOptions = {
       return token
     },
 
-    session: ({ session, token, trigger }) => {
+    session: ({ session, token }) => {
       if (token) {
         session.user.id = token.id
-        session.user.firstname = token.firstname
-        session.user.lastname = token.lastname
-        session.user.phone = token.phone
-        session.user.location = token.location
+        session.user.firstname = token.firstname as string
+        session.user.lastname = token.lastname as string
+        session.user.phone = token.phone as string
+        session.user.location = token.location as string
       }
       return session
     },

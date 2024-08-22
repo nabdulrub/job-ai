@@ -1,39 +1,18 @@
-import { connectToDatabase } from "@/lib/connectdb"
-import { NextResponse } from "next/server"
-import { prisma } from "../../../../../prisma"
-import bcrypt from "bcrypt"
-import { ZodError } from "zod"
 import { RegisterSchema } from "@/types/type"
+import newUser from "@/use-cases/auth/register"
+import initializeResume from "@/use-cases/initializeResume"
+import subscribeToNewsletter from "@/use-cases/subscribeToNewsletter"
+import { NextResponse } from "next/server"
+import { ZodError } from "zod"
 
 export const POST = async (req: Request, res: Response) => {
   try {
     const body = await req.json()
     const { firstname, lastname, password, email } = RegisterSchema.parse(body)
 
-    await connectToDatabase()
-
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    const user = await prisma.user.create({
-      data: {
-        firstname,
-        lastname,
-        hashedPassword,
-        email,
-      },
-    })
-
-    const resume = await prisma.resume.create({
-      data: {
-        userId: user.id,
-      },
-    })
-
-    const news = await prisma.newsletter.create({
-      data: {
-        email,
-      },
-    })
+    const user = await newUser({ firstname, lastname, password, email })
+    const resume = await initializeResume(user.id)
+    const news = await subscribeToNewsletter(email)
 
     return NextResponse.json({ user }, { status: 200 })
   } catch (error) {
@@ -44,13 +23,9 @@ export const POST = async (req: Request, res: Response) => {
       )
     }
 
-    console.log(error)
-
     return NextResponse.json(
       { message: "Error Registering User!", error: error },
       { status: 400 }
     )
-  } finally {
-    await prisma.$disconnect()
   }
 }

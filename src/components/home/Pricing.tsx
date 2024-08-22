@@ -54,24 +54,6 @@ const Pricing = ({ isPricingPage, session }: Props) => {
               duration="MONTHLY"
             />
           ))}
-          {/* <Plan
-            isPlan={true}
-            planPage={isPricingPage}
-            title="Student Starter"
-            description="Our recommended plan for students."
-            price={15}
-            duration="MONTHLY"
-          />
-          <Plan
-            isPlan={false}
-            planPage={isPricingPage}
-            top
-            topTitle="Unlimited"
-            title="Career Accelerator"
-            description="Our most popular plan for job seekers."
-            price={35}
-            duration="MONTHLY"
-          /> */}
         </TabsContent>
         <TabsContent
           value="annual"

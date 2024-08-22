@@ -1,4 +1,4 @@
-import { FileText, LayoutDashboard, Search } from "lucide-react"
+import { FileText, LayoutDashboard, Search, Settings } from "lucide-react"
 
 export const unauthorizedLinks = [
   { title: "Home", path: "/" },
@@ -14,12 +14,17 @@ export const authorizedLinks = [
   },
   {
     title: "Resumes",
-    path: "/all/resumes",
+    path: "/dashboard/resume/all",
     icon: <FileText className="w-5" strokeWidth={2.1} />,
   },
   {
     title: "Discover",
     path: "/",
     icon: <Search className="w-5" strokeWidth={2.1} />,
+  },
+  {
+    title: "Settings",
+    path: "/dashboard/profile",
+    icon: <Settings className="w-5" strokeWidth={2.1} />,
   },
 ]

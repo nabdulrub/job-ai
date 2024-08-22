@@ -6,51 +6,57 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email          String   @unique
   hashedPassword String?
   firstname      String
   lastname       String
   location       String?
   phone          String?
-  createdAt      DateTime @default(now()) @db.Timestamp()
-  updatedAt      DateTime @updatedAt @db.Timestamp()
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   relatedResumes Resume[]
 
-  stripeCustomerId       String?           @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?           @map(name: "stripe_subscription_id")
-  stripePriceId          String?           @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime?         @map(name: "stripe_current_period_end")
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
   GeneratedResume        GeneratedResume[]
+
+  @@map("users")
 }
 
 model Newsletter {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String   @unique
-  createdAt DateTime @default(now()) @db.Timestamp()
-  updatedAt DateTime @updatedAt @db.Timestamp()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("newsletters")
 }
 
 model Resume {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user      User        @relation(fields: [userId], references: [id])
   jobs      Job[]
   projects  Project[]
   skills    Skill[]
   education Education[]
-  userId    String      @db.ObjectId
+  userId    String      @db.Uuid
 
-  createdAt DateTime @default(now()) @db.Timestamp()
-  updatedAt DateTime @updatedAt @db.Timestamp()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("resumes")
 }
 
 model Job {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String?
   employer    String?
   location    String?
@@ -60,15 +66,17 @@ model Job {
   endYear     Int?
   present     Boolean?
   description String?
-  createdAt   DateTime @default(now()) @db.Timestamp()
-  updatedAt   DateTime @updatedAt @db.Timestamp()
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String  @db.ObjectId
+  resumeId String  @db.Uuid
+
+  @@map("jobs")
 }
 
 model Project {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String?
   location    String?
   startMonth  String?
@@ -76,38 +84,44 @@ model Project {
   endMonth    String?
   endYear     Int?
   description String?
-  createdAt   DateTime @default(now()) @db.Timestamp()
-  updatedAt   DateTime @updatedAt @db.Timestamp()
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String  @db.ObjectId
+  resumeId String  @db.Uuid
+
+  @@map("projects")
 }
 
 model Skill {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name String?
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String  @db.ObjectId
+  resumeId String  @db.Uuid
+
+  @@map("skills")
 }
 
 model Education {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   school          String?
   degree          String?
-  gpa             Int?
+  gpa             Float?
   location        String?
   graduationMonth String?
   graduationYear  Int?
-  createdAt       DateTime @default(now()) @db.Timestamp()
-  updatedAt       DateTime @updatedAt @db.Timestamp()
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   Resume   Resume? @relation(fields: [resumeId], references: [id])
-  resumeId String  @db.ObjectId
+  resumeId String  @db.Uuid
+
+  @@map("education")
 }
 
 model GeneratedResume {
-  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  id          String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user        User                 @relation(fields: [userId], references: [id])
   title       String?
   description String?
@@ -115,57 +129,67 @@ model GeneratedResume {
   projects    GeneratedProject[]
   skills      GeneratedSkill[]
   education   GeneratedEducation[]
-  userId      String               @db.ObjectId
-  createdAt   DateTime             @default(now()) @db.Timestamp()
-  updatedAt   DateTime             @updatedAt @db.Timestamp()
+  userId      String               @db.Uuid
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@map("generated_resumes")
 }
 
 model GeneratedJob {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String?
   employer    String?
   location    String?
   dateRange   String?
   description String?
-  createdAt   DateTime @default(now()) @db.Timestamp()
-  updatedAt   DateTime @updatedAt @db.Timestamp()
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   GeneratedResume   GeneratedResume? @relation(fields: [generatedResumeId], references: [id])
-  generatedResumeId String?          @db.ObjectId
+  generatedResumeId String?          @db.Uuid
+
+  @@map("generated_jobs")
 }
 
 model GeneratedProject {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String?
   location    String?
   dateRange   String?
   description String?
-  createdAt   DateTime @default(now()) @db.Timestamp()
-  updatedAt   DateTime @updatedAt @db.Timestamp()
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   GeneratedResume   GeneratedResume? @relation(fields: [generatedResumeId], references: [id])
-  generatedResumeId String?          @db.ObjectId
+  generatedResumeId String?          @db.Uuid
+
+  @@map("generated_projects")
 }
 
 model GeneratedSkill {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String?
-  createdAt DateTime @default(now()) @db.Timestamp()
-  updatedAt DateTime @updatedAt @db.Timestamp()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   GeneratedResume   GeneratedResume? @relation(fields: [generatedResumeId], references: [id])
-  generatedResumeId String?          @db.ObjectId
+  generatedResumeId String?          @db.Uuid
+
+  @@map("generated_skills")
 }
 
 model GeneratedEducation {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   school         String?
   degree         String?
   location       String?
   graduationDate String?
-  createdAt      DateTime @default(now()) @db.Timestamp()
-  updatedAt      DateTime @updatedAt @db.Timestamp()
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   GeneratedResume   GeneratedResume? @relation(fields: [generatedResumeId], references: [id])
-  generatedResumeId String?          @db.ObjectId
+  generatedResumeId String?          @db.Uuid
+
+  @@map("generated_education")
 }

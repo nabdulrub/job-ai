@@ -2,7 +2,7 @@ import ProfileTabs from "@/components/profile/ProfileTabs"
 import { connectToDatabase } from "@/lib/connectdb"
 import { getAuthSession } from "@/lib/nextauth"
 import { redirect } from "next/navigation"
-import { prisma } from "../../../../prisma"
+import { prisma } from "../../../../../prisma"
 
 type Props = {
   params: {

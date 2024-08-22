@@ -3,22 +3,13 @@
 import { SignInSchema, TSignInSchema } from "@/types/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Button } from "../ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card"
+import { Card, CardContent } from "../ui/card"
 
+import ButtonLoading from "../ButtonLoading"
 import Field from "../Field"
 import { Form } from "../ui/form"
-import ButtonLoading from "../ButtonLoading"
 
 type Props = {}
 
@@ -47,8 +38,6 @@ const SignInForm = (props: Props) => {
         password: data.password,
         redirect: false,
       })
-
-      console.log(response)
 
       if (response?.error) {
         setError("password", { message: "Invalid Password or Email" })
@@ -81,7 +70,7 @@ const SignInForm = (props: Props) => {
               text="Sign In"
               loadingText="Signing in..."
               isLoading={isSubmitting}
-              className=" bg-indigo-500 py-6 text-white hover:bg-indigo-800"
+              className="bg-indigo-500 py-6 text-white hover:bg-indigo-800"
               variant="secondary"
             />
           </form>

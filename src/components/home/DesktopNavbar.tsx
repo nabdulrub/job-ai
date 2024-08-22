@@ -1,14 +1,12 @@
 "use client"
 
-import Link from "next/link"
-import React from "react"
-import { Button } from "../ui/button"
-import SignOutButton from "../auth/SignInButton"
-import { UserSession } from "@/types/type"
 import { unauthorizedLinks } from "@/data/NavbarLinks"
-import JobAI from "../branding/JobAI"
-import { usePathname } from "next/navigation"
+import { UserSession } from "@/types/type"
 import { ChevronRight } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import JobAI from "../branding/JobAI"
+import { Button } from "../ui/button"
 
 export type NavbarProps = {
   session?: UserSession
@@ -51,20 +49,16 @@ const DesktopNavbar = ({ session }: NavbarProps) => {
         )}
 
         {session && (
-          <>
-            <div className="flex gap-4">
-              {!session.isNewUser && (
-                <Link href={"/dashboard"}>
-                  <Button
-                    variant={"outline"}
-                    className="rounded-full bg-gray-700 text-white shadow-none"
-                  >
-                    Dashboard <ChevronRight size={20} className="-mr-2 ml-1" />
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </>
+          <div className="flex gap-4">
+            <Link href={"/dashboard"}>
+              <Button
+                variant={"outline"}
+                className="rounded-full bg-gray-700 text-white shadow-none"
+              >
+                Dashboard <ChevronRight size={20} className="-mr-2 ml-1" />
+              </Button>
+            </Link>
+          </div>
         )}
       </div>
     </nav>

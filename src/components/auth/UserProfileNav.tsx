@@ -47,10 +47,10 @@ const UserProfileNav = ({ user }: Props) => {
       <DropdownMenuContent className="mb-2 w-[200px]">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href={`/profile/${user?.id}`}>
+        <Link href={`/dashboard/profile/${user?.id}`}>
           <DropdownMenuItem>Profile</DropdownMenuItem>
         </Link>
-        <Link href={"/billing"}>
+        <Link href={"/dashboard/billing"}>
           <DropdownMenuItem>Billing</DropdownMenuItem>
         </Link>
         <DropdownMenuItem

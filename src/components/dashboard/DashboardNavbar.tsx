@@ -14,21 +14,13 @@ type Props = {}
 
 const DashboardNavbar = (props: Props) => {
   const { data: session } = useSession()
-  const currentPath = usePathname()
+  const pathname = usePathname()
 
   const activeLinkStyles = "relative"
 
-  const dashboard = currentPath === "/dashboard"
-  const settings = currentPath === `/profile/${session?.user.id}`
-  const resumes = currentPath === "/all/resumes"
-  const discover = currentPath === "/discover"
-  const billing = currentPath === "/billing"
-  const generatedResume = currentPath.includes("/generated/resume")
+  const isAuthorizedPath = pathname.includes("/dashboard")
 
-  const authorizedPaths =
-    dashboard || settings || resumes || discover || billing || generatedResume
-
-  return authorizedPaths ? (
+  return isAuthorizedPath ? (
     <div className="relative hidden h-full w-full max-w-[250px] border-r-2 border-gray-100 bg-gray-50 bg-opacity-40 py-10 shadow-lg shadow-gray-50 md:block md:h-screen">
       <div className="flex h-full flex-col items-center justify-between">
         <div className="grid w-full max-w-[170px] gap-12">
@@ -37,7 +29,7 @@ const DashboardNavbar = (props: Props) => {
           </Link>
           <ul className="-ml-4 flex flex-col gap-4">
             {authorizedLinks.map((path, i) => {
-              const isActive = currentPath === path.path
+              const isActive = pathname === path.path
               return (
                 <li key={i}>
                   <Button
@@ -60,26 +52,6 @@ const DashboardNavbar = (props: Props) => {
                 </li>
               )
             })}
-            <li>
-              <Button
-                variant={"ghost"}
-                className={`w-full justify-start ${
-                  currentPath === `/profile/${session?.user.id}` &&
-                  "bg-slate-100"
-                }`}
-              >
-                <Link
-                  href={`/profile/${session?.user.id}`}
-                  className={`flex items-center gap-6 font-extrabold leading-[3rem] transition-all duration-200   ${
-                    currentPath === `/profile/${session?.user.id}`
-                      ? activeLinkStyles
-                      : "border-transparent text-gray-400"
-                  }`}
-                >
-                  <Settings className="w-5" strokeWidth={2.1} /> Settings
-                </Link>
-              </Button>
-            </li>
           </ul>
         </div>
         <div className="-mt-3 flex w-full items-center gap-4">

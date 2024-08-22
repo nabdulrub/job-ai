@@ -5,16 +5,11 @@ import { DeleteSchema } from "@/types/delete"
 import { NextResponse } from "next/server"
 import { ZodError } from "zod"
 import { prisma } from "../../../../prisma"
+import isUserAuthentication from "@/use-cases/auth/isUserAuthenticated"
 
 export const POST = async (req: Request, res: Response) => {
   try {
-    const session = await getAuthSession()
-
-    if (!session?.user)
-      return NextResponse.json(
-        { messsage: "User Unauthenticated!" },
-        { status: 401 }
-      )
+    await isUserAuthentication()
 
     await connectToDatabase()
 

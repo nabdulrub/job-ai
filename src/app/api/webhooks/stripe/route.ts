@@ -3,7 +3,6 @@ import { stripe } from "@/utils/stripe"
 import { headers } from "next/headers"
 import Stripe from "stripe"
 import { prisma } from "../../../../../prisma"
-import getRawBody from "raw-body"
 
 export const POST = async (req: Request, res: Response) => {
   const body = await req.text()

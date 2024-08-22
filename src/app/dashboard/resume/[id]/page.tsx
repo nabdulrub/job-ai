@@ -1,11 +1,9 @@
-import { getAuthSession } from "@/lib/nextauth"
-import { redirect } from "next/navigation"
-import React, { Suspense } from "react"
-import { prisma } from "../../../../../prisma"
-import ResumePDF from "@/components/generated/ResumePDF"
-import { PDFViewer } from "@react-pdf/renderer"
 import ResumeViewer from "@/components/generated/ResumeViewer"
+import { getAuthSession } from "@/lib/nextauth"
 import { Loader2 } from "lucide-react"
+import { redirect } from "next/navigation"
+import { Suspense } from "react"
+import { prisma } from "../../../../../prisma"
 
 type Props = {
   params: {
